@@ -6,6 +6,6 @@
 
 using namespace std;
 
-string Lexer(string line){
-
+string Lexer(string line) {
+    string s;
 }
