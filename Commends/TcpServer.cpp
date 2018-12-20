@@ -18,7 +18,7 @@ void TcpServer::setup(int port) {
         perror("OpenDataServerCommand->openDataServer: ");
         exit(EXIT_FAILURE);
     }
-    memset(&m_serverAddress,0, sizeof(m_serverAddress)); //allocate space for the struct
+    memset(&m_serverAddress,0, sizeof(m_serverAddress)); //allocate space for the struct and put zeros
     m_serverAddress.sin_family = AF_INET;
     m_serverAddress.sin_addr.s_addr=htonl(INADDR_ANY); //Convert '0.0.0.0' to network byte order. set to any ip because the server
     //doesn't know the client ip and doesn't need to.
