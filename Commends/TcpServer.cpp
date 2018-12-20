@@ -3,7 +3,7 @@
 //
 
 #include "TcpServer.h"
-
+string TcpServer::Message;
 /**
  * Function name: setup
  * @param port
