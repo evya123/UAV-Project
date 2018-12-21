@@ -23,4 +23,3 @@ MapStringCommand::MapStringCommand() {
 
 
 }
->>>>>>> lidor-dev
