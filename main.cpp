@@ -6,7 +6,7 @@
 #include "Expression/ShuntingYard.h"
 #include <string>
 #include <iostream>
-#include "LexerParser.h"
+#include "Control/LexerParser.h"
 #include "Commends/TcpServer.h"
 #include "Commends/TcpClient.h"
 
