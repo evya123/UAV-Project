@@ -14,5 +14,6 @@ using namespace std;
 #define UAV_PROJECT_LEXER_H
 
 vector<string> LexerS(string line);
+void FinalLexer(vector<string> &result, vector<string> &final);
 
 #endif //UAV_PROJECT_LEXER_H

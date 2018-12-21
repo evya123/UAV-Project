@@ -7,7 +7,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#include "Lexer.h"
+#include "LexerParser.h"
 
 int main(int argc, char *argv[]) {
 
@@ -20,7 +20,5 @@ int main(int argc, char *argv[]) {
     string str = " ( -2 * - 3 ) + - 5  * - 5";
     ShuntingYard s(str);
     cout << s.evaluate() << "\n";
-
-
     return 0;
 }
