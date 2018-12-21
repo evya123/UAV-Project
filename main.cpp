@@ -6,15 +6,12 @@
 #include "Expression/ShuntingYard.h"
 #include <string>
 #include <iostream>
-#include "Control/LexerParser.h"
-#include "Commends/TcpServer.h"
-#include "Commends/TcpClient.h"
+#include "Commends/PrintCommand.h"
 
 
 int main() {
+PrintCommand* p = new PrintCommand();
+p->doCommand("this is a test");
 
-TcpClient* tcpC = new TcpClient();
-tcpC->setup("172.16.20.103",12345);
-tcpC->Send("Hello");
 return 0;
 }

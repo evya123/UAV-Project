@@ -7,4 +7,8 @@ include_directories(.)
 
 add_executable(Dev
         main.cpp README.md Expression/Expression.h Commends/Command.h Expression/BinaryExpression.h
+<<<<<<< HEAD
         Expression/BinaryExpression.cpp Expression/Minus.cpp Expression/Minus.h Expression/Plus.cpp Expression/Plus.h Expression/Mult.cpp Expression/Mult.h Expression/Div.cpp Expression/Div.h Expression/Num.cpp Expression/Num.h Expression/ShuntingYard.cpp Expression/ShuntingYard.h Control/LexerParser.cpp Control/LexerParser.h Control/Data.cpp Control/Data.h Commends/OpenDataServerCommand.cpp Commends/TcpServer.cpp Commends/OpenDataServerCommand.h Commends/TcpServer.h Commends/TcpClient.cpp Commends/TcpClient.h Control/Controller.cpp Control/Controller.h Commends/MapStringCommand.cpp Commends/MapStringCommand.h)
+=======
+        Expression/BinaryExpression.cpp Expression/Minus.cpp Expression/Minus.h Expression/Plus.cpp Expression/Plus.h Expression/Mult.cpp Expression/Mult.h Expression/Div.cpp Expression/Div.h Expression/Num.cpp Expression/Num.h Expression/ShuntingYard.cpp Expression/ShuntingYard.h Control/LexerParser.cpp Control/LexerParser.h Control/Data.cpp Control/Data.h Commends/OpenDataServerCommand.cpp Commends/TcpServer.cpp Commends/OpenDataServerCommand.h Commends/TcpServer.h Commends/TcpClient.cpp Commends/TcpClient.h Control/Controller.cpp Control/Controller.h Commends/VarCommand.cpp Commends/VarCommand.h Commends/ConnectCommand.cpp Commends/ConnectCommand.h Commends/IfCommand.cpp Commends/IfCommand.h Commends/WhileCommand.cpp Commends/WhileCommand.h Commends/PrintCommand.cpp Commends/PrintCommand.h Commends/SleepCommand.cpp Commends/SleepCommand.h)
+>>>>>>> 518c70b9f8171c8304414254b70fa0a9684f8db4
