@@ -13,7 +13,7 @@
 #include <stdexcept>
 #include <unistd.h>
 
-#define MAXPACKETSIZE 4096
+#define MAXPACKETSIZE 1024
 
 using namespace std;
 
@@ -28,6 +28,7 @@ public:
 private:
 
     static void* Task(void* argv);
+
     static string Message;
     int m_serverSocket, m_accVal;
     pthread_t m_serverThread;
