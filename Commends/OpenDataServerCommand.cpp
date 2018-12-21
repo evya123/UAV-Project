@@ -1,9 +1,6 @@
 
 #include "OpenDataServerCommand.h"
 
-OpenDataServerCommand::OpenDataServerCommand(const string& arguments) {
-    m_args = arguments;
-}
 /**
  * Function name: convertToInt
  * @param port

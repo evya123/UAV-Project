@@ -9,14 +9,16 @@
 #include "Command.h"
 #include <stdexcept>
 
-class OpenDataServerCommand : public Command{
+class OpenDataServerCommand : public Command {
 
 public:
-    OpenDataServerCommand(const string& arguments);
+    OpenDataServerCommand() = default;
+
     virtual void doCommand(string arguments);
 
 private:
     int openDataServer();
+
     int convertToInt(string port);
 
     string m_args;
