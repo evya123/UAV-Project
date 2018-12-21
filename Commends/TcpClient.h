@@ -27,7 +27,7 @@ class TcpClient
 {
 private:
     int sock;
-    std::string address;
+    string address;
     int port;
     struct sockaddr_in server;
 

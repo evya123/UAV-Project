@@ -13,7 +13,7 @@
 #include <stdexcept>
 #include <unistd.h>
 
-#define MAXPACKETSIZE 4096
+#define MAXPACKETSIZE 1024
 
 using namespace std;
 
