@@ -3,7 +3,7 @@
 //
 
 #include <stdio.h>
-#include "ShuntingYard.h"
+#include "Expression/ShuntingYard.h"
 #include <string>
 #include <iostream>
 
