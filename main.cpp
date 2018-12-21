@@ -16,8 +16,9 @@ using namespace std;
 
 int main(){
 
-TcpClient* tcpC = new TcpClient();
-tcpC->setup("172.16.20.103",12345);
-tcpC->Send("Hello");
-return 0;
+    TcpServer* tcp = new TcpServer();
+    tcp->setup(5400);
+    tcp->receive();
+    tcp->detach();
+    return 0;
 }

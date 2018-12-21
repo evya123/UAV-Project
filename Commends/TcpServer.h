@@ -28,6 +28,7 @@ public:
 private:
 
     static void* Task(void* argv);
+
     static string Message;
     int m_serverSocket, m_accVal;
     pthread_t m_serverThread;
