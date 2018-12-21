@@ -15,9 +15,6 @@ using namespace std;
 
 
 int main(){
-//    string str = " ( -2 * - 3 ) + - 5  * - 5";
-//    ShuntingYard s(str);
-//    cout << s.evaluate () << "\n";
 
 TcpClient* tcpC = new TcpClient();
 tcpC->setup("172.16.20.103",12345);
