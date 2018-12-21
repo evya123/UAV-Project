@@ -3,7 +3,6 @@
 //
 
 #include "PrintCommand.h"
-
 void PrintCommand::doCommand(const string &arguments){
     cout<<arguments<<endl;
 }
