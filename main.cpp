@@ -9,7 +9,6 @@
 
 #include "Commends/TcpServer.h"
 #include "Commends/TcpClient.h"
-int main(int argc, char *argv[]) {
 
 
 
