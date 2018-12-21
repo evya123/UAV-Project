@@ -16,17 +16,17 @@ int OpenDataServerCommand::convertToInt(string port) {
         return stoi(port);
     } catch(invalid_argument& e){
         // if no conversion could be performed
-        printf("OpenDataServerCommand->convertToInt: ", e.what());
+        printf("OpenDataServerCommand->convertToInt: %s", e.what());
         exit(EXIT_FAILURE);
     } catch(out_of_range& e){
         // if the converted value would fall out of the range of the result type
         // or if the underlying function (std::strtol or std::strtoull) sets errno
         // to ERANGE.
-        printf("OpenDataServerCommand->convertToInt: ", e.what());
+        printf("OpenDataServerCommand->convertToInt: %s", e.what());
         exit(EXIT_FAILURE);
     } catch(exception& e) {
         // everything else
-        printf("OpenDataServerCommand->convertToInt: ", e.what());
+        printf("OpenDataServerCommand->convertToInt: %s", e.what());
         exit(EXIT_FAILURE);
     }
 }
