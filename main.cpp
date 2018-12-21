@@ -6,19 +6,16 @@
 #include "ShuntingYard.h"
 #include <string>
 #include <iostream>
-#include <vector>
-#include "LexerParser.h"
 
-int main(int argc, char *argv[]) {
+#include "Commends/TcpServer.h"
+#include "Commends/TcpClient.h"
 
-    string c = "";
-    for (int i = 1; i < argc; i++) {
-        c += argv[i];
-        c += " ";
-    }
-    vector<string> lex = LexerS(c);
-    string str = " ( -2 * - 3 ) + - 5  * - 5";
-    ShuntingYard s(str);
-    cout << s.evaluate() << "\n";
-    return 0;
+
+
+int main(){
+
+TcpClient* tcpC = new TcpClient();
+tcpC->setup("172.16.20.103",12345);
+tcpC->Send("Hello");
+return 0;
 }

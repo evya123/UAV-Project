@@ -11,18 +11,24 @@
 #include <arpa/inet.h>
 #include <cstring>
 #include <stdexcept>
+#include <unistd.h>
+
+#define MAXPACKETSIZE 1024
 
 using namespace std;
 
 class TcpServer {
 public:
     TcpServer() = default;
-    static void* Task();
     int openDataServer();
     void setup(int port);
     string receive();
-
+    void detach();
+    void clean();
 private:
+
+    static void* Task(void* argv);
+    static string Message;
     int m_serverSocket, m_accVal;
     pthread_t m_serverThread;
     struct sockaddr_in m_serverAddress;
