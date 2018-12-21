@@ -3,3 +3,7 @@
 //
 
 #include "SleepCommand.h"
+
+void SleepCommand::doCommand(const string &arguments) {
+    sleep(stoi(arguments));
+}
