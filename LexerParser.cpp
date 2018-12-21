@@ -21,8 +21,7 @@ vector<string> LexerS(string line) {
         expretions.push_back(exp);
         line = line.substr(firstSpace + 1, endOfstring);
     }
-    std::regex e("=|\\+|\\*|\\(|\\)|\\-|\\,"
-                 "|\\<|\\>|\\/|\\&|\\||\\!");
+    std::regex e("=|\\+|\\*|\\(|\\)|\\-|\\,|\\<|\\>|\\/|\\&|\\||\\!");
 
     checkRegex(expretions, result, e);
     vector<string> final;
@@ -95,3 +94,14 @@ void FinalLexer(vector<string> &result, vector<string> &final) {
     }
 }
 
+void test (){
+    string str  = "<line_separator>newline</line_separator>";
+    vector<string> checkVec;
+    checkVec = LexerS(str);
+    while (!checkVec.empty()){
+        cout<<checkVec.back()<< endl;
+        checkVec.pop_back();
+    }
+
+
+}

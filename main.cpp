@@ -3,19 +3,22 @@
 //
 
 #include <stdio.h>
-#include "ShuntingYard.h"
+#include "Expression/ShuntingYard.h"
 #include <string>
 #include <iostream>
-
+#include "LexerParser.h"
 #include "Commends/TcpServer.h"
 #include "Commends/TcpClient.h"
 
 
+int main() {
 
-int main(){
+    test();
 
+
+/**
 TcpClient* tcpC = new TcpClient();
 tcpC->setup("172.16.20.103",12345);
 tcpC->Send("Hello");
-return 0;
+return 0;**/
 }
