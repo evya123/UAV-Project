@@ -38,7 +38,7 @@ int OpenDataServerCommand::openDataServer() {
 
 }
 
-void OpenDataServerCommand::doCommand() {
+void OpenDataServerCommand::doCommand(string arguments) {
     //TODO: create thread and add the function to the thread
 
 }

@@ -2,6 +2,7 @@
 // Created by evya on 12/18/18.
 //
 
+#include <iostream>
 #include "TcpServer.h"
 string TcpServer::Message;
 /**
@@ -47,6 +48,7 @@ void* TcpServer::Task(void* arg) {
         }
         msg[n]=0;
         Message = string(msg);
+        cout<<"This is: \n"<<Message<<endl;
     }
     return 0;
 }

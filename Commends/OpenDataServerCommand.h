@@ -13,7 +13,7 @@ class OpenDataServerCommand : public Command{
 
 public:
     OpenDataServerCommand(const string& arguments);
-    virtual void doCommand();
+    virtual void doCommand(string arguments);
 
 private:
     int openDataServer();
