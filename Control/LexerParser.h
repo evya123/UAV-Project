@@ -15,5 +15,6 @@ using namespace std;
 
 vector<string> LexerS(string line);
 void FinalLexer(vector<string> &result, vector<string> &final);
+void test ();
 
 #endif //UAV_PROJECT_LEXER_H

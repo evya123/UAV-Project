@@ -6,14 +6,12 @@
 #include "Expression/ShuntingYard.h"
 #include <string>
 #include <iostream>
-
+#include "Control/LexerParser.h"
 #include "Commends/TcpServer.h"
 #include "Commends/TcpClient.h"
 
 
-
-int main(){
-
+int main() {
 
 TcpClient* tcpC = new TcpClient();
 tcpC->setup("172.16.20.103",12345);

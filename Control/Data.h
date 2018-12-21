@@ -3,6 +3,7 @@
 //
 
 #include <map>
+#include "Command.h"
 
 using namespace std;
 #ifndef UAV_PROJECT_DATA_H
@@ -19,11 +20,16 @@ public:
 
     void addPathAndVar(string var, string path);
 
+    void setVar(double val);
+
     map<string, double> getVarMap() const;
 
     map<string, double> getPathMap() const;
 
     map<string, string> getMappingVarAndPath() const;
+
+    map<string, Command *> mapStringToCommand;
+
 
 };
 
