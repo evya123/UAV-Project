@@ -3,7 +3,6 @@
 //
 
 #include "MapStringCommand.h"
-
 MapStringCommand::MapStringCommand() {
     //OpenData server command
     Command *openDataServer = new OpenDataServerCommand();
