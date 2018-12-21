@@ -27,6 +27,7 @@ void TcpServer::setup(int port) {
     int lst = listen(m_serverSocket,5);
     if (lst < 0) {
         perror("OpenDataServerCommand->setup: ");
+        close(m_serverSocket);
         exit(EXIT_FAILURE);
     }
 }
@@ -58,14 +59,13 @@ void* TcpServer::Task(void* arg) {
  **/
 string TcpServer::receive() {
     string str;
-    while(true)
-    {
+    while(true){
         socklen_t sosize  = sizeof(m_clientAddress);
         m_accVal = accept(m_serverSocket,(struct sockaddr*)&m_clientAddress,&sosize); //On success, these system calls return a nonnegative integer that is a
                                                                                       //file descriptor for the accepted socket.  On error, -1 is returned,
-                                                                                      //and errno is set appropriately.f accpat
+                                                                                      //and errno is set appropriately.
         str = inet_ntoa(m_clientAddress.sin_addr);
-        pthread_create(&m_serverThread,NULL,&Task,(void*)m_accVal);
+        pthread_create(&m_serverThread,nullptr,&Task,(void*)m_accVal);
     }
     return str;
 }
@@ -82,6 +82,9 @@ string TcpServer::receive() {
  */
 void TcpServer::detach()
 {
+    shutdown(m_serverSocket,SHUT_RDWR);
+    shutdown(m_accVal,SHUT_RDWR);
+    sleep(1);
     close(m_serverSocket);
     close(m_accVal);
 }

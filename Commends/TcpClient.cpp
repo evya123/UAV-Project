@@ -37,7 +37,7 @@ bool TcpClient::setup(string address , int port){
         server.sin_addr.s_addr = inet_addr( address.c_str() );
     }
     server.sin_family = AF_INET;
-    server.sin_port = htons( port );
+    server.sin_port = htons(port);
     if (connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0) {
         perror("TcpClient->setup: ");
         return false;
