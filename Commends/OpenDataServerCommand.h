@@ -12,8 +12,8 @@
 class OpenDataServerCommand : public Command{
 
 public:
-    OpenDataServerCommand(const string& arguments);
-    virtual void doCommand(string arguments);
+    OpenDataServerCommand() = default;
+    virtual void doCommand(const string &arguments);
 
 private:
     int openDataServer();

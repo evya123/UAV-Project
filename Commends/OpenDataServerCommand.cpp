@@ -1,9 +1,5 @@
 
 #include "OpenDataServerCommand.h"
-
-OpenDataServerCommand::OpenDataServerCommand(const string& arguments) {
-    m_args = arguments;
-}
 /**
  * Function name: convertToInt
  * @param port
@@ -38,7 +34,7 @@ int OpenDataServerCommand::openDataServer() {
 
 }
 
-void OpenDataServerCommand::doCommand(string arguments) {
+void OpenDataServerCommand::doCommand(const string &arguments) {
     //TODO: create thread and add the function to the thread
 
 }

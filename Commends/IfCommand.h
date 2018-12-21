@@ -7,7 +7,8 @@
 #include "Command.h"
 
 class IfCommand : public Command{
-
+public:
+    virtual void doCommand(const string &arguments);
 };
 
 

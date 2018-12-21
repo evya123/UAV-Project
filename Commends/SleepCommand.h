@@ -7,6 +7,8 @@
 #include "Command.h"
 
 class SleepCommand : public Command{
+public:
+    virtual void doCommand(const string &arguments);
 
 };
 
