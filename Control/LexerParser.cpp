@@ -93,15 +93,3 @@ void FinalLexer(vector<string> &result, vector<string> &final) {
         r = "";
     }
 }
-
-void test (){
-    string str  = "<line_separator>newline</line_separator>";
-    vector<string> checkVec;
-    checkVec = LexerS(str);
-    while (!checkVec.empty()){
-        cout<<checkVec.back()<< endl;
-        checkVec.pop_back();
-    }
-
-
-}

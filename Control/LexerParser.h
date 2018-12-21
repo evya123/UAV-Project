@@ -12,7 +12,6 @@ using namespace std;
 
 #ifndef UAV_PROJECT_LEXER_H
 #define UAV_PROJECT_LEXER_H
-
 vector<string> LexerS(string line);
 void FinalLexer(vector<string> &result, vector<string> &final);
 void test ();
