@@ -3,6 +3,14 @@
 //
 
 #include "IfCommand.h"
-void IfCommand::doCommand(const string &arguments) {
-    return;
+IfCommand::IfCommand(MapStringCommand *mpc) {
+    m_msc = mpc;
+}
+
+void IfCommand::doCommand(const vector<string> arguments) {
+    if(nblalalala) {
+        auto it = arguments.begin();
+        while((*it) != ";")
+            docommands(vector)
+    }
 }

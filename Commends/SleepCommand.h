@@ -6,10 +6,11 @@
 #define UAV_PROJECT_SLEEPCOMMAND_H
 #include "Command.h"
 #include<unistd.h>
+#define SLEEP_TIME 0
 
 class SleepCommand : public Command{
 public:
-    virtual void doCommand(const string &arguments);
+    virtual void doCommand(const vector<string> arguments);
 
 };
 

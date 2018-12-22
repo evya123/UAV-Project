@@ -8,11 +8,20 @@
 #include <iostream>
 #include "Commends/PrintCommand.h"
 #include "Control/LexerParser.h"
+#include "Commends/ArithmeticConditions.h"
 
 int main() {
-test();
-PrintCommand* p = new PrintCommand();
-p->doCommand("this is a test");
+//test();
+//PrintCommand* p = new PrintCommand();
+//    vector<string> a {"this","is","a","test"};
+//p->doCommand(a);
+//SleepCommand * s = new SleepCommand();
+//vector<string> b = {"5"};
+//s->doCommand(b);
+//p->doCommand(a);
 
+string a = "5.12345",b = "5.12345";
+ArithmeticConditions* p = new ArithmeticConditions();
+cout<<p->getCondition("!=")(65,5.5)<<endl;
 return 0;
 }

@@ -8,19 +8,22 @@
 
 #include "Command.h"
 #include <stdexcept>
+#include <Commends/PullAndPush/TcpServer.h>
 
 class OpenDataServerCommand : public Command {
 
 public:
-    OpenDataServerCommand() = default;
+    OpenDataServerCommand();
 
-    virtual void doCommand(const string &arguments);
+    virtual void doCommand(const vector<string> arguments);
+
+    virtual ~OpenDataServerCommand();
 
 private:
-    int openDataServer();
-
+    int openDataServer(int port);
     int convertToInt(string port);
 
+    TcpServer* m_server;
     string m_args;
 };
 
