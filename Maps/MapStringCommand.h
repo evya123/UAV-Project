@@ -2,10 +2,14 @@
 // Created by lidor115 on 12/21/18.
 //
 
-#include "PrintCommand.h"
-#include "ConnectCommand.h"
-#include "SleepCommand.h"
-#include "VarCommand.h"
+#include "Commends/PrintCommand.h"
+#include "Commends/ConnectCommand.h"
+#include "Commends/SleepCommand.h"
+#include "Commends/VarCommand.h"
+#include "Commends/OpenDataServerCommand.h"
+#include "Commends/IfCommand.h"
+#include "Commends/WhileCommand.h"
+
 
 #include <map>
 using namespace std;

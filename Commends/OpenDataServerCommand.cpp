@@ -1,9 +1,5 @@
 
 #include "OpenDataServerCommand.h"
-<<<<<<< HEAD
-
-=======
->>>>>>> 518c70b9f8171c8304414254b70fa0a9684f8db4
 /**
  * Function name: convertToInt
  * @param port

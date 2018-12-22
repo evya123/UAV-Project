@@ -16,7 +16,7 @@ class Data {
 public:
     void addVar(string var, double val);
 
-    void addPath(string path, double val);
+    void initPath(string path, double val);
 
     void addPathAndVar(string var, string path);
 
