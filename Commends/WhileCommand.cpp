@@ -3,6 +3,6 @@
 //
 
 #include "WhileCommand.h"
-void WhileCommand::doCommand(const string &arguments) {
-    return;
+void WhileCommand::doCommand(const vector<string> arguments) {
+    //TODO
 }

@@ -4,11 +4,20 @@
 
 #ifndef UAV_PROJECT_IFCOMMAND_H
 #define UAV_PROJECT_IFCOMMAND_H
+
+#include <Maps/MapStringCommand.h>
 #include "Command.h"
+#include "ArithmeticConditions.h"
+#include "Control/LexerParser.h"
 
 class IfCommand : public Command{
 public:
-    virtual void doCommand(const string &arguments);
+    IfCommand(MapStringCommand* mpc);
+    virtual void doCommand(const vector<string> arguments);
+
+private:
+    ArithmeticConditions m_ac;
+    MapStringCommand* m_msc;
 };
 
 
