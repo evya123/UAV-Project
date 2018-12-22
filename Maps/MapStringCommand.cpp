@@ -2,6 +2,7 @@
 // Created by lidor115 on 12/21/18.
 //
 
+#include <cstring>
 #include "MapStringCommand.h"
 
 /**
@@ -27,11 +28,11 @@ MapStringCommand::MapStringCommand() {
 
     //ifComnabd
     Command *ifCommand = new IfCommand();
-    _stringCommandMap.insert(pair<string, Command *>("var", ifCommand));
+    _stringCommandMap.insert(pair<string, Command *>("if", ifCommand));
 
     //whileCommand
     Command *whileCommand = new WhileCommand();
-    _stringCommandMap.insert(pair<string, Command *>("var", whileCommand));
+    _stringCommandMap.insert(pair<string, Command *>("while", whileCommand));
 
 }
 
@@ -53,7 +54,7 @@ MapStringCommand::~MapStringCommand() {
  * @return if the string represent a command or not
  */
 bool MapStringCommand::isLeagalCommand(const string c) const {
-    if (_stringCommandMap.at(c)) {
+    if (_stringCommandMap.count(c) > 0) {
         return true;
     }
     return false;
@@ -66,4 +67,5 @@ bool MapStringCommand::isLeagalCommand(const string c) const {
  */
 Command *MapStringCommand::getCommand(const string c) const {
     return _stringCommandMap.at(c);
+
 }

@@ -78,7 +78,7 @@ void FinalLexer(vector<string> &result, vector<string> &final) {
         string temp = "";
         string check = result.back();
         while (result.back() != ",") {
-            r = result.back() + " " + r;
+            r = result.back() + r;
             result.pop_back();
             if (result.empty()) {
                 break;
@@ -99,18 +99,69 @@ void Parser(vector<string> &lexer) {
     Data *data = new Data();
     MapStringCommand *mapStringCommand = new MapStringCommand();
     string temp = "";
+
     while (!lexer.empty()) {
+        // first if its a var - get the value
         temp = lexer.back();
-        if(mapStringCommand->isLeagalCommand(temp)){
-            cout<<"the command is:" + temp;
-            lexer.pop_back();
-            continue;
+        if (mapStringCommand->isLeagalCommand(temp)) {
+            cout << "the command is: " + temp << endl;
+        } else if (isMathExpression(temp)) {
+            cout << "it's a math expression: " + temp << endl;
+            string t = dijkstra(temp);
+            cout << "after dijkstra: " + t << endl;
+
         }
+
+        lexer.pop_back();
     }
 
 }
 
-void test(){
-    string str = "openDataServer 5400 10";
-    LexerS(str);
+bool isMathExpression(string s) {
+    std::regex e("[a-z]+|\\[A-Z]+");
+    std::smatch m;
+    string match;
+    if (regex_search(s, m, e)) {
+        return false;
+    } else {
+        return true;
+    }
 }
+
+string dijkstra(string s) {
+    string newStr;
+    std::smatch m1;
+    std::smatch m2;
+    std::regex e("[a-z]+|\\[A-Z]+");
+    std::regex r("\\+|\\*|\\(|\\)|\\-|\\/");
+    while (s != "") {
+        if (regex_search(s, m1, r)) {
+            newStr += m1.prefix();
+            string op;
+            for (auto x:m1) {
+                op = x;
+            }
+            newStr += ' ';
+            newStr += op;
+            s = m1.suffix();
+        } else {
+            newStr += s;
+            s = "";
+        }
+    }
+    ShuntingYard shuntingYard(newStr);
+    double temp = shuntingYard.evaluate();
+    return to_string(temp);
+}
+
+
+void test() {
+    string str = "var h0 = heading";
+    LexerS(str);
+    string str1 = "var breaks = bind /hhhs/ggg/ggg ";
+    LexerS(str1);
+    string str2 = "var x =3";
+    LexerS(str2);
+
+}
+
