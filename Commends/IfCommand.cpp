@@ -3,3 +3,6 @@
 //
 
 #include "IfCommand.h"
+void IfCommand::doCommand(const string &arguments) {
+    return;
+}

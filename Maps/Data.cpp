@@ -4,7 +4,10 @@
 
 #include "Data.h"
 
-void Data::initPath(string path, double val) {
+Data::Data() {
+    initPath();
+}
+void Data::initPath() {
     this->pathMap.insert(pair<string, double>("/instrumentation/airspeed-indicator/indicated-speed-kt", 0));
     this->pathMap.insert(pair<string, double>("/instrumentation/altimeter/indicated-altitude-ft", 0));
     this->pathMap.insert(pair<string, double>("/instrumentation/altimeter/pressure-alt-ft", 0));
@@ -50,3 +53,4 @@ map<string, double> Data::getPathMap() const {
 map<string, double> Data::getVarMap() const {
     return varMap;
 }
+
