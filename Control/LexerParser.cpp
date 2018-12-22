@@ -9,8 +9,11 @@ using namespace std;
 
 void checkRegex(list<string> &expretions, vector<string> &result, regex e);
 
+LexerParser::LexerParser(Data *data) {
+    _data = data;
+}
 
-void LexerS(string line) {
+void LexerParser::LexerS(string line) {
     list<string> expretions;
     vector<string> result;
     line = line + " ";
@@ -29,7 +32,8 @@ void LexerS(string line) {
     Parser(final);
 }
 
-void checkRegex(list<string> &expretions, vector<string> &result, regex e) {
+void LexerParser::checkRegex(list<string> &expretions, vector<string> &result,
+                             regex e) {
     std::smatch m;
     // for each expresion divided by space
     for (list<string>::iterator word = expretions.begin(); word != expretions
@@ -39,6 +43,7 @@ void checkRegex(list<string> &expretions, vector<string> &result, regex e) {
             string back = result.back();
             // if there is "=" or there was "=" before put "," if there
             // wasn't operation and now its not an operation
+
             if (!(regex_match(result.back(), e)) && !(regex_match(c, e))) {
                 result.push_back(",");
             }
@@ -55,16 +60,21 @@ void checkRegex(list<string> &expretions, vector<string> &result, regex e) {
                 op = x;
             }
             if ((regex_match(result.back(), regex("="))) ||
-                (regex_match(op, regex("=")))) {
+                (regex_match(op, regex("="))) || (result.back() == "bind")) {
                 result.push_back(",");
             }
             result.push_back(op);
             *word = m.suffix().str();
-        }
-        if (!result.empty() && (regex_match(result.back(), regex("=")))) {
-            result.push_back(",");
-        }
+            if (regex_match(result.back(), regex("\\)")) && (!regex_match
+                    (word->substr(0, 1), regex("\\+|\\-|\\*|\\/")))) {
+                result.push_back(",");
+            }
 
+
+            if (!result.empty() && (regex_match(result.back(), regex("=")))) {
+                result.push_back(",");
+            }
+        }
         if (*word != "") {
             result.push_back(*word);
         }
@@ -72,13 +82,13 @@ void checkRegex(list<string> &expretions, vector<string> &result, regex e) {
 }
 
 
-void FinalLexer(vector<string> &result, vector<string> &final) {
+void LexerParser::FinalLexer(vector<string> &result, vector<string> &final) {
     string r;
     while (!result.empty()) {
         string temp = "";
         string check = result.back();
         while (result.back() != ",") {
-            r = result.back() + " " + r;
+            r = result.back() + r;
             result.pop_back();
             if (result.empty()) {
                 break;
@@ -95,22 +105,136 @@ void FinalLexer(vector<string> &result, vector<string> &final) {
 }
 
 
-void Parser(vector<string> &lexer) {
-    Data *data = new Data();
+void LexerParser::Parser(vector<string> &lexer) {
     MapStringCommand *mapStringCommand = new MapStringCommand();
     string temp = "";
+
     while (!lexer.empty()) {
+        // first if its a var - get the value
         temp = lexer.back();
-        if(mapStringCommand->isLeagalCommand(temp)){
-            cout<<"the command is:" + temp;
+        if (temp == "var") {
             lexer.pop_back();
-            continue;
+            varOperation(lexer);
+            if (lexer.empty()) {
+                break;
+            }
+            throw ("var is not valid");
         }
+        if (mapStringCommand->isLeagalCommand(temp)) {
+            cout << "the command is: " + temp << endl;
+        } else if (isMathExpression(temp)) {
+            cout << "it's a math expression: " + temp << endl;
+            string t = to_string(dijkstra(temp));
+            cout << "after dijkstra: " + t << endl;
+
+        }
+        lexer.pop_back();
     }
 
 }
 
-void test(){
-    string str = "openDataServer 5400 10";
-    LexerS(str);
+bool LexerParser::isMathExpression(string s) {
+    std::regex e("[a-z]+|\\[A-Z]+");
+    std::smatch m;
+    string match;
+    if (regex_search(s, m, e)) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+double LexerParser::dijkstra(string s) {
+    string newStr;
+    std::smatch m1;
+    std::smatch m2;
+    std::regex e("[a-z]+|\\[A-Z]+");
+    std::regex r("\\+|\\*|\\(|\\)|\\-|\\/|\\(|\\)");
+    while (s != "") {
+        if (regex_search(s, m1, r)) {
+            newStr += m1.prefix();
+            string op;
+            for (auto x:m1) {
+                op = x;
+            }
+            newStr += ' ';
+            newStr += op;
+            newStr += ' ';
+            s = m1.suffix();
+        } else {
+            newStr += s;
+            s = "";
+        }
+    }
+    ShuntingYard shuntingYard(newStr);
+    double temp = shuntingYard.evaluate();
+    return temp;
+}
+
+void LexerParser::varOperation(vector<string> &varVec) {
+    string key = varVec.back();
+    // if there is no var - build new var
+    if (!_data->isLeagalVar(key)) {
+        _data->addVar(key, 0);
+    }
+    while (varVec.back() != "=") {
+        varVec.pop_back();
+    }
+    // pop the "="
+    varVec.pop_back();
+    /*
+     * bind case
+     */
+    if (varVec.back() == "bind") {
+        varVec.pop_back();
+        // check if there is a legal bind
+        string path = varVec.back();
+        if (_data->isPath(path)) {
+            _data->addPathAndVar(key, path);
+            _data->changeBindValue(path, _data->getVarValue(key));
+        } else {
+            throw ("path %s is not valid", path);
+        }
+    }
+        /**
+         * case 2 - set value to a var
+         */
+    else if (isMathExpression(varVec.back())) {
+        double value = dijkstra(varVec.back());
+        _data->assignVar(key, value);
+        if (_data->isBind(key)) {
+            _data->changeBindValue(_data->getPath(key), value);
+        }
+    }
+        /**
+         * case 3 - vars we need to calculate
+         */
+    else {
+        // string for dijecstra
+        string dString;
+        string str = varVec.back();
+        smatch m;
+        std::regex r("\\+|\\*|\\(|\\)|\\-|\\/|\\(|\\)");
+        while (str != "") {
+            regex_search(str, m, r);
+            string op;
+            for (auto x:m) {
+                op = x;
+            }
+            string var = m.prefix();
+            str = m.suffix();
+            if (!isMathExpression(var)) {
+                if (_data->isLeagalVar(var)) {
+                    dString += to_string(_data->getVarValue(var));
+                } else {
+                    throw ("illegal Expression");
+                }
+            } else {
+                dString = m.suffix();
+            }
+            dString += op;
+        }
+        double num =dijkstra(dString);
+    }
+    varVec.pop_back();
 }
