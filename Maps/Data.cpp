@@ -59,47 +59,39 @@ void Data::initPath() {
 }
 
 void Data::addVar(string var, double val) {
-    _varMap.insert(std::pair<string, double>(var, val));
+    _symbolTable.insert(std::pair<string, double>(var, val));
 }
 
 void Data::addPathAndVar(string var, string path) {
     _mappingPathVar.insert(std::pair<string, string>(var, path));
 }
 
-map<string, string> Data::getMappingVarAndPath() const {
-    return _mappingPathVar;
-}
-
-map<string, double> Data::getPathMap() const {
-    return _pathMap;
-}
-
-map<string, double> Data::getVarMap() const {
-    return _varMap;
-}
-
 bool Data::isLeagalVar(const string var) const {
-    if (_varMap.count(var) > 0) {
+    if (_symbolTable.count(var) > 0) {
         return true;
     }
     return false;
 }
 
 double Data::getVarValue(const string var) const {
-    return _varMap.at(var);
+    return _symbolTable.at(var);
+}
+
+string Data::getPath(const string var) const {
+    return _mappingPathVar.at(var);
 }
 
 void Data::assignVar(const string var, double val) {
     // if the var is already exist - change the var and the bind table
     if (isLeagalVar(var)) {
-        _varMap.at(var) = val;
+        _symbolTable.at(var) = val;
         if (isBind(var)) {
             string bind = _mappingPathVar[var];
             _pathMap.at(bind) = val;
         }
         // its a new var - add to the symbolTable
     } else {
-        _varMap.insert(pair<string, double>(var, val));
+        _symbolTable.insert(pair<string, double>(var, val));
     }
 }
 
@@ -108,4 +100,15 @@ bool Data::isBind(const string var) const {
         return true;
     }
     return false;
+}
+
+bool Data::isPath(const string var) const {
+    if (_pathMap.count(var) > 0) {
+        return true;
+    }
+    return false;
+}
+
+void Data::changeBindValue(const string path, const double val) {
+    _pathMap[path] = val;
 }

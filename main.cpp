@@ -10,9 +10,17 @@
 #include "Control/LexerParser.h"
 
 int main() {
-test();
-PrintCommand* p = new PrintCommand();
-p->doCommand("this is a test");
+    Data *data = new Data();
+    LexerParser *l = new LexerParser(data);
+    string str = "var h0 = 2";
+    l->LexerS(str);
+    string str1 = "var h0 = h0 *2 ";
+    l->LexerS(str1);
+    string str2 = "var throttle =3";
+    //l->LexerS(str2);
 
-return 0;
+    PrintCommand *p = new PrintCommand();
+    p->doCommand("this is a test");
+
+    return 0;
 }

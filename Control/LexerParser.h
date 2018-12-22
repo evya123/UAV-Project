@@ -17,15 +17,27 @@ using namespace std;
 #ifndef UAV_PROJECT_LEXER_H
 #define UAV_PROJECT_LEXER_H
 
-void LexerS(string line);
+class LexerParser {
+private:
+    Data *_data;
+public:
+    LexerParser(Data* data);
+    void LexerS(string line);
 
-void FinalLexer(vector<string> &result, vector<string> &final);
+    void checkRegex(list<string> &expretions, vector<string> &result, regex e);
 
-void Parser(vector<string> &lexer);
 
-bool isMathExpression(string s);
+    void FinalLexer(vector<string> &result, vector<string> &final);
 
-string dijkstra(string s);
+    void Parser(vector<string> &lexer);
 
-void test();
+    bool isMathExpression(string s);
+
+    double dijkstra(string s);
+
+    void varOperation(vector<string> &varVec);
+
+    void test();
+};
+
 #endif //UAV_PROJECT_LEXER_H
