@@ -3,3 +3,6 @@
 //
 
 #include "WhileCommand.h"
+void WhileCommand::doCommand(const string &arguments) {
+    return;
+}

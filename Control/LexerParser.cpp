@@ -10,7 +10,7 @@ using namespace std;
 void checkRegex(list<string> &expretions, vector<string> &result, regex e);
 
 
-vector<string> LexerS(string line) {
+void LexerS(string line) {
     list<string> expretions;
     vector<string> result;
     line = line + " ";
@@ -26,7 +26,7 @@ vector<string> LexerS(string line) {
     checkRegex(expretions, result, e);
     vector<string> final;
     FinalLexer(result, final);
-    return final;
+    Parser(final);
 }
 
 void checkRegex(list<string> &expretions, vector<string> &result, regex e) {
@@ -92,4 +92,25 @@ void FinalLexer(vector<string> &result, vector<string> &final) {
         }
         r = "";
     }
+}
+
+
+void Parser(vector<string> &lexer) {
+    Data *data = new Data();
+    MapStringCommand *mapStringCommand = new MapStringCommand();
+    string temp = "";
+    while (!lexer.empty()) {
+        temp = lexer.back();
+        if(mapStringCommand->isLeagalCommand(temp)){
+            cout<<"the command is:" + temp;
+            lexer.pop_back();
+            continue;
+        }
+    }
+
+}
+
+void test(){
+    string str = "openDataServer 5400 10";
+    LexerS(str);
 }

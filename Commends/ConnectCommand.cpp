@@ -3,3 +3,6 @@
 //
 
 #include "ConnectCommand.h"
+void ConnectCommand::doCommand(const string &arguments) {
+    return;
+}

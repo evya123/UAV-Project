@@ -12,12 +12,21 @@
 
 
 #include <map>
+
 using namespace std;
 #ifndef UAV_PROJECT_MAPSTRINGCOMMAND_H
 #define UAV_PROJECT_MAPSTRINGCOMMAND_H
-class MapStringCommand{
-    map<string, Command*> _stringCommandMap;
+
+class MapStringCommand {
+    map<string, Command *> _stringCommandMap;
 public:
     MapStringCommand();
+
+    bool isLeagalCommand(const string c) const;
+
+    ~MapStringCommand();
+
+    Command *getCommand(const string c) const;
 };
+
 #endif //UAV_PROJECT_MAPSTRINGCOMMAND_H

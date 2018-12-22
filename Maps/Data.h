@@ -16,7 +16,7 @@ class Data {
 public:
     void addVar(string var, double val);
 
-    void initPath(string path, double val);
+    void initPath();
 
     void addPathAndVar(string var, string path);
 
@@ -28,8 +28,9 @@ public:
 
     map<string, string> getMappingVarAndPath() const;
 
-    map<string, Command *> mapStringToCommand;
+    Data();
 
+    ~Data();
 
 };
 

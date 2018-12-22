@@ -7,9 +7,10 @@
 #include <string>
 #include <iostream>
 #include "Commends/PrintCommand.h"
-
+#include "Control/LexerParser.h"
 
 int main() {
+test();
 PrintCommand* p = new PrintCommand();
 p->doCommand("this is a test");
 
