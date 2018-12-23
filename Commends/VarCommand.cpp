@@ -3,6 +3,6 @@
 //
 
 #include "VarCommand.h"
-void VarCommand::doCommand(const vector<string> &arguments, Date &d) {
+void VarCommand::doCommand(const vector<string> &arguments, Data &d) {
     //TODO
 }

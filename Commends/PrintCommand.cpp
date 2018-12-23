@@ -4,7 +4,7 @@
 
 #include <vector>
 #include "PrintCommand.h"
-void PrintCommand::doCommand(const vector<string> &arguments, Date &d) {
+void PrintCommand::doCommand(const vector<string> &arguments, Data &d) {
     std::size_t i;
     for (i = 0; i < arguments.size() - 1; ++i){
         std::cout << arguments[i]<<" ";

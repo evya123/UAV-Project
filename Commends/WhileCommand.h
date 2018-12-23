@@ -8,7 +8,7 @@
 
 class WhileCommand : public Command{
 public:
-    virtual void doCommand(const vector<string> &arguments, Date &d);
+    virtual void doCommand(const vector<string> &arguments, Data &d);
 };
 
 
