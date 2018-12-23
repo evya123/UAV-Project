@@ -27,8 +27,8 @@ MapStringCommand::MapStringCommand() {
     _stringCommandMap.insert(pair<string, Command *>("var", varCommand));
 
     //ifComnabd
-    Command *ifCommand = new IfCommand();
-    _stringCommandMap.insert(pair<string, Command *>("if", ifCommand));
+//    Command *ifCommand = new IfCommand();
+//    _stringCommandMap.insert(pair<string, Command *>("if", ifCommand));
 
     //whileCommand
     Command *whileCommand = new WhileCommand();

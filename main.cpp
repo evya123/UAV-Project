@@ -10,6 +10,15 @@
 #include "Control/LexerParser.h"
 #include "Commends/ArithmeticConditions.h"
 
+vector<string> splitByDelimiter(vector<string>::iterator& it,const string delimiter) {
+    vector<string> ret;
+    while((*it).compare(delimiter) != 0){
+        ret.push_back((*it));
+        ++it;
+    }
+    return ret;
+}
+
 int main() {
 //test();
 //PrintCommand* p = new PrintCommand();
@@ -19,9 +28,5 @@ int main() {
 //vector<string> b = {"5"};
 //s->doCommand(b);
 //p->doCommand(a);
-
-string a = "5.12345",b = "5.12345";
-ArithmeticConditions* p = new ArithmeticConditions();
-cout<<p->getCondition("!=")(65,5.5)<<endl;
 return 0;
 }
