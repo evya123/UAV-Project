@@ -3,7 +3,6 @@
 //
 
 #include "Data.h"
-
 Data::Data() {
     initPath();
 }

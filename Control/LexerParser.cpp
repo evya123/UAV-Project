@@ -222,6 +222,9 @@ void LexerParser::varOperation(vector<string> &varVec) {
                 op = x;
             }
             string var = m.prefix();
+            if (op == "") {
+                var = str;
+            }
             str = m.suffix();
             if (!isMathExpression(var)) {
                 if (_data->isLeagalVar(var)) {
@@ -230,11 +233,16 @@ void LexerParser::varOperation(vector<string> &varVec) {
                     throw ("illegal Expression");
                 }
             } else {
-                dString = m.suffix();
+                dString += var;
             }
             dString += op;
         }
-        double num =dijkstra(dString);
+        double value = dijkstra(dString);
+        _data->assignVar(key, value);
+        if (_data->isBind(key)) {
+            _data->changeBindValue(_data->getPath(key), value);
+        }
+
     }
     varVec.pop_back();
 }
