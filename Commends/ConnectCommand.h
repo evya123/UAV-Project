@@ -12,7 +12,7 @@ class ConnectCommand : public Command{
 
 public:
     ConnectCommand() = default;
-    virtual void doCommand(const vector<string> arguments);
+    virtual void doCommand(const vector<string> &arguments, Date &d);
 };
 
 

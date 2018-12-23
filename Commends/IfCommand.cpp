@@ -7,7 +7,7 @@ IfCommand::IfCommand(MapStringCommand *mpc) {
     m_msc = mpc;
 }
 
-void IfCommand::doCommand(const vector<string> arguments) {
+void IfCommand::doCommand(const vector<string> &arguments, Date &d) {
     if(nblalalala) {
         auto it = arguments.begin();
         while((*it) != ";")

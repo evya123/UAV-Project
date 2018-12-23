@@ -8,7 +8,7 @@ using namespace std;
 
 class Command {
 public:
-    virtual void doCommand(const vector <string> arguments) = 0;
+    virtual void doCommand(const vector<string> &arguments, Date &d) = 0;
     virtual ~Command(){};
 };
 

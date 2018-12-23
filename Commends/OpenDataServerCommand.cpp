@@ -37,7 +37,7 @@ int OpenDataServerCommand::openDataServer(int port) {
 
 }
 
-void OpenDataServerCommand::doCommand(const vector<string> arguments) {
+void OpenDataServerCommand::doCommand(const vector<string> &arguments, Date &d) {
     //TODO: create thread and add the function to the thread
 
 }

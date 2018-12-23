@@ -13,9 +13,10 @@
 class IfCommand : public Command{
 public:
     IfCommand(MapStringCommand* mpc);
-    virtual void doCommand(const vector<string> arguments);
+    virtual void doCommand(const vector<string> &arguments, Date &d);
 
 private:
+    LexerParser lp;
     ArithmeticConditions m_ac;
     MapStringCommand* m_msc;
 };
