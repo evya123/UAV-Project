@@ -9,7 +9,7 @@ using namespace std;
 
 class Command {
 public:
-    virtual void doCommand(vector<string> &arguments, Data &d) = 0;
+    virtual void doCommand(vector<string> &arguments, Data *d) = 0;
     virtual ~Command(){};
 };
 

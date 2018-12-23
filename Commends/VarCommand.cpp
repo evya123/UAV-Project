@@ -4,11 +4,11 @@
 
 #include "VarCommand.h"
 
-void VarCommand::doCommand(vector <string> &arguments, Data &d) {
+void VarCommand::doCommand(vector <string> &arguments, Data *d) {
     string key = arguments.back();
     // if there is no var - build new var
-    if (!d.isLeagalVar(key)) {
-        d.addVar(key, 0);
+    if (!d->isLeagalVar(key)) {
+        d->addVar(key, 0);
     }
     while (arguments.back() != "=") {
         arguments.pop_back();
@@ -22,9 +22,9 @@ void VarCommand::doCommand(vector <string> &arguments, Data &d) {
         arguments.pop_back();
         // check if there is a legal bind
         string path = arguments.back();
-        if (d.isPath(path)) {
-            d.addPathAndVar(key, path);
-            d.changeBindValue(path, d.getVarValue(key));
+        if (d->isPath(path)) {
+            d->addPathAndVar(key, path);
+            d->changeBindValue(path, d->getVarValue(key));
         } else {
             throw ("path %s is not valid", path);
         }
@@ -34,9 +34,9 @@ void VarCommand::doCommand(vector <string> &arguments, Data &d) {
          */
     else if (isMathExpression(arguments.back())) {
         double value = dijkstra(arguments.back());
-        d.assignVar(key, value);
-        if (d.isBind(key)) {
-            d.changeBindValue(d.getPath(key), value);
+        d->assignVar(key, value);
+        if (d->isBind(key)) {
+            d->changeBindValue(d->getPath(key), value);
         }
     }
         /**
@@ -45,7 +45,7 @@ void VarCommand::doCommand(vector <string> &arguments, Data &d) {
     else {
         // string for dijecstra
         string dString;
-        string str = varVec.back();
+        string str = arguments.back();
         smatch m;
         std::regex r("\\+|\\*|\\(|\\)|\\-|\\/|\\(|\\)");
         while (str != "") {
@@ -60,8 +60,8 @@ void VarCommand::doCommand(vector <string> &arguments, Data &d) {
             }
             str = m.suffix();
             if (!isMathExpression(var)) {
-                if (_data->isLeagalVar(var)) {
-                    dString += to_string(_data->getVarValue(var));
+                if (d->isLeagalVar(var)) {
+                    dString += to_string(d->getVarValue(var));
                 } else {
                     throw ("illegal Expression");
                 }
@@ -71,9 +71,9 @@ void VarCommand::doCommand(vector <string> &arguments, Data &d) {
             dString += op;
         }
         double value = dijkstra(dString);
-        d.assignVar(key, value);
-        if (d.isBind(key)) {
-            d.changeBindValue(d.getPath(key), value);
+        d->assignVar(key, value);
+        if (d->isBind(key)) {
+            d->changeBindValue(d->getPath(key), value);
         }
 
     }
