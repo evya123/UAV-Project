@@ -109,16 +109,49 @@ void LexerParser::Parser(vector<string> &lexer) {
     while (!lexer.empty()) {
         // first if its a var - get the value
         temp = lexer.back();
-        if (mapStringCommand->isLeagalCommand(temp)) {
+        if(temp == "while" || temp == "if"){
+            ConditionParser(lexer);
+        }
+
+
+        else if (mapStringCommand->isLeagalCommand(temp)) {
             cout << "the command is: " + temp << endl;
             lexer.pop_back();
             mapStringCommand->getCommand(temp)->doCommand
-                    (lexer,_data);
-        } else if (isMathExpression(temp)) {
-            cout << "it's a math expression: " + temp << endl;
-            string t = to_string(dijkstra(temp));
-            cout << "after dijkstra: " + t << endl;
-
+                    (lexer, _data);
+        } else {
+            cout << "Other : " + temp << endl;
+            if (_data->isLeagalVar(temp)) {
+                VarCommand *varCommand = new VarCommand();
+                varCommand->doCommand(lexer, _data);
+            } else {
+                throw ("var is not valid!");
+            }
         }
     }
+}
+
+void LexerParser::ReadFromFile(string fileName) {
+    fstream file;
+    file.open(fileName,
+              std::fstream::in | std::fstream::out);
+    ifstream infile(fileName);
+    string line;
+    while (getline(infile, line)) {
+        LexerS(line);
+    }
+}
+
+void LexerParser::ConditionParser(vector<string> &lexer) {
+    // save the condition (if or while) and pop it
+    string condition = lexer.back();
+     lexer.pop_back();
+
+     /**
+      * now we bulid the condition after we know if its while or if
+      */
+
+    std::regex e("==|\\>|\\<|\\<=|\\>=|\\");
+
+
 }

@@ -10,14 +10,11 @@
 #include "Control/LexerParser.h"
 #include "Commends/ArithmeticConditions.h"
 
-int main() {
+int main(int argc, char *argv[]){
 
     Data * data = new Data();
     LexerParser *l = new LexerParser(data);
-    string s1 = "var x = 5";
-    l->LexerS(s1);
-    string s2 = "var y = x* 5 *8 -2";
-    l->LexerS(s2);
+    l->ReadFromFile(argv[1]);
 
 //test();
 //PrintCommand* p = new PrintCommand();
