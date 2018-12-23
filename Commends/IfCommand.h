@@ -13,7 +13,7 @@
 class IfCommand : public Command{
 public:
     IfCommand(MapStringCommand* mpc);
-    virtual void doCommand(vector<string> &arguments, Data &d);
+    virtual void doCommand(vector<string> &arguments, Data *d);
 
 private:
     LexerParser lp;

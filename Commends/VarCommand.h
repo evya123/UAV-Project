@@ -4,14 +4,16 @@
 
 #ifndef UAV_PROJECT_VARCOMMAND_H
 #define UAV_PROJECT_VARCOMMAND_H
+
 #include "Command.h"
 #include "Maps/MapStringCommand.h"
 #include "Expression/ShuntingYard.h"
+#include "Utils.h"
 
-class VarCommand : public Command{
+class VarCommand : public Command {
 
 public:
-    virtual void doCommand(vector<string> &arguments, Data &d);
+    virtual void doCommand(vector<string> &arguments, Data *d);
 
 };
 

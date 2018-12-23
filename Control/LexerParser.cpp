@@ -6,9 +6,6 @@
 
 using namespace std;
 
-
-void checkRegex(list<string> &expretions, vector<string> &result, regex e);
-
 LexerParser::LexerParser(Data *data) {
     _data = data;
 }
@@ -112,62 +109,16 @@ void LexerParser::Parser(vector<string> &lexer) {
     while (!lexer.empty()) {
         // first if its a var - get the value
         temp = lexer.back();
-        if (temp == "var") {
-            lexer.pop_back();
-            varOperation(lexer);
-            if (lexer.empty()) {
-                break;
-            }
-            throw ("var is not valid");
-        }
         if (mapStringCommand->isLeagalCommand(temp)) {
             cout << "the command is: " + temp << endl;
+            lexer.pop_back();
+            mapStringCommand->getCommand(temp)->doCommand
+                    (lexer,_data);
         } else if (isMathExpression(temp)) {
             cout << "it's a math expression: " + temp << endl;
             string t = to_string(dijkstra(temp));
             cout << "after dijkstra: " + t << endl;
 
         }
-        lexer.pop_back();
-    }
-
-}
-
-bool LexerParser::isMathExpression(string s) {
-    std::regex e("[a-z]+|\\[A-Z]+");
-    std::smatch m;
-    string match;
-    if (regex_search(s, m, e)) {
-        return false;
-    } else {
-        return true;
     }
 }
-
-double LexerParser::dijkstra(string s) {
-    string newStr;
-    std::smatch m1;
-    std::smatch m2;
-    std::regex e("[a-z]+|\\[A-Z]+");
-    std::regex r("\\+|\\*|\\(|\\)|\\-|\\/|\\(|\\)");
-    while (s != "") {
-        if (regex_search(s, m1, r)) {
-            newStr += m1.prefix();
-            string op;
-            for (auto x:m1) {
-                op = x;
-            }
-            newStr += ' ';
-            newStr += op;
-            newStr += ' ';
-            s = m1.suffix();
-        } else {
-            newStr += s;
-            s = "";
-        }
-    }
-    ShuntingYard shuntingYard(newStr);
-    double temp = shuntingYard.evaluate();
-    return temp;
-}
-
