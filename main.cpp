@@ -8,19 +8,20 @@
 #include <iostream>
 #include "Commends/PrintCommand.h"
 #include "Control/LexerParser.h"
+#include "Commends/ArithmeticConditions.h"
 
 int main() {
-    Data *data = new Data();
-    LexerParser *l = new LexerParser(data);
-    string str = "var h0 = 2";
-    l->LexerS(str);
-    string str1 = "var h0 = h0 *8 ";
-    l->LexerS(str1);
-    string str2 = "var throttle =3";
-    //l->LexerS(str2);
+//test();
+//PrintCommand* p = new PrintCommand();
+//    vector<string> a {"this","is","a","test"};
+//p->doCommand(a);
+//SleepCommand * s = new SleepCommand();
+//vector<string> b = {"5"};
+//s->doCommand(b);
+//p->doCommand(a);
 
-    PrintCommand *p = new PrintCommand();
-    p->doCommand("this is a test");
-
-    return 0;
+string a = "5.12345",b = "5.12345";
+ArithmeticConditions* p = new ArithmeticConditions();
+cout<<p->getCondition("!=")(65,5.5)<<endl;
+return 0;
 }

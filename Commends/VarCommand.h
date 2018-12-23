@@ -11,7 +11,7 @@
 class VarCommand : public Command{
 
 public:
-    virtual void doCommand(const string &arguments);
+    virtual void doCommand(const vector<string> arguments);
 
 };
 

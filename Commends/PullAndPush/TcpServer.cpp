@@ -16,13 +16,13 @@ string TcpServer::Message;
 void TcpServer::setup(int port) {
     m_serverSocket = socket(AF_INET,SOCK_STREAM,0); //Create the socket
     if (m_serverSocket < 0){ //Check if the creation succeeded
-        perror("OpenDataServerCommand->openDataServer: ");
+        perror("OpenDataServerCommand->setup: ");
         exit(EXIT_FAILURE);
     }
     memset(&m_serverAddress,0, sizeof(m_serverAddress)); //allocate space for the struct and put zeros
     m_serverAddress.sin_family = AF_INET;
     m_serverAddress.sin_addr.s_addr=htonl(INADDR_ANY); //Convert '0.0.0.0' to network byte order. set to any ip because the server
-    //doesn't know the client ip and doesn't need to.
+                                                        //doesn't know the client ip and doesn't need to.
     m_serverAddress.sin_port = htons(port);
     ::bind(m_serverSocket,(sockaddr*)&m_serverAddress, sizeof(m_serverAddress)); //:: before bind because without it, the function use std::bind
     int lst = listen(m_serverSocket,5);
@@ -38,7 +38,7 @@ void* TcpServer::Task(void* arg) {
     int newsockfd = (long)arg;
     char msg[MAXPACKETSIZE];
     pthread_detach(pthread_self());
-    while(1)
+    while(true)
     {
         n=recv(newsockfd,msg,MAXPACKETSIZE,0);
         if(n==0)
@@ -48,7 +48,6 @@ void* TcpServer::Task(void* arg) {
         }
         msg[n]=0;
         Message = string(msg);
-        cout<<"This is: \n"<<Message<<endl;
     }
     return 0;
 }

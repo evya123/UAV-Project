@@ -2,12 +2,14 @@
 #ifndef DEV_COMMAND_H
 #define DEV_COMMAND_H
 #include <string>
+#include <vector>
 
 using namespace std;
 
 class Command {
-protected:
-    virtual void doCommand(const string &argument) = 0;
+public:
+    virtual void doCommand(const vector <string> arguments) = 0;
+    virtual ~Command(){};
 };
 
 #endif //DEV_COMMAND_H

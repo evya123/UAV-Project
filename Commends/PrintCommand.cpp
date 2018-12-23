@@ -2,7 +2,13 @@
 // Created by evya on 12/21/18.
 //
 
+#include <vector>
 #include "PrintCommand.h"
-void PrintCommand::doCommand(const string &arguments){
-    cout<<arguments<<endl;
+void PrintCommand::doCommand(const vector <string> arguments){
+    std::size_t i;
+    for (i = 0; i < arguments.size() - 1; ++i){
+        std::cout << arguments[i]<<" ";
+    }
+    std::cout << arguments[i]<<endl;
+
 }

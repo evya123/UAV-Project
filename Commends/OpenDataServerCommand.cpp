@@ -1,5 +1,8 @@
 
 #include "OpenDataServerCommand.h"
+OpenDataServerCommand::OpenDataServerCommand() {
+    m_server = new TcpServer();
+}
 /**
  * Function name: convertToInt
  * @param port
@@ -28,13 +31,17 @@ int OpenDataServerCommand::convertToInt(string port) {
 }
 
 
-int OpenDataServerCommand::openDataServer() {
-
-
+int OpenDataServerCommand::openDataServer(int port) {
+    m_server->setup(port);
+    m_server->receive();
 
 }
 
-void OpenDataServerCommand::doCommand(const string &arguments) {
+void OpenDataServerCommand::doCommand(const vector<string> arguments) {
     //TODO: create thread and add the function to the thread
 
+}
+
+OpenDataServerCommand::~OpenDataServerCommand() {
+    delete m_server;
 }
