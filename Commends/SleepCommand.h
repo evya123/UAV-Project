@@ -10,7 +10,7 @@
 
 class SleepCommand : public Command{
 public:
-    virtual void doCommand(const vector<string> &arguments, Data &d);
+    virtual void doCommand(vector<string> &arguments, Data &d);
 
 };
 

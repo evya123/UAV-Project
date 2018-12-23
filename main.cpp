@@ -11,6 +11,14 @@
 #include "Commends/ArithmeticConditions.h"
 
 int main() {
+
+    Data * data = new Data();
+    LexerParser *l = new LexerParser(data);
+    string s1 = "var x = 5";
+    l->LexerS(s1);
+    string s2 = "var y = x* 5 *8 -2";
+    l->LexerS(s2);
+
 //test();
 //PrintCommand* p = new PrintCommand();
 //    vector<string> a {"this","is","a","test"};
