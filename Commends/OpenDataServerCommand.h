@@ -15,7 +15,7 @@ class OpenDataServerCommand : public Command {
 public:
     OpenDataServerCommand();
 
-    virtual void doCommand(const vector<string> &arguments, Data &d);
+    virtual void doCommand(vector<string> &arguments, Data *d);
 
     virtual ~OpenDataServerCommand();
 

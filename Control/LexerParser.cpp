@@ -6,9 +6,6 @@
 
 using namespace std;
 
-
-void checkRegex(list<string> &expretions, vector<string> &result, regex e);
-
 LexerParser::LexerParser(Data *data) {
     _data = data;
 }
@@ -112,137 +109,16 @@ void LexerParser::Parser(vector<string> &lexer) {
     while (!lexer.empty()) {
         // first if its a var - get the value
         temp = lexer.back();
-        if (temp == "var") {
-            lexer.pop_back();
-            varOperation(lexer);
-            if (lexer.empty()) {
-                break;
-            }
-            throw ("var is not valid");
-        }
         if (mapStringCommand->isLeagalCommand(temp)) {
             cout << "the command is: " + temp << endl;
+            lexer.pop_back();
+            mapStringCommand->getCommand(temp)->doCommand
+                    (lexer,_data);
         } else if (isMathExpression(temp)) {
             cout << "it's a math expression: " + temp << endl;
             string t = to_string(dijkstra(temp));
             cout << "after dijkstra: " + t << endl;
 
         }
-        lexer.pop_back();
     }
-
-}
-
-bool LexerParser::isMathExpression(string s) {
-    std::regex e("[a-z]+|\\[A-Z]+");
-    std::smatch m;
-    string match;
-    if (regex_search(s, m, e)) {
-        return false;
-    } else {
-        return true;
-    }
-}
-
-double LexerParser::dijkstra(string s) {
-    string newStr;
-    std::smatch m1;
-    std::smatch m2;
-    std::regex e("[a-z]+|\\[A-Z]+");
-    std::regex r("\\+|\\*|\\(|\\)|\\-|\\/|\\(|\\)");
-    while (s != "") {
-        if (regex_search(s, m1, r)) {
-            newStr += m1.prefix();
-            string op;
-            for (auto x:m1) {
-                op = x;
-            }
-            newStr += ' ';
-            newStr += op;
-            newStr += ' ';
-            s = m1.suffix();
-        } else {
-            newStr += s;
-            s = "";
-        }
-    }
-    ShuntingYard shuntingYard(newStr);
-    double temp = shuntingYard.evaluate();
-    return temp;
-}
-
-void LexerParser::varOperation(vector<string> &varVec) {
-    string key = varVec.back();
-    // if there is no var - build new var
-    if (!_data->isLeagalVar(key)) {
-        _data->addVar(key, 0);
-    }
-    while (varVec.back() != "=") {
-        varVec.pop_back();
-    }
-    // pop the "="
-    varVec.pop_back();
-    /*
-     * bind case
-     */
-    if (varVec.back() == "bind") {
-        varVec.pop_back();
-        // check if there is a legal bind
-        string path = varVec.back();
-        if (_data->isPath(path)) {
-            _data->addPathAndVar(key, path);
-            _data->changeBindValue(path, _data->getVarValue(key));
-        } else {
-            throw ("path %s is not valid", path);
-        }
-    }
-        /**
-         * case 2 - set value to a var
-         */
-    else if (isMathExpression(varVec.back())) {
-        double value = dijkstra(varVec.back());
-        _data->assignVar(key, value);
-        if (_data->isBind(key)) {
-            _data->changeBindValue(_data->getPath(key), value);
-        }
-    }
-        /**
-         * case 3 - vars we need to calculate
-         */
-    else {
-        // string for dijecstra
-        string dString;
-        string str = varVec.back();
-        smatch m;
-        std::regex r("\\+|\\*|\\(|\\)|\\-|\\/|\\(|\\)");
-        while (str != "") {
-            regex_search(str, m, r);
-            string op;
-            for (auto x:m) {
-                op = x;
-            }
-            string var = m.prefix();
-            if (op == "") {
-                var = str;
-            }
-            str = m.suffix();
-            if (!isMathExpression(var)) {
-                if (_data->isLeagalVar(var)) {
-                    dString += to_string(_data->getVarValue(var));
-                } else {
-                    throw ("illegal Expression");
-                }
-            } else {
-                dString += var;
-            }
-            dString += op;
-        }
-        double value = dijkstra(dString);
-        _data->assignVar(key, value);
-        if (_data->isBind(key)) {
-            _data->changeBindValue(_data->getPath(key), value);
-        }
-
-    }
-    varVec.pop_back();
 }

@@ -15,7 +15,7 @@
 class IfCommand : public Command{
 public:
     IfCommand(MapStringCommand* mpc);
-    virtual void doCommand(const vector<string> &arguments, Data &d);
+    virtual void doCommand(vector<string> &arguments, Data *d);
 
 private:
     vector<string> splitByDelimiter(vector<string>::iterator&,const string delimiter);

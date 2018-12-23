@@ -10,7 +10,7 @@
 class PrintCommand : public Command{
 public:
     PrintCommand()= default;
-    virtual void doCommand(const vector<string> &arguments, Data &d);
+    virtual void doCommand(vector<string> &arguments, Data *d);
 
 };
 

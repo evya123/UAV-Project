@@ -3,6 +3,6 @@
 //
 
 #include "ConnectCommand.h"
-void ConnectCommand::doCommand(const vector<string> &arguments, Data &d) {
+void ConnectCommand::doCommand(vector<string> &arguments, Data *d) {
     return;
 }

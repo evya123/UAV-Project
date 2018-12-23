@@ -30,6 +30,7 @@ MapStringCommand::MapStringCommand() {
 //    Command *ifCommand = new IfCommand();
 //    _stringCommandMap.insert(pair<string, Command *>("if", ifCommand));
 
+
     //whileCommand
     Command *whileCommand = new WhileCommand();
     _stringCommandMap.insert(pair<string, Command *>("while", whileCommand));
