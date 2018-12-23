@@ -14,7 +14,7 @@ int main() {
     LexerParser *l = new LexerParser(data);
     string str = "var h0 = 2";
     l->LexerS(str);
-    string str1 = "var h0 = h0 *2 ";
+    string str1 = "var h0 = h0 *8 ";
     l->LexerS(str1);
     string str2 = "var throttle =3";
     //l->LexerS(str2);
