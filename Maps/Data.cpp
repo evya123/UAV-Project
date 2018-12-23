@@ -3,6 +3,7 @@
 //
 
 #include "Data.h"
+
 Data::Data() {
     initPath();
 }
@@ -57,57 +58,62 @@ void Data::initPath() {
 
 }
 
-void Data::addVar(string var, double val) {
-    _symbolTable.insert(std::pair<string, double>(var, val));
+void Data::addVar(string var_name, Var *var) {
+    _symbolTable.insert(std::pair<string, Var *>(var_name, var));
 }
 
-void Data::addPathAndVar(string var, string path) {
-    _mappingPathVar.insert(std::pair<string, string>(var, path));
+void Data::addPathAndVar(Var *var, string path) {
+    _pathVarMap.insert(std::pair<string, Var *>(path, var));
+    var->setBind(path);
+    _pathMap[path] = var->getValue();
 }
 
-bool Data::isLeagalVar(const string var) const {
-    if (_symbolTable.count(var) > 0) {
-        return true;
-    }
-    return false;
+bool Data::isLeagalVar(const string &var) const {
+    return (_symbolTable.count(var) > 0);
 }
 
-double Data::getVarValue(const string var) const {
-    return _symbolTable.at(var);
+double Data::getVarValue(const string &var) const {
+    return _symbolTable.at(var)->getValue();
 }
 
-string Data::getPath(const string var) const {
-    return _mappingPathVar.at(var);
+bool Data::isBind(const Var *var) const {
+    return var->isBind();
 }
 
-void Data::assignVar(const string var, double val) {
-    // if the var is already exist - change the var and the bind table
-    if (isLeagalVar(var)) {
-        _symbolTable.at(var) = val;
-        if (isBind(var)) {
-            string bind = _mappingPathVar[var];
-            _pathMap.at(bind) = val;
-        }
-        // its a new var - add to the symbolTable
-    } else {
-        _symbolTable.insert(pair<string, double>(var, val));
-    }
+bool Data::isPath(const string &var) const {
+    return (_pathMap.count(var) > 0);
 }
 
-bool Data::isBind(const string var) const {
-    if (_mappingPathVar.count(var) > 0) {
-        return true;
-    }
-    return false;
-}
-
-bool Data::isPath(const string var) const {
-    if (_pathMap.count(var) > 0) {
-        return true;
-    }
-    return false;
-}
 
 void Data::changeBindValue(const string path, const double val) {
     _pathMap[path] = val;
 }
+
+void Data::setPath(const string &path, double val) {
+    if (isPath(path)) {
+        _pathMap[path] = val;
+    }
+}
+
+Var *Data::getVar(const string &var) const {
+    if (isLeagalVar(var)) {
+        return _symbolTable.at(var);
+    }
+}
+
+void Data::assignVar(string var_name, double val) {
+    Var *v = _symbolTable[var_name];
+    v->assign(val);
+    if (isBind(v)) {
+        _pathMap[v->getBindAdress()] = val;
+    }
+}
+
+void Data::addBind(Var *var, const string &bind_adress) {
+    _pathVarMap.insert(pair<string, Var *>(bind_adress, var));
+}
+
+void Data::addPath(string path) {
+    this->_pathMap.insert(pair<string, double>(path, 0));
+}
+

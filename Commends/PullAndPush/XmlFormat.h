@@ -8,7 +8,7 @@
 #include <list>
 #include <string>
 
-std::list<std::string> m_xmlHandler = {
+static std::list<std::string> m_xmlHandler = {
         "airspeed-indicator_indicated-speed-kt",
         "/instrumentation/airspeed-indicator/indicated-speed-kt",
         "altimeter_indicated-altitude-ft",
@@ -58,7 +58,5 @@ std::list<std::string> m_xmlHandler = {
         "engine_rpm",
         "/engines/engine/rpm"
 };
-
-
 
 #endif //UAV_PROJECT_XMLFORMAT_H

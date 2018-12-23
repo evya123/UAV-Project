@@ -1,6 +1,11 @@
 //
 // Created by lidor115 on 12/20/18.
 //
+
+
+
+#ifndef UAV_PROJECT_LEXER_H
+#define UAV_PROJECT_LEXER_H
 #include <vector>
 #include <map>
 #include <regex>
@@ -16,9 +21,6 @@
 #include <fstream>
 
 using namespace std;
-
-#ifndef UAV_PROJECT_LEXER_H
-#define UAV_PROJECT_LEXER_H
 
 class LexerParser {
 private:
