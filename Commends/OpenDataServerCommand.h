@@ -9,7 +9,7 @@
 #include "Command.h"
 #include <stdexcept>
 #include <Commends/PullAndPush/TcpServer.h>
-
+#define PORT_POS 0
 class OpenDataServerCommand : public Command {
 
 public:

@@ -2,9 +2,8 @@
 // Created by evya on 12/18/18.
 //
 
-#include <iostream>
 #include "TcpServer.h"
-string TcpServer::Message;
+
 /**
  * Function name: setup
  * @param port
@@ -33,12 +32,13 @@ void TcpServer::setup(int port) {
     }
 }
 
-void* TcpServer::Task(void* arg) {
+
+void * TcpServer::task(void *arg, Data *d) {
     int n;
     int newsockfd = (long)arg;
     char msg[MAXPACKETSIZE];
-    pthread_detach(pthread_self());
-    while(true)
+    //pthread_detach(pthread_self());
+    while(1)
     {
         n=recv(newsockfd,msg,MAXPACKETSIZE,0);
         if(n==0)
@@ -47,10 +47,11 @@ void* TcpServer::Task(void* arg) {
             break;
         }
         msg[n]=0;
-        Message = string(msg);
+        toMap(string(msg),d);
     }
     return 0;
 }
+
 /**
  * Function name: receive
  * @return return the msg the client sent
@@ -58,25 +59,15 @@ void* TcpServer::Task(void* arg) {
  * Upon connection, accept the connection and create a thread
  * which runs Task().
  **/
-string TcpServer::receive() {
-    string str;
-    while(true){
+int TcpServer::receive() {
+    //string str;
         socklen_t sosize  = sizeof(m_clientAddress);
         m_accVal = accept(m_serverSocket,(struct sockaddr*)&m_clientAddress,&sosize); //On success, these system calls return a nonnegative integer that is a
-                                                                                      //file descriptor for the accepted socket.  On error, -1 is returned,
-                                                                                      //and errno is set appropriately.
-        str = inet_ntoa(m_clientAddress.sin_addr);
-        pthread_create(&m_serverThread,nullptr,&Task,(void*)m_accVal);
-    }
-    return str;
+        //file descriptor for the accepted socket.  On error, -1 is returned,
+        //and errno is set appropriately.
+    return m_accVal;
 }
 
-//void TcpServer::clean()
-//{
-//    char msg[ MAXPACKETSIZE ];
-//    Message = "";
-//    memset(msg, 0, MAXPACKETSIZE);
-//}
 
 /**
  * Close the socket
@@ -88,4 +79,22 @@ void TcpServer::detach()
     sleep(1);
     close(m_serverSocket);
     close(m_accVal);
+}
+
+void TcpServer::toMap(string toSplit, Data *d) {
+    vector<double > values;
+    size_t pos = 0;
+    while ((pos = toSplit.find(DELIMITER)) != string::npos) {
+        values.push_back(stod(toSplit.substr(0, pos)));
+        toSplit.erase(0, pos + 1);
+    }
+
+    auto it = m_xmlHandler.begin();
+    for (double value : values) {
+        d->assignVar(*it,value);
+        ++it;
+        d->changeBindValue(*it,value);
+        if (it == m_xmlHandler.end())
+            break;
+    }
 }

@@ -18,4 +18,4 @@ add_executable(Dev
         Commends/VarCommand.cpp Commends/VarCommand.h Commends/ConnectCommand.cpp
         Commends/ConnectCommand.h Commends/IfCommand.cpp Commends/IfCommand.h
         Commends/WhileCommand.cpp Commends/WhileCommand.h Commends/PrintCommand.cpp Commends/PrintCommand.h
-        Commends/SleepCommand.cpp Commends/SleepCommand.h Maps/MapStringCommand.cpp Maps/MapStringCommand.h Commends/ArithmeticConditions.cpp Commends/ArithmeticConditions.h Utils.cpp Utils.h)
+        Commends/SleepCommand.cpp Commends/SleepCommand.h Maps/MapStringCommand.cpp Maps/MapStringCommand.h Commends/ArithmeticConditions.cpp Commends/ArithmeticConditions.h Utils.cpp Utils.h Commends/PullAndPush/XmlFormat.h)

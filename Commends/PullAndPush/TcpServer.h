@@ -12,28 +12,33 @@
 #include <cstring>
 #include <stdexcept>
 #include <unistd.h>
+#include <iostream>
+#include <vector>
+#include <Maps/Data.h>
+#include "XmlFormat.h"
+
+#define DELIMITER ','
 
 #define MAXPACKETSIZE 1024
 
 using namespace std;
 
+
 class TcpServer {
 public:
     TcpServer() = default;
-    int openDataServer();
     void setup(int port);
-    string receive();
+    int receive();
     void detach();
-    void clean();
+
+    static void *task(void *arg, Data *d);
+
 private:
-
-    static void* Task(void* argv);
-
-    static string Message;
+    static void toMap(string toSplit, Data *d);
     int m_serverSocket, m_accVal;
-    pthread_t m_serverThread;
     struct sockaddr_in m_serverAddress;
     struct sockaddr_in m_clientAddress;
+
 };
 
 

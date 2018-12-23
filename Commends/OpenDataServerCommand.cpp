@@ -3,6 +3,7 @@
 OpenDataServerCommand::OpenDataServerCommand() {
     m_server = new TcpServer();
 }
+
 /**
  * Function name: convertToInt
  * @param port
@@ -30,16 +31,16 @@ int OpenDataServerCommand::convertToInt(string port) {
     }
 }
 
-
 int OpenDataServerCommand::openDataServer(int port) {
     m_server->setup(port);
-    m_server->receive();
+    //m_server->receive();
 
 }
 
 void OpenDataServerCommand::doCommand(vector<string> &arguments, Data *d) {
-    //TODO: create thread and add the function to the thread
-
+    int port = convertToInt(arguments[PORT_POS]);
+    m_server->setup(port);
+    m_server->receive();
 }
 
 OpenDataServerCommand::~OpenDataServerCommand() {
