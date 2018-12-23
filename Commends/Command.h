@@ -7,7 +7,7 @@ using namespace std;
 
 class Command {
 protected:
-    virtual void doCommand(const string &arguments, Data &data) = 0;
+    virtual void doCommand(const string &argument) = 0;
 };
 
 #endif //DEV_COMMAND_H
