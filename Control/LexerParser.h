@@ -12,6 +12,8 @@
 #include "Commends/Command.h"
 #include "Expression/ShuntingYard.h"
 #include "Utils.h"
+#include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -31,6 +33,10 @@ public:
     void FinalLexer(vector<string> &result, vector<string> &final);
 
     void Parser(vector<string> &lexer);
+
+    void ConditionParser(vector<string> &lexer);
+
+    void ReadFromFile(string fileName);
 };
 
 #endif //UAV_PROJECT_LEXER_H

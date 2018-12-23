@@ -1,11 +1,9 @@
 //
 // Created by lidor115 on 12/23/18.
 //
-#include <string>
-#include <regex>
-#include "Expression/ShuntingYard.h"
+
 #include "Utils.h"
-using namespace std;
+
 
 bool isMathExpression(string s) {
     std::regex e("[a-z]+|\\[A-Z]+");
@@ -43,4 +41,35 @@ double dijkstra(string s) {
     ShuntingYard shuntingYard(newStr);
     double temp = shuntingYard.evaluate();
     return temp;
+}
+
+double calculateExpression(string str, Data *d) {
+    string dString;
+    smatch m;
+    std::regex r("\\+|\\*|\\(|\\)|\\-|\\/|\\(|\\)");
+    while (str != "") {
+        regex_search(str, m, r);
+        string op;
+        for (auto x:m) {
+            op = x;
+        }
+        string var = m.prefix();
+        if (op == "") {
+            var = str;
+        }
+        str = m.suffix();
+        if (!isMathExpression(var)) {
+            if (d->isLeagalVar(var)) {
+                dString += to_string(d->getVarValue(var));
+            } else {
+                throw ("illegal Expression");
+            }
+        } else {
+            dString += var;
+        }
+        dString += op;
+    }
+    double value = dijkstra(dString);
+
+    return value;
 }

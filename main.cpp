@@ -11,6 +11,7 @@
 #include "Commends/ArithmeticConditions.h"
 #include "Commends/PullAndPush/TcpServer.h"
 
+<<<<<<< HEAD
 void toMap(string toSplit) {
     vector<float> f;
     size_t pos = 0;
@@ -49,14 +50,5 @@ pthread_join(id,NULL);
 //    l->LexerS(s1);
 //    string s2 = "var y = x* 5 *8 -2";
 //    l->LexerS(s2);
-
-//test();
-//PrintCommand* p = new PrintCommand();
-//    vector<string> a {"this","is","a","test"};
-//p->doCommand(a);
-//SleepCommand * s = new SleepCommand();
-//vector<string> b = {"5"};
-//s->doCommand(b);
-//p->doCommand(a);
 return 0;
 }
