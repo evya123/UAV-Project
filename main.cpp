@@ -6,6 +6,7 @@
 #include <Commends/OpenDataServerCommand.h>
 #include <Commends/ConnectCommand.h>
 
+<<<<<<< HEAD
 int main() {
     OpenDataServerCommand* pdsc = new OpenDataServerCommand();
     ConnectCommand* cc = new ConnectCommand();
@@ -21,5 +22,11 @@ int main() {
     }
 
 
+=======
+int main(int argc, char* argv[]) {
+    Data* data = new Data();
+    LexerParser* l = new LexerParser(data);
+    l->ReadFromFile(argv[1]);
+>>>>>>> a4c13783560741106899eabbf29cbcb760faab00
 return 0;
 }

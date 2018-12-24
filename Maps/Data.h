@@ -2,41 +2,47 @@
 // Created by lidor115 on 12/20/18.
 //
 
-#include <map>
-#include "Commends/Command.h"
-
-using namespace std;
 #ifndef UAV_PROJECT_DATA_H
 #define UAV_PROJECT_DATA_H
 
+#include <map>
+#include "Var.h"
+
+using namespace std;
+
 class Data {
-    map<string, double> _symbolTable;
+private:
+    map<string, Var *> _symbolTable;
     map<string, double> _pathMap;
-    map<string, string> _mappingPathVar;
+    multimap<string, Var *> _pathVarMap;
 public:
-    void addVar(string var, double val);
+    void addVar(string var_name, Var *var);
+
+    void addPath(string path);
 
     void initPath();
 
-    void addPathAndVar(string var, string path);
+    void addPathAndVar(Var *var, string path);
 
-    string getVar(const string var) const;
+    Var *getVar(const string &var) const;
 
-    string getPath(const string var) const;
+    bool isLeagalVar(const string &var) const;
 
-    bool isLeagalVar(const string var) const;
+    double getVarValue(const string &var) const;
 
-    double getVarValue(const string var) const;
+    bool isPath(const string &var) const;
 
-    void assignVar(const string var, double val);
+    void changeBindValue(string path, double val);
 
-    bool isPath(const string var) const;
+    bool isBind(const Var *var) const;
 
-    void changeBindValue(const string path, const double val);
-
-    bool isBind(const string var) const;
+    void addBind(Var *var, const string &bind_adress);
 
     Data();
+
+    void setPath(const string &path, double val);
+
+    void assignVar(string var_name, double val);
 
     ~Data();
 

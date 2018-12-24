@@ -6,10 +6,14 @@ set(CMAKE_CXX_FLAGS -pthread)
 include_directories(.)
 
 add_executable(Dev
-        main.cpp README.md Expression/Expression.h Commends/Command.h Expression/BinaryExpression.h
-        Expression/BinaryExpression.cpp Expression/Minus.cpp Expression/Minus.h Expression/Plus.cpp Expression/Plus.h Expression/Mult.cpp
-        Expression/Mult.h Expression/Div.cpp Expression/Div.h Expression/Num.cpp Expression/Num.h
-        Expression/ShuntingYard.cpp Expression/ShuntingYard.h Control/LexerParser.cpp Control/LexerParser.h
+        main.cpp README.md Expression/Expression.h Commends/Command.h
+        Expression/BinaryExpression.h
+        Expression/BinaryExpression.cpp Expression/Minus.cpp
+        Expression/Minus.h Expression/Plus.cpp Expression/Plus.h Expression/Mult.cpp
+        Expression/Mult.h Expression/Div.cpp Expression/Div.h
+        Expression/Num.cpp Expression/Num.h
+        Expression/ShuntingYard.cpp Expression/ShuntingYard.h Control/LexerParser.cpp
+        Control/LexerParser.h
         Maps/Data.cpp Maps/Data.h Commends/OpenDataServerCommand.cpp
         Commends/PullAndPush/TcpServer.cpp Commends/OpenDataServerCommand.h
         Commends/PullAndPush/TcpServer.h
@@ -17,5 +21,8 @@ add_executable(Dev
         Control/Controller.cpp Control/Controller.h
         Commends/VarCommand.cpp Commends/VarCommand.h Commends/ConnectCommand.cpp
         Commends/ConnectCommand.h Commends/IfCommand.cpp Commends/IfCommand.h
-        Commends/WhileCommand.cpp Commends/WhileCommand.h Commends/PrintCommand.cpp Commends/PrintCommand.h
-        Commends/SleepCommand.cpp Commends/SleepCommand.h Maps/MapStringCommand.cpp Maps/MapStringCommand.h Commends/ArithmeticConditions.cpp Commends/ArithmeticConditions.h Utils.cpp Utils.h Commends/PullAndPush/XmlFormat.h)
+        Commends/WhileCommand.cpp Commends/WhileCommand.h Commends/PrintCommand.cpp
+        Commends/PrintCommand.h Commends/SleepCommand.cpp Commends/SleepCommand.h Maps/MapStringCommand.cpp
+        Maps/MapStringCommand.h Commends/ArithmeticConditions.cpp
+        Commends/ArithmeticConditions.h Utils.cpp Utils.h
+        Commends/PullAndPush/XmlFormat.h Var.cpp Var.h)

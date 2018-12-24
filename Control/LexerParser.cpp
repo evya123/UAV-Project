@@ -153,5 +153,4 @@ void LexerParser::ConditionParser(vector<string> &lexer) {
 
     std::regex e("==|\\>|\\<|\\<=|\\>=|\\");
 
-
 }

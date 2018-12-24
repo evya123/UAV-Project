@@ -59,6 +59,4 @@ static std::list<std::string> m_xmlHandler = {
         "/engines/engine/rpm"
 };
 
-
-
 #endif //UAV_PROJECT_XMLFORMAT_H
