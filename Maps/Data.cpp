@@ -68,6 +68,7 @@ void Data::initPath() {
 }
 
 void Data::addVar(string var_name, Var *var) {
+    unique_lock<mutex> lock(m_locker);
     _symbolTable.insert(std::pair<string, Var *>(var_name, var));
 }
 
