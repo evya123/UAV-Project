@@ -73,11 +73,11 @@ void* TcpClient::TaskClient(void *arg) {
     TcpClientStruct *args = static_cast<TcpClientStruct*>(arg);
     TcpClient* _this = args->arg2;
     _this->Send(args->arg1);
-    int i = 5;
-    while(i != 0){
-        cout<<"this is just a test in client!: "<<args->arg1<<endl;
-        sleep(1);
-        --i;
-    }
+//    int i = 5;
+//    while(i != 0){
+//        cout<<"this is just a test in client!: "<<args->arg1<<endl;
+//        sleep(1);
+//        --i;
+//    }
     pthread_exit(0);
 }
