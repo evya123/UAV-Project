@@ -20,7 +20,6 @@
 #include <netdb.h>
 #include <netdb.h>
 #include <vector>
-const char* EXIT_REQUEST = "exit";
 using namespace std;
 struct arg_struct_client;
 class TcpClient
@@ -28,6 +27,7 @@ class TcpClient
 private:
     int sock;
     struct sockaddr_in server;
+    const char* EXIT_REQUEST = "exit";
 
 
 public:

@@ -17,6 +17,7 @@ int main() {
     pthread_join(cc->getM_clientThreadId(),NULL);
     while(true){
         cout<<"This is also a test in main"<<endl;
+        sleep(5);
     }
 return 0;
 }

@@ -43,12 +43,13 @@ void * TcpServer::TaskServer(void *arg) {
     while(1)
     {
         n=recv(newsockfd,msg,MAXPACKETSIZE,0);
+        string content = string(msg);
         if(n==0) {
             close(newsockfd);
             break;
         }
         msg[n]=0;
-        toMap(string(msg),d);
+        //toMap(string(msg),d);
         cout<<"this is just a test in server!: "<<msg<<endl;
         sleep(1);
         memset(msg,0,MAXPACKETSIZE);

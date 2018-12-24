@@ -7,8 +7,6 @@
 
 TcpClient::TcpClient(){
     sock = -1;
-    port = 0;
-    address = "";
 }
 
 bool TcpClient::setup(string address , int port){

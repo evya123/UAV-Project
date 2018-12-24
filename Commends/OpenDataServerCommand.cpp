@@ -38,7 +38,6 @@ void OpenDataServerCommand::doCommand(vector<string> &arguments, Data *d) {
     args.arg1 = m_server->receive();
     args.arg2 = d;
     pthread_create(&m_serverThreadId,NULL, &TcpServer::TaskServer,(void *)&args);
-    pthread_join(m_serverThreadId,NULL);
 }
 
 OpenDataServerCommand::~OpenDataServerCommand() {
