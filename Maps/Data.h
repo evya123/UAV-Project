@@ -18,8 +18,6 @@ private:
 public:
     void addVar(string var_name, Var *var);
 
-    void addPath(string path);
-
     void initPath();
 
     void addPathAndVar(Var *var, string path);

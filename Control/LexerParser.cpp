@@ -2,6 +2,7 @@
 // Created by lidor on 19/12/18.
 //
 
+#include <ExpressionCommand.h>
 #include "LexerParser.h"
 
 using namespace std;
@@ -109,21 +110,23 @@ void LexerParser::Parser(vector<string> &lexer) {
     while (!lexer.empty()) {
         // first if its a var - get the value
         temp = lexer.back();
-        if(temp == "while" || temp == "if"){
+        if (temp == "while" || temp == "if") {
             ConditionParser(lexer);
-        }
-
-
-        else if (mapStringCommand->isLeagalCommand(temp)) {
+        } else if (mapStringCommand->isLeagalCommand(temp)) {
             cout << "the command is: " + temp << endl;
             lexer.pop_back();
-            mapStringCommand->getCommand(temp)->doCommand
-                    (lexer, _data);
+            Command *command = mapStringCommand->getCommand(temp);
+            ExpressionCommand *expressionCommand = new ExpressionCommand
+                    (command, &lexer, _data);
+            expressionCommand->calculate();
         } else {
             cout << "Other : " + temp << endl;
             if (_data->isLeagalVar(temp)) {
-                VarCommand *varCommand = new VarCommand();
-                varCommand->doCommand(lexer, _data);
+                Command *varCommand = new VarCommand();
+                ExpressionCommand *expressionCommandVar = new
+                        ExpressionCommand(varCommand, &lexer, _data);
+                expressionCommandVar->calculate();
+
             } else {
                 throw ("var is not valid!");
             }
@@ -145,11 +148,11 @@ void LexerParser::ReadFromFile(string fileName) {
 void LexerParser::ConditionParser(vector<string> &lexer) {
     // save the condition (if or while) and pop it
     string condition = lexer.back();
-     lexer.pop_back();
+    lexer.pop_back();
 
-     /**
-      * now we bulid the condition after we know if its while or if
-      */
+    /**
+     * now we bulid the condition after we know if its while or if
+     */
 
     std::regex e("==|\\>|\\<|\\<=|\\>=|\\");
 

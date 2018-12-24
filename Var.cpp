@@ -50,3 +50,7 @@ string Var::getBindAdress() const {
 double Var::calculate() {
     return _val;
 }
+
+string Var::getVarName() const {
+    return _name;
+}

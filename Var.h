@@ -33,6 +33,8 @@ public:
 
     double calculate();
 
+    string getVarName() const;
+
 };
 
 

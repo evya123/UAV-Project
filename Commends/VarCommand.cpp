@@ -9,11 +9,11 @@ void VarCommand::doCommand(vector<string> &arguments, Data *d) {
     Var *var;
     // if there is no var - build new var
     if (!d->isLeagalVar(name)) {
-        Var *v = new Var(name);
+        Var *v = new Var(name); //Var*
         var = v;
         d->addVar(name, var);
     } else {
-        var = d->getVar(name);
+        var = d->getVar(name);  //Var*
     }
     while (arguments.back() != "=") {
         arguments.pop_back();
@@ -29,18 +29,18 @@ void VarCommand::doCommand(vector<string> &arguments, Data *d) {
         string path = arguments.back();
 
         if (d->isPath(path)) {
-            d->addPathAndVar(var, path);
+            d->addPathAndVar(var, path); // Map - var path
         }
             // its somthing like var x = bind y
         else if (d->isLeagalVar(path)) {
-            d->addPathAndVar(var, path);
-            var->setBind(path);
+            d->addPathAndVar(var, path); // Map - var path
+            var->setBind(path);          // Var*
             var->assign(d->getVar(path)->getValue());
             //its not a variable but unknown path
         } else if (!d->isLeagalVar(path)) {
-            d->addPath(path);
-            var->setBind(path);
-            d->setPath(path, var->getValue());
+            var->setBind(path);        //Var*
+            d->setPath(path, var->getValue()); // Map - var-Path
+            d->addBind(var, path);             // Map -var - path
         } else {
             throw ("Unsupported Operation!");
         }
@@ -52,9 +52,7 @@ void VarCommand::doCommand(vector<string> &arguments, Data *d) {
 // string for dijecstra
         string str = arguments.back();
         double value = calculateExpression(str, d);
-        d->
-                assignVar(name, value
-        );
+        d->assignVar(name, value);   // all maps
     }
     arguments.
 
