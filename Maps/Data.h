@@ -23,17 +23,17 @@ public:
 
     void addPathAndVar(Var *var, string path);
 
-    Var *getVar(const string &var) const;
+    Var *getVar(const string &var) ;
 
-    bool isLeagalVar(const string &var) const;
+    bool isLeagalVar(const string &var) ;
 
-    double getVarValue(const string &var) const;
+    double getVarValue(const string &var) ;
 
-    bool isPath(const string &var) const;
+    bool isPath(const string &var) ;
 
     void changeBindValue(string path, double val);
 
-    bool isBind(const Var *var) const;
+    bool isBind(const Var *var) ;
 
     void addBind(Var *var, const string &bind_adress);
 

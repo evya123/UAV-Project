@@ -17,7 +17,7 @@ void Data::initPath() {
     this->_pathMap.insert(
             pair<string, double>
                     ("\"instrumentation/altimeter/pressure-alt-ft\"",
-                                 0));
+                     0));
     this->_pathMap.insert(pair<string, double>(
             "\"/instrumentation/attitude-indicator/indicated-pitch-deg\"", 0));
     this->_pathMap.insert(pair<string, double>(
@@ -34,7 +34,7 @@ void Data::initPath() {
     this->_pathMap.insert(
             pair<string, double>
                     ("\"/instrumentation/gps/indicated-altitude-ft\"",
-                                 0));
+                     0));
     this->_pathMap.insert(pair<string, double>(
             "\"/instrumentation/gps/indicated-ground-speed-kt", 0));
     this->_pathMap.insert(pair<string, double>(
@@ -52,23 +52,24 @@ void Data::initPath() {
             "\"/instrumentation/vertical-speed-indicator/indicated-speed-fpm\"",
             0));
     this->_pathMap.insert(pair<string, double>("\"/controls/flight/aileron\"",
-    0));
+                                               0));
     this->_pathMap.insert(pair<string, double>
-            ("\"/controls/flight/elevator\"", 0));
+                                  ("\"/controls/flight/elevator\"", 0));
     this->_pathMap.insert(pair<string, double>("\"/controls/flight/rudder\"",
-    0));
+                                               0));
     this->_pathMap.insert(pair<string, double>("\"/controls/flight/flaps\"",
-            0));
+                                               0));
     this->_pathMap.insert(
             pair<string, double>("\"/controls/engines/engine/throttle\"", 0));
     this->_pathMap.insert(pair<string, double>("\"/engines/engine/rpm\"", 0));
     this->_pathMap.insert(pair<string, double>
-            ("\"/controls/engines/current-engine/throttle\"", 0));
+                                  ("\"/controls/engines/current-engine/throttle\"",
+                                   0));
 
 }
 
 void Data::addVar(string var_name, Var *var) {
-    unique_lock<mutex> lock(m_locker);
+//    unique_lock<mutex> lock(m_locker);
     _symbolTable.insert(std::pair<string, Var *>(var_name, var));
 }
 
@@ -78,19 +79,19 @@ void Data::addPathAndVar(Var *var, string path) {
     _pathMap[path] = var->getValue();
 }
 
-bool Data::isLeagalVar(const string &var) const {
+bool Data::isLeagalVar(const string &var) {
     return (_symbolTable.count(var) > 0);
 }
 
-double Data::getVarValue(const string &var) const {
+double Data::getVarValue(const string &var) {
     return _symbolTable.at(var)->getValue();
 }
 
-bool Data::isBind(const Var *var) const {
+bool Data::isBind(const Var *var) {
     return var->isBind();
 }
 
-bool Data::isPath(const string &var) const {
+bool Data::isPath(const string &var) {
     return (_pathMap.count(var) > 0);
 }
 
@@ -105,7 +106,7 @@ void Data::setPath(const string &path, double val) {
     }
 }
 
-Var *Data::getVar(const string &var) const {
+Var *Data::getVar(const string &var) {
     if (isLeagalVar(var)) {
         return _symbolTable.at(var);
     }
@@ -122,4 +123,3 @@ void Data::assignVar(string var_name, double val) {
 void Data::addBind(Var *var, const string &bind_adress) {
     _pathVarMap.insert(pair<string, Var *>(bind_adress, var));
 }
-

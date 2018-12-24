@@ -19,6 +19,7 @@
 #include "Utils.h"
 #include <iostream>
 #include <fstream>
+#include "ExpressionCommand.h"
 
 using namespace std;
 
