@@ -11,9 +11,10 @@ void VarCommand::doCommand(vector<string> &arguments, Data *d) {
     if (!d->isLeagalVar(name)) {
         Var *v = new Var(name); //Var*
         var = v;
-        d->addVar(name, var);
+        d->addVar(name, var); // its ok - mutex at the var - the add is in
+        // the Data - Don't worry
     } else {
-        var = d->getVar(name);  //Var*
+        var = d->getVar(name);  //Var* - we don't change the var here
     }
     while (arguments.back() != "=") {
         arguments.pop_back();
@@ -34,11 +35,11 @@ void VarCommand::doCommand(vector<string> &arguments, Data *d) {
             // its somthing like var x = bind y
         else if (d->isLeagalVar(path)) {
             d->addPathAndVar(var, path); // Map - var path
-            var->setBind(path);          // Var*
-            var->assign(d->getVar(path)->getValue());
+            d->changeVarBind(var, path);// change the path of var in Data class
+            d->changeVarValue(var, d->getVar(path)->getValue());
             //its not a variable but unknown path
         } else if (!d->isLeagalVar(path)) {
-            var->setBind(path);        //Var*
+            d->changeVarBind(var, path);// change the path of var in Data class
             d->setPath(path, var->getValue()); // Map - var-Path
             d->addBind(var, path);             // Map -var - path
         } else {

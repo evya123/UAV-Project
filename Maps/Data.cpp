@@ -17,7 +17,7 @@ void Data::initPath() {
     this->_pathMap.insert(
             pair<string, double>
                     ("\"instrumentation/altimeter/pressure-alt-ft\"",
-                                 0));
+                     0));
     this->_pathMap.insert(pair<string, double>(
             "\"/instrumentation/attitude-indicator/indicated-pitch-deg\"", 0));
     this->_pathMap.insert(pair<string, double>(
@@ -34,7 +34,7 @@ void Data::initPath() {
     this->_pathMap.insert(
             pair<string, double>
                     ("\"/instrumentation/gps/indicated-altitude-ft\"",
-                                 0));
+                     0));
     this->_pathMap.insert(pair<string, double>(
             "\"/instrumentation/gps/indicated-ground-speed-kt", 0));
     this->_pathMap.insert(pair<string, double>(
@@ -52,18 +52,19 @@ void Data::initPath() {
             "\"/instrumentation/vertical-speed-indicator/indicated-speed-fpm\"",
             0));
     this->_pathMap.insert(pair<string, double>("\"/controls/flight/aileron\"",
-    0));
+                                               0));
     this->_pathMap.insert(pair<string, double>
-            ("\"/controls/flight/elevator\"", 0));
+                                  ("\"/controls/flight/elevator\"", 0));
     this->_pathMap.insert(pair<string, double>("\"/controls/flight/rudder\"",
-    0));
+                                               0));
     this->_pathMap.insert(pair<string, double>("\"/controls/flight/flaps\"",
-            0));
+                                               0));
     this->_pathMap.insert(
             pair<string, double>("\"/controls/engines/engine/throttle\"", 0));
     this->_pathMap.insert(pair<string, double>("\"/engines/engine/rpm\"", 0));
     this->_pathMap.insert(pair<string, double>
-            ("\"/controls/engines/current-engine/throttle\"", 0));
+                                  ("\"/controls/engines/current-engine/throttle\"",
+                                   0));
 
 }
 
@@ -153,4 +154,3 @@ void Data::changeVarValue(Var *var, double value) {
     unique_lock<mutex> lock(m_locker);//locked!
     var->assign(value);
 }
-
