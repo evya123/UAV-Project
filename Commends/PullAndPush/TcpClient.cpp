@@ -44,19 +44,16 @@ bool TcpClient::setup(string address , int port){
 }
 
 bool TcpClient::Send(string data){
-
-    while (data.compare(EXIT_REQUEST)){
-        if(sock != -1) {
-            if(send(sock , data.c_str() , strlen( data.c_str() ) , 0) < 0) {
-                printf("Send failed : %s" ,&data);
-                return false;
-            }
-        } else {
-            printf("Socket is not initialized");
+    if(sock != -1) {
+        if(send(sock , data.c_str() , strlen( data.c_str() ) , 0) < 0) {
+            printf("Send failed : %s" ,&data);
             return false;
         }
+    } else {
+        printf("Socket is not initialized");
+        return false;
     }
-    return true;
+return true;
 }
 
 void TcpClient::exit(){
