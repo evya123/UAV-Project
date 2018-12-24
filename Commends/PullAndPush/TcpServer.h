@@ -18,6 +18,7 @@
 #include "XmlFormat.h"
 
 #define DELIMITER ','
+#define TIME_TO_WAIT 0.1
 
 #define MAXPACKETSIZE 1024
 

@@ -3,3 +3,9 @@
 //
 
 #include "Controller.h"
+
+void Controller::toMap(map<double> &) {
+    unique_lock<mutex> lock(m_locker); //locked!
+
+
+}

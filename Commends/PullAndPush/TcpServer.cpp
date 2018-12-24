@@ -39,20 +39,17 @@ void * TcpServer::TaskServer(void *arg) {
     Data* d = args->arg2;
     int n;
     char msg[MAXPACKETSIZE];
-    memset(msg,0,MAXPACKETSIZE);
-    while(1)
+    while(true)
     {
+        memset(msg,0,MAXPACKETSIZE);
         n=recv(newsockfd,msg,MAXPACKETSIZE,0);
-        string content = string(msg);
+        //toMap(string(msg),d);
         if(n==0) {
             close(newsockfd);
             break;
         }
-        msg[n]=0;
-        //toMap(string(msg),d);
         cout<<"this is just a test in server!: "<<msg<<endl;
-        sleep(1);
-        memset(msg,0,MAXPACKETSIZE);
+        sleep(TIME_TO_WAIT);
     }
     pthread_exit(0);
 }
@@ -86,21 +83,22 @@ void TcpServer::detach()
     close(m_accVal);
 }
 
-void TcpServer::toMap(string toSplit, Data *d) {
-    vector<double> values;
-    size_t pos = 0;
-    while ((pos = toSplit.find(DELIMITER)) != string::npos) {
-        values.push_back(stod(toSplit.substr(0, pos)));
-        toSplit.erase(0, pos + 1);
-    }
-
-    auto it = m_xmlHandler.begin();
-    for (double value : values) {
-        d->assignVar(*it,value);
-        ++it;
-        d->changeBindValue(*it,value);
-        ++it;
-        if (it == m_xmlHandler.end())
-            break;
-    }
-}
+//void TcpServer::toMap(string toSplit, Data *d) {
+//    vector<double> values;
+//    map<string,double> toMap;
+//    size_t pos = 0;
+//    while ((pos = toSplit.find(DELIMITER)) != string::npos) {
+//        values.push_back(stod(toSplit.substr(0, pos)));
+//        toSplit.erase(0, pos + 1);
+//    }
+//
+//    auto it = m_xmlHandler.begin();
+//    for (double value : values) {
+//        d->assignVar(*it,value);
+//        ++it;
+//        d->changeBindValue(*it,value);
+//        ++it;
+//        if (it == m_xmlHandler.end())
+//            break;
+//    }
+//}
