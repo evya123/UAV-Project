@@ -16,6 +16,7 @@ private:
     map<string, Var *> _symbolTable;
     map<string, double> _pathMap;
     multimap<string, Var *> _pathVarMap;
+    mutex m_locker;
 public:
     void addVar(string var_name, Var *var);
 
@@ -42,6 +43,10 @@ public:
     void setPath(const string &path, double val);
 
     void assignVar(string var_name, double val);
+
+    void changeVarBind(Var* var, string& bind);
+
+    void changeVarValue(Var* var, double value);
 
     ~Data();
 

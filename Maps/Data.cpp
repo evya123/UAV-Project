@@ -69,57 +69,88 @@ void Data::initPath() {
 }
 
 void Data::addVar(string var_name, Var *var) {
-//    unique_lock<mutex> lock(m_locker);
+    unique_lock<mutex> lock(m_locker);//locked!
     _symbolTable.insert(std::pair<string, Var *>(var_name, var));
+    //unlocked!
 }
 
 void Data::addPathAndVar(Var *var, string path) {
+    unique_lock<mutex> lock(m_locker);//locked!
     _pathVarMap.insert(std::pair<string, Var *>(path, var));
     var->setBind(path);
     _pathMap[path] = var->getValue();
+    //unlocked!
 }
 
 bool Data::isLeagalVar(const string &var) {
+    unique_lock<mutex> lock(m_locker);//locked!
     return (_symbolTable.count(var) > 0);
+    //unlocked!
 }
 
-double Data::getVarValue(const string &var) {
+double Data::getVarValue(const string &var)  {
+    unique_lock<mutex> lock(m_locker);//locked!
     return _symbolTable.at(var)->getValue();
+    //unlocked!
 }
 
-bool Data::isBind(const Var *var) {
+bool Data::isBind(const Var *var)  {
+    unique_lock<mutex> lock(m_locker);//locked!
     return var->isBind();
+    //unlocked!
 }
 
-bool Data::isPath(const string &var) {
+bool Data::isPath(const string &var)  {
+    unique_lock<mutex> lock(m_locker);//locked!
     return (_pathMap.count(var) > 0);
+    //unlocked!
 }
 
 
 void Data::changeBindValue(const string path, const double val) {
+    unique_lock<mutex> lock(m_locker);//locked!
     _pathMap[path] = val;
+    //unlocked!
 }
 
 void Data::setPath(const string &path, double val) {
+    unique_lock<mutex> lock(m_locker);//locked!
     if (isPath(path)) {
         _pathMap[path] = val;
     }
+    //unlocked!
 }
 
-Var *Data::getVar(const string &var) {
+Var *Data::getVar(const string &var)  {
+    unique_lock<mutex> lock(m_locker);//locked!
     if (isLeagalVar(var)) {
         return _symbolTable.at(var);
     }
+    //unlocked!
 }
 
 void Data::assignVar(string var_name, double val) {
+    unique_lock<mutex> lock(m_locker);//locked!
     Var *v = _symbolTable[var_name];
     v->assign(val);
     if (isBind(v)) {
         _pathMap[v->getBindAdress()] = val;
     }
+    //unlocked!
 }
 
 void Data::addBind(Var *var, const string &bind_adress) {
+    unique_lock<mutex> lock(m_locker);//locked!
     _pathVarMap.insert(pair<string, Var *>(bind_adress, var));
+    //unlocked!
+}
+
+void Data::changeVarBind(Var *var, string& bind) {
+    unique_lock<mutex> lock(m_locker);//locked!
+    var->setBind(bind);
+}
+
+void Data::changeVarValue(Var *var, double value) {
+    unique_lock<mutex> lock(m_locker);//locked!
+    var->assign(value);
 }
