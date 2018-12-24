@@ -20,24 +20,28 @@
 #include <netdb.h>
 #include <netdb.h>
 #include <vector>
-
+const char* EXIT_REQUEST = "exit";
 using namespace std;
-
+struct arg_struct_client;
 class TcpClient
 {
 private:
     int sock;
-    string address;
-    int port;
     struct sockaddr_in server;
+
 
 public:
     TcpClient();
     bool setup(string address, int port);
     bool Send(string data);
-    string receive(int size = 4096);
-    string read();
+    static void* TaskClient(void *);
+    void start(pthread_t &id, arg_struct_client &args);
     void exit();
 };
+
+typedef struct arg_struct_client {
+    string arg1;
+    TcpClient* arg2;
+}TcpClientStruct;
 
 #endif //UAV_PROJECT_TCPCLIENT_H

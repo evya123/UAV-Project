@@ -33,23 +33,27 @@ void TcpServer::setup(int port) {
 }
 
 
-void * TcpServer::task(void *arg, Data *d) {
+void * TcpServer::TaskServer(void *arg) {
+    TcpStruct *args = static_cast<TcpStruct*>(arg);
+    int newsockfd = args->arg1;
+    Data* d = args->arg2;
     int n;
-    int newsockfd = (long)arg;
     char msg[MAXPACKETSIZE];
-    //pthread_detach(pthread_self());
+    memset(msg,0,MAXPACKETSIZE);
     while(1)
     {
         n=recv(newsockfd,msg,MAXPACKETSIZE,0);
-        if(n==0)
-        {
+        if(n==0) {
             close(newsockfd);
             break;
         }
         msg[n]=0;
         toMap(string(msg),d);
+        cout<<"this is just a test in server!: "<<msg<<endl;
+        sleep(1);
+        memset(msg,0,MAXPACKETSIZE);
     }
-    return 0;
+    pthread_exit(0);
 }
 
 /**
@@ -61,8 +65,8 @@ void * TcpServer::task(void *arg, Data *d) {
  **/
 int TcpServer::receive() {
     //string str;
-        socklen_t sosize  = sizeof(m_clientAddress);
-        m_accVal = accept(m_serverSocket,(struct sockaddr*)&m_clientAddress,&sosize); //On success, these system calls return a nonnegative integer that is a
+    socklen_t sosize  = sizeof(m_clientAddress);
+    m_accVal = accept(m_serverSocket,(struct sockaddr*)&m_clientAddress,&sosize); //On success, these system calls return a nonnegative integer that is a
         //file descriptor for the accepted socket.  On error, -1 is returned,
         //and errno is set appropriately.
     return m_accVal;
@@ -82,7 +86,7 @@ void TcpServer::detach()
 }
 
 void TcpServer::toMap(string toSplit, Data *d) {
-    vector<double > values;
+    vector<double> values;
     size_t pos = 0;
     while ((pos = toSplit.find(DELIMITER)) != string::npos) {
         values.push_back(stod(toSplit.substr(0, pos)));
@@ -94,6 +98,7 @@ void TcpServer::toMap(string toSplit, Data *d) {
         d->assignVar(*it,value);
         ++it;
         d->changeBindValue(*it,value);
+        ++it;
         if (it == m_xmlHandler.end())
             break;
     }

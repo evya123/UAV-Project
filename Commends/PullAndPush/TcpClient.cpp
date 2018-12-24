@@ -3,9 +3,9 @@
 //
 
 #include "TcpClient.h"
+#include "TcpServer.h"
 
-TcpClient::TcpClient()
-{
+TcpClient::TcpClient(){
     sock = -1;
     port = 0;
     address = "";
@@ -47,49 +47,39 @@ bool TcpClient::setup(string address , int port){
 
 bool TcpClient::Send(string data){
 
-    if(sock != -1) {
-        if( send(sock , data.c_str() , strlen( data.c_str() ) , 0) < 0) {
-            printf("Send failed : %s" ,&data);
+    while (data.compare(EXIT_REQUEST)){
+        if(sock != -1) {
+            if(send(sock , data.c_str() , strlen( data.c_str() ) , 0) < 0) {
+                printf("Send failed : %s" ,&data);
+                return false;
+            }
+        } else {
+            printf("Socket is not initialized");
             return false;
         }
-    } else {
-        printf("Socket is not initialized");
-        return false;
     }
     return true;
-}
-
-string TcpClient::receive(int size){
-
-    char buffer[size];
-    memset(&buffer[0], 0, sizeof(buffer));
-
-    string reply;
-    if( recv(sock , buffer , size, 0) < 0) {
-        cerr << "receive failed!" << endl;
-        return nullptr;
-    }
-    buffer[size-1]='\0';
-    reply = buffer;
-    return reply;
-}
-
-string TcpClient::read(){
-
-    char buffer[1] = {};
-    string reply;
-    while (buffer[0] != '\n') {
-        if( recv(sock , buffer , sizeof(buffer) , 0) < 0) {
-            cout << "receive failed!" << endl;
-            return nullptr;
-        }
-        reply += buffer[0];
-    }
-    return reply;
 }
 
 void TcpClient::exit(){
     shutdown(sock,SHUT_RDWR); //stop connection from both sides but can still receive pending data
     sleep(1); //let the pending data flow and then close
     close(sock);
+}
+
+//void TcpClient::start(pthread_t &id, arg_struct_client &args) {
+//    pthread_create(&id, 0, &TcpClient::TaskClient, (void*)&args);
+//}
+
+void* TcpClient::TaskClient(void *arg) {
+    TcpClientStruct *args = static_cast<TcpClientStruct*>(arg);
+    TcpClient* _this = args->arg2;
+    _this->Send(args->arg1);
+    int i = 5;
+    while(i != 0){
+        cout<<"this is just a test in client!: "<<args->arg1<<endl;
+        sleep(1);
+        --i;
+    }
+    pthread_exit(0);
 }

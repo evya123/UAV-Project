@@ -23,7 +23,6 @@
 
 using namespace std;
 
-
 class TcpServer {
 public:
     TcpServer() = default;
@@ -31,7 +30,7 @@ public:
     int receive();
     void detach();
 
-    static void *task(void *arg, Data *d);
+    static void *TaskServer(void *arg);
 
 private:
     static void toMap(string toSplit, Data *d);
@@ -41,5 +40,9 @@ private:
 
 };
 
+typedef struct arg_struct_server {
+    int arg1;
+    Data* arg2;
+}TcpStruct;
 
 #endif //UAV_PROJECT_TCPSERVER_H

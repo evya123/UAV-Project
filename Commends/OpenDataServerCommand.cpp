@@ -31,18 +31,22 @@ int OpenDataServerCommand::convertToInt(string port) {
     }
 }
 
-int OpenDataServerCommand::openDataServer(int port) {
-    m_server->setup(port);
-    //m_server->receive();
-
-}
-
 void OpenDataServerCommand::doCommand(vector<string> &arguments, Data *d) {
-    int port = convertToInt(arguments[PORT_POS]);
+    int port = convertToInt(arguments[PORT_POS_Server]);
+    TcpStruct args;
     m_server->setup(port);
-    m_server->receive();
+    args.arg1 = m_server->receive();
+    args.arg2 = d;
+    pthread_create(&m_serverThreadId,NULL, &TcpServer::TaskServer,(void *)&args);
+    pthread_join(m_serverThreadId,NULL);
 }
 
 OpenDataServerCommand::~OpenDataServerCommand() {
     delete m_server;
 }
+
+pthread_t OpenDataServerCommand::getId() const {
+    return m_serverThreadId;
+}
+
+
