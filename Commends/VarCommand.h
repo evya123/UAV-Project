@@ -10,12 +10,11 @@
 #include "Expression/ShuntingYard.h"
 #include "Utils.h"
 #include "Var.h"
-
+#include "Commends/PullAndPush/TcpClient.h"
 class VarCommand : public Command {
 
 public:
     virtual void doCommand(vector<string> &arguments, Data *d);
-
 };
 
 

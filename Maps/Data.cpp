@@ -86,21 +86,21 @@ bool Data::isLeagalVar(const string &var) {
     unique_lock<mutex> lock(m_locker);//locked!
     return (_symbolTable.count(var) > 0);
     //unlocked!
-}
+}A
 
-double Data::getVarValue(const string &var)  {
+double Data::getVarValue(const string &var) {
     unique_lock<mutex> lock(m_locker);//locked!
     return _symbolTable.at(var)->getValue();
     //unlocked!
 }
 
-bool Data::isBind(const Var *var)  {
+bool Data::isBind(const Var *var) {
     unique_lock<mutex> lock(m_locker);//locked!
     return var->isBind();
     //unlocked!
 }
 
-bool Data::isPath(const string &var)  {
+bool Data::isPath(const string &var) {
     unique_lock<mutex> lock(m_locker);//locked!
     return (_pathMap.count(var) > 0);
     //unlocked!
@@ -114,16 +114,16 @@ void Data::changeBindValue(const string path, const double val) {
 }
 
 void Data::setPath(const string &path, double val) {
-    unique_lock<mutex> lock(m_locker);//locked!
     if (isPath(path)) {
+        unique_lock<mutex> lock(m_locker);//locked!
         _pathMap[path] = val;
     }
     //unlocked!
 }
 
-Var *Data::getVar(const string &var)  {
-    unique_lock<mutex> lock(m_locker);//locked!
+Var *Data::getVar(const string &var) {
     if (isLeagalVar(var)) {
+        unique_lock<mutex> lock(m_locker);//locked!
         return _symbolTable.at(var);
     }
     //unlocked!
@@ -133,7 +133,7 @@ void Data::assignVar(string var_name, double val) {
     unique_lock<mutex> lock(m_locker);//locked!
     Var *v = _symbolTable[var_name];
     v->assign(val);
-    if (isBind(v)) {
+    if (_pathMap.count(v->getVarName()) > 0) {
         _pathMap[v->getBindAdress()] = val;
     }
     //unlocked!
@@ -145,7 +145,7 @@ void Data::addBind(Var *var, const string &bind_adress) {
     //unlocked!
 }
 
-void Data::changeVarBind(Var *var, string& bind) {
+void Data::changeVarBind(Var *var, string &bind) {
     unique_lock<mutex> lock(m_locker);//locked!
     var->setBind(bind);
 }
