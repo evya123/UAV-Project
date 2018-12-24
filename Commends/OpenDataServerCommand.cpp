@@ -32,7 +32,8 @@ int OpenDataServerCommand::convertToInt(string port) {
 }
 
 void OpenDataServerCommand::doCommand(vector<string> &arguments, Data *d) {
-    int port = convertToInt(arguments[PORT_POS_Server]);
+    int port = convertToInt(arguments.back());
+    arguments.clear();
     TcpStruct args;
     m_server->setup(port);
     args.arg1 = m_server->receive();

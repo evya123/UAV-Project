@@ -8,8 +8,8 @@
 #include "Command.h"
 #include <iostream>
 #include <Commends/PullAndPush/TcpClient.h>
-#define IP_POS 0
-#define PORT_POS_Client 1
+#define PORT_POS_Client 0
+#define IP_POS 1
 
 class ConnectCommand : public Command{
 

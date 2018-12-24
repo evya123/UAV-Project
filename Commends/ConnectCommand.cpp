@@ -9,6 +9,7 @@ ConnectCommand::ConnectCommand() {
 
 void ConnectCommand::doCommand(vector<string> &arguments, Data *d) {
     m_client->setup(arguments[IP_POS],stoi(arguments[PORT_POS_Client]));
+    arguments.clear();
     TcpClientStruct args;
     args.arg2 = m_client;
     args.arg1 = "set controls/flight/rudder 1";
