@@ -9,6 +9,7 @@
 #include "Var.h"
 #include <mutex>
 #include <Commends/PullAndPush/TcpClient.h>
+#include <algorithm>
 
 using namespace std;
 
@@ -18,9 +19,9 @@ private:
     map<string, double> _pathMap;
     multimap<string, Var *> _pathVarMap;
     mutex m_locker;
-    TcpClient * _client;
+    TcpClient *_client;
 public:
-    Data(TcpClient* client);
+    Data(TcpClient *client);
 
     void addVar(string var_name, Var *var);
 
@@ -28,17 +29,17 @@ public:
 
     void addPathAndVar(Var *var, string path);
 
-    Var *getVar(const string &var) ;
+    Var *getVar(const string &var);
 
-    bool isLeagalVar(const string &var) ;
+    bool isLeagalVar(const string &var);
 
-    double getVarValue(const string &var) ;
+    double getVarValue(const string &var);
 
-    bool isPath(const string &var) ;
+    bool isPath(const string &var);
 
     void changeBindValue(string path, double val);
 
-    bool isBind(const Var *var) ;
+    bool isBind(const Var *var);
 
     void addBind(Var *var, const string &bind_adress);
 
@@ -46,13 +47,18 @@ public:
 
     void assignVar(string var_name, double val);
 
-    void changeVarBind(Var* var, string& bind);
+    void changeVarBind(Var *var, string &bind);
 
-    void changeVarValue(Var* var, double value);
+    void changeVarValue(Var *var, double value);
 
     void sendToClient(const string &path, double value);
 
+    void RemoveQuotationMark(string &path);
+
+    void addToMapsFromServer(pair<string, double> &toMap);
+
     ~Data();
+
 
 };
 

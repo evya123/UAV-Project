@@ -135,9 +135,12 @@ void Data::assignVar(string var_name, double val) {
     unique_lock<mutex> lock(m_locker);//locked!
     Var *v = _symbolTable[var_name];
     v->assign(val);
-    if (_pathMap.count(v->getBindAdress()) > 0) {
-        _pathMap[v->getBindAdress()] = val;
-        sendToClient(v->getBindAdress(), val);
+    string path = v->getBindAdress();
+    if (_pathMap.count(path) > 0) {
+        _pathMap[path] = val;
+        RemoveQuotationMark(path);
+
+        sendToClient(path, val);
     }
     //unlocked!
 }
@@ -162,4 +165,24 @@ void Data::sendToClient(const string &path, double value) {
     string s = "";
     s += "set " + path + " " + to_string(value);
     _client->Send(s);
+}
+
+void Data::RemoveQuotationMark(string &path) {
+    path.erase(remove(path.begin(), path.end(), '\"'), path.end());
+    path.erase(path.begin());
+}
+
+void Data::addToMapsFromServer(pair<string, double> &toMap) {
+    typedef std::multimap<string, Var *>::iterator MMAPIterator;
+    unique_lock<mutex> lock(m_locker);//locked!
+    string path = toMap.first;
+    double val = toMap.second;
+    _pathMap[path] = val;
+    std::pair<MMAPIterator, MMAPIterator> result = _pathVarMap
+            .equal_range(path);
+    for (auto it = result.first; it !=result.second; ++it) {
+        it->second->assign(val);
+    }
+
+
 }
