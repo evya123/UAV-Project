@@ -54,7 +54,7 @@ static std::list<std::string> m_xmlHandler = {
         "flight_flaps",
         "/controls/flight/flaps",
         "engine_throttle",
-        "/controls/engines/engine/throttle",
+        "/controls/engines/current-engine/throttle",
         "engine_rpm",
         "/engines/engine/rpm"
 };
