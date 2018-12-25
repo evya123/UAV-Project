@@ -8,6 +8,7 @@ ConnectCommand::ConnectCommand() {
 }
 
 void ConnectCommand::doCommand(vector<string> &arguments, Data *d) {
+    cout<<"ConnectCommand!"<<endl;
     m_client->setup(arguments[IP_POS],stoi(arguments[PORT_POS_Client]));
     arguments.clear();
 }

@@ -13,6 +13,7 @@
  * listen to the port and wait for connection.
  */
 void TcpServer::setup(int port) {
+    cout<<"Setup"<<endl;
     m_serverSocket = socket(AF_INET,SOCK_STREAM,0); //Create the socket
     if (m_serverSocket < 0){ //Check if the creation succeeded
         perror("OpenDataServerCommand->setup: ");
@@ -34,6 +35,7 @@ void TcpServer::setup(int port) {
 
 
 void * TcpServer::TaskServer(void *arg) {
+    cout<<"Connected! now waiting for data!"<<endl;
     TcpStruct *args = static_cast<TcpStruct*>(arg);
     int newsockfd = args->arg1;
     Data* d = args->arg2;
@@ -62,6 +64,7 @@ void * TcpServer::TaskServer(void *arg) {
  * which runs Task().
  **/
 int TcpServer::receive() {
+    cout<<"Accepting connection!"<<endl;
     //string str;
     socklen_t sosize  = sizeof(m_clientAddress);
     m_accVal = accept(m_serverSocket,(struct sockaddr*)&m_clientAddress,&sosize); //On success, these system calls return a nonnegative integer that is a
@@ -84,14 +87,14 @@ void TcpServer::detach()
 }
 
 void TcpServer::toMap(string toSplit, Data *d) {
-    map<string,double> toSave;
     auto it = m_xmlHandler.begin();
     size_t pos = 0;
     while (toSplit != "") {
         if(++it == m_xmlHandler.end())
             break;
         pos = toSplit.find(DELIMITER);
-        toSave.insert(make_pair(*it,stod(toSplit.substr(0, pos))));
+        pair<string,double> p = make_pair(*it,stod(toSplit.substr(0, pos)));
+        d->addToMapsFromServer(p);
         toSplit.erase(0, pos + 1);
         if(++it == m_xmlHandler.end())
             break;

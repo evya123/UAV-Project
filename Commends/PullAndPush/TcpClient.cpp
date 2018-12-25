@@ -9,7 +9,7 @@ TcpClient::TcpClient(){
 }
 
 bool TcpClient::setup(string address , int port){
-
+    cout<<"Client setup!"<<endl;
     if(sock == -1) {
         sock = socket(AF_INET , SOCK_STREAM , 0);
         if (sock < 0) {
@@ -49,13 +49,14 @@ bool TcpClient::setup(string address , int port){
 }
 
 bool TcpClient::Send(string &data){
+    cout<<"Sending!"<<endl;
     if(sock != -1) {
         if(send(sock , data.c_str() , strlen( data.c_str() ) , 0) < 0) {
-            printf("Send failed : %s" ,&data);
+            cout<<"Send failed :"<<data<<endl;
             return false;
         }
     } else {
-        printf("Socket is not initialized");
+        cout<<"Socket is not initialized"<<endl;
         return false;
     }
 return true;

@@ -1,0 +1,6 @@
+openDataServer 5400 10
+connect 172.16.20.102 5402
+var roll = bind "/instrumentation/attitude-indicator/indicated-roll-deg"
+var heading = bind "/instrumentation/heading-indicator/offset-deg"
+var x = 5
+var z= 8

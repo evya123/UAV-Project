@@ -115,16 +115,16 @@ void LexerParser::Parser(vector<string> &lexer) {
             cout << "the command is: " + temp << endl;
             lexer.pop_back();
             Command *command = mapStringCommand->getCommand(temp);
-//            ExpressionCommand *expressionCommand = new ExpressionCommand
-//                    (command, &lexer, _data);
-//            expressionCommand->calculate();
+            ExpressionCommand *expressionCommand = new ExpressionCommand
+                    (command, &lexer, _data);
+            expressionCommand->calculate();
         } else {
             cout << "Other : " + temp << endl;
             if (_data->isLeagalVar(temp)) {
                 Command *varCommand = new VarCommand();
-//                ExpressionCommand *expressionCommandVar = new
-//                        ExpressionCommand(varCommand, &lexer, _data);
-//                expressionCommandVar->calculate();
+                ExpressionCommand *expressionCommandVar = new
+                        ExpressionCommand(varCommand, &lexer, _data);
+                expressionCommandVar->calculate();
 
             } else {
                 throw ("var is not valid!");
@@ -135,8 +135,17 @@ void LexerParser::Parser(vector<string> &lexer) {
 
 void LexerParser::ReadFromFile(string fileName) {
     fstream file;
-    file.open(fileName,
-              std::fstream::in | std::fstream::out);
+//    file.exceptions ( std::ifstream::failbit | std::ifstream::badbit );
+//    try {
+//        file.open(fileName,
+//                  std::fstream::in | std::fstream::out);
+//        while (!file.eof()) file.get();
+//        file.close();
+//    }
+//    catch (std::ifstream::failure e) {
+//        std::cerr << "Exception opening/reading/closing file\n";
+//    }
+    file.open(fileName);
     ifstream infile(fileName);
     string line;
     while (getline(infile, line)) {

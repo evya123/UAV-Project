@@ -163,8 +163,8 @@ void Data::sendToClient(const string &path, double value) {
     _client->Send(s);
 }
 void Data::addToMapsFromServer(pair<string, double> &toMap) {
-    typedef std::multimap<string, Var *>::iterator MMAPIterator;
     unique_lock<mutex> lock(m_locker);//locked!
+    typedef std::multimap<string, Var *>::iterator MMAPIterator;
     string path = toMap.first;
     double val = toMap.second;
     _pathMap[path] = val;
