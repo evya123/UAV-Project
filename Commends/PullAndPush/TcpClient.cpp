@@ -3,7 +3,6 @@
 //
 
 #include "TcpClient.h"
-#include "TcpServer.h"
 
 TcpClient::TcpClient(){
     sock = -1;

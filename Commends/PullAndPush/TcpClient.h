@@ -27,7 +27,6 @@ class TcpClient
 private:
     int sock;
     struct sockaddr_in server;
-    const char* EXIT_REQUEST = "exit";
 
 
 public:
