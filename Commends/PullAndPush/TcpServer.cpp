@@ -1,9 +1,9 @@
 //
 // Created by evya on 12/18/18.
 //
-
 #include "TcpServer.h"
-
+#include <iostream>
+#include <fstream>
 /**
  * Function name: setup
  * @param port
@@ -43,7 +43,7 @@ void * TcpServer::TaskServer(void *arg) {
     {
         memset(msg,0,MAXPACKETSIZE);
         n=recv(newsockfd,msg,MAXPACKETSIZE,0);
-        //toMap(string(msg),d);
+        toMap(string(msg),d);
         if(n==0) {
             close(newsockfd);
             break;
@@ -83,22 +83,18 @@ void TcpServer::detach()
     close(m_accVal);
 }
 
-//void TcpServer::toMap(string toSplit, Data *d) {
-//    vector<double> values;
-//    map<string,double> toMap;
-//    size_t pos = 0;
-//    while ((pos = toSplit.find(DELIMITER)) != string::npos) {
-//        values.push_back(stod(toSplit.substr(0, pos)));
-//        toSplit.erase(0, pos + 1);
-//    }
-//
-//    auto it = m_xmlHandler.begin();
-//    for (double value : values) {
-//        d->assignVar(*it,value);
-//        ++it;
-//        d->changeBindValue(*it,value);
-//        ++it;
-//        if (it == m_xmlHandler.end())
-//            break;
-//    }
-//}
+void TcpServer::toMap(string toSplit, Data *d) {
+    map<string,double> toSave;
+    auto it = m_xmlHandler.begin();
+    size_t pos = 0;
+    while (toSplit != "") {
+        if(++it == m_xmlHandler.end())
+            break;
+        pos = toSplit.find(DELIMITER);
+        toSave.insert(make_pair(*it,stod(toSplit.substr(0, pos))));
+        toSplit.erase(0, pos + 1);
+        if(++it == m_xmlHandler.end())
+            break;
+    }
+
+}

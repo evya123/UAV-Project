@@ -32,7 +32,7 @@ private:
 public:
     TcpClient();
     bool setup(string address, int port);
-    bool Send(string data);
+    bool Send(string &data);
     static void* TaskClient(void *);
     void start(pthread_t &id, arg_struct_client &args);
     void exit();

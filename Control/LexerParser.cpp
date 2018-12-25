@@ -115,16 +115,16 @@ void LexerParser::Parser(vector<string> &lexer) {
             cout << "the command is: " + temp << endl;
             lexer.pop_back();
             Command *command = mapStringCommand->getCommand(temp);
-            ExpressionCommand *expressionCommand = new ExpressionCommand
-                    (command, &lexer, _data);
-            expressionCommand->calculate();
+//            ExpressionCommand *expressionCommand = new ExpressionCommand
+//                    (command, &lexer, _data);
+//            expressionCommand->calculate();
         } else {
             cout << "Other : " + temp << endl;
             if (_data->isLeagalVar(temp)) {
                 Command *varCommand = new VarCommand();
-                ExpressionCommand *expressionCommandVar = new
-                        ExpressionCommand(varCommand, &lexer, _data);
-                expressionCommandVar->calculate();
+//                ExpressionCommand *expressionCommandVar = new
+//                        ExpressionCommand(varCommand, &lexer, _data);
+//                expressionCommandVar->calculate();
 
             } else {
                 throw ("var is not valid!");

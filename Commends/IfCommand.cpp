@@ -9,11 +9,9 @@ IfCommand::IfCommand(MapStringCommand *mpc) {
 void IfCommand::doCommand(vector<string> &arguments, Data *d) {
     auto it = arguments.begin();
     LexerParser lp(d);
-    vector<string> ifArgs {arguments[LHS],arguments[RHS]};
-    //lp.varOperation(ifArgs);
-    if (m_ac.getCondition(arguments[COMPARE])(stod(ifArgs[LHS]),stod(ifArgs[RHS - 1]))) {
+    vector<string> ifArgs {arguments.at(LHS),arguments.at(RHS)};
+    if (m_ac.getCondition(arguments[COMPARE])(stod(ifArgs[LHS]),stod(ifArgs[RHS - 1])))
         printf("success");
-    }
 }
 
 vector<string> IfCommand::splitByDelimiter(vector<string>::iterator& it,const string delimiter) {

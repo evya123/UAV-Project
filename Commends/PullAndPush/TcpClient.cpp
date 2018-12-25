@@ -35,14 +35,20 @@ bool TcpClient::setup(string address , int port){
     }
     server.sin_family = AF_INET;
     server.sin_port = htons(port);
-    if (connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0) {
-        perror("TcpClient->setup: ");
-        return false;
+    int connectRet;
+    for (int j = 0; j <= 9 ; ++j) {
+        if ((connectRet = connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0))
+            sleep(1);
+        else
+            return true;
     }
-    return true;
+    if (connectRet < 0){
+        perror("TcpClient->setup: ");
+        throw runtime_error ("Cannot connect to FlightGear, tried 10 times");
+    }
 }
 
-bool TcpClient::Send(string data){
+bool TcpClient::Send(string &data){
     if(sock != -1) {
         if(send(sock , data.c_str() , strlen( data.c_str() ) , 0) < 0) {
             printf("Send failed : %s" ,&data);
@@ -57,23 +63,6 @@ return true;
 
 void TcpClient::exit(){
     shutdown(sock,SHUT_RDWR); //stop connection from both sides but can still receive pending data
-    sleep(1); //let the pending data flow and then close
+    sleep(1);               //let the pending data flow and then close
     close(sock);
-}
-
-//void TcpClient::start(pthread_t &id, arg_struct_client &args) {
-//    pthread_create(&id, 0, &TcpClient::TaskClient, (void*)&args);
-//}
-
-void* TcpClient::TaskClient(void *arg) {
-    TcpClientStruct *args = static_cast<TcpClientStruct*>(arg);
-    TcpClient* _this = args->arg2;
-    _this->Send(args->arg1);
-//    int i = 5;
-//    while(i != 0){
-//        cout<<"this is just a test in client!: "<<args->arg1<<endl;
-//        sleep(1);
-//        --i;
-//    }
-    pthread_exit(0);
 }
