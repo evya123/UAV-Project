@@ -4,7 +4,8 @@
 
 #include "Data.h"
 
-Data::Data() {
+Data::Data(TcpClient *client) {
+    _client = client;
     initPath();
 }
 
@@ -86,7 +87,7 @@ bool Data::isLeagalVar(const string &var) {
     unique_lock<mutex> lock(m_locker);//locked!
     return (_symbolTable.count(var) > 0);
     //unlocked!
-}A
+}
 
 double Data::getVarValue(const string &var) {
     unique_lock<mutex> lock(m_locker);//locked!
@@ -117,6 +118,7 @@ void Data::setPath(const string &path, double val) {
     if (isPath(path)) {
         unique_lock<mutex> lock(m_locker);//locked!
         _pathMap[path] = val;
+        sendToClient(path, val); // send to the client
     }
     //unlocked!
 }
@@ -133,8 +135,9 @@ void Data::assignVar(string var_name, double val) {
     unique_lock<mutex> lock(m_locker);//locked!
     Var *v = _symbolTable[var_name];
     v->assign(val);
-    if (_pathMap.count(v->getVarName()) > 0) {
+    if (_pathMap.count(v->getBindAdress()) > 0) {
         _pathMap[v->getBindAdress()] = val;
+        sendToClient(v->getBindAdress(), val);
     }
     //unlocked!
 }
@@ -153,4 +156,10 @@ void Data::changeVarBind(Var *var, string &bind) {
 void Data::changeVarValue(Var *var, double value) {
     unique_lock<mutex> lock(m_locker);//locked!
     var->assign(value);
+}
+
+void Data::sendToClient(const string &path, double value) {
+    string s = "";
+    s += "set " + path + " " + to_string(value);
+    _client->Send(s);
 }
