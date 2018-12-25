@@ -31,9 +31,12 @@ MapStringCommand::MapStringCommand() {
 //    _stringCommandMap.insert(pair<string, Command *>("if", ifCommand));
 
 
-    //whileCommand
+    //Enterc
     Command *whileCommand = new WhileCommand();
-    _stringCommandMap.insert(pair<string, Command *>("while", whileCommand));
+    _stringCommandMap.insert(pair<string, Command *>("Enterc", whileCommand));
+    Command *entercCommand = new EntercCommand();
+    _stringCommandMap.insert(pair<string, Command *>("openDataServer",
+                                                     entercCommand));
 
 }
 

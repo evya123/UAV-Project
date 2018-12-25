@@ -9,7 +9,7 @@
 #include "Commends/OpenDataServerCommand.h"
 #include "Commends/IfCommand.h"
 #include "Commends/WhileCommand.h"
-
+#include "Commends/EntercCommand.h"
 
 #include <map>
 
