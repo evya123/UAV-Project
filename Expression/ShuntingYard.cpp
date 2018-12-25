@@ -47,7 +47,7 @@ double ShuntingYard::applyOp(double a, double b, char op) {
 // Function that returns value of
 // expression after evaluation.
 double ShuntingYard::evaluate() {
-    int i;
+    int i = 0;
     bool wasOperation = false;
 
     // stack to store integer values.

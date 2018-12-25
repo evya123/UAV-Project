@@ -53,7 +53,6 @@ public:
 
     void sendToClient(const string &path, double value);
 
-    void RemoveQuotationMark(string &path);
 
     void addToMapsFromServer(pair<string, double> &toMap);
 

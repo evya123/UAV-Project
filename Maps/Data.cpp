@@ -162,12 +162,6 @@ void Data::sendToClient(const string &path, double value) {
     s += "set " + path + " " + to_string(value);
     _client->Send(s);
 }
-/*
-void Data::RemoveQuotationMark(string &path) {
-    path.erase(remove(path.begin(), path.end(), ), path.end());
-    path.erase(path.begin());
-}
-*/
 void Data::addToMapsFromServer(pair<string, double> &toMap) {
     typedef std::multimap<string, Var *>::iterator MMAPIterator;
     unique_lock<mutex> lock(m_locker);//locked!
