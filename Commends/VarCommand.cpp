@@ -28,7 +28,7 @@ void VarCommand::doCommand(vector<string> &arguments, Data *d) {
         arguments.pop_back();
         // check if there is a legal bind
         string path = arguments.back();
-
+        RemoveQuotationMark(path);
         if (d->isPath(path)) {
             d->addPathAndVar(var, path); // Map - var path
         }
@@ -58,4 +58,10 @@ void VarCommand::doCommand(vector<string> &arguments, Data *d) {
     arguments.
 
             pop_back();
+}
+
+
+void VarCommand::RemoveQuotationMark(string &path) {
+    path.erase(remove(path.begin(), path.end(), '\"'), path.end());
+    path.erase(path.begin());
 }
