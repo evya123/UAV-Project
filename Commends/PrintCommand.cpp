@@ -9,5 +9,6 @@ void PrintCommand::doCommand(vector<string> &arguments, Data *d) {
     for (i = 0; i < arguments.size(); ++i){
         std::cout << arguments[i]<<" ";
     }
+    std::cout<<"\n";
     arguments.clear();
 }
