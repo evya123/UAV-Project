@@ -159,7 +159,7 @@ void Data::changeVarValue(Var *var, double value) {
 
 void Data::sendToClient(const string &path, double value) {
     string s = "";
-    s += "set " + path + " " + to_string(value);
+    s += "set " + path + " " + to_string(value) + "\r\n";
     _client->Send(s);
 }
 void Data::addToMapsFromServer(pair<string, double> &toMap) {

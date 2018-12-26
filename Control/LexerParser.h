@@ -26,8 +26,9 @@ using namespace std;
 class LexerParser {
 private:
     Data *_data;
+    MapStringCommand* _mapStringCommad;
 public:
-    explicit LexerParser(Data* data);
+    explicit LexerParser(Data *data, MapStringCommand *);
 
     void LexerS(string line);
 

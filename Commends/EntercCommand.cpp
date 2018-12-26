@@ -5,6 +5,6 @@
 #include "EntercCommand.h"
 
 void EntercCommand::doCommand(vector<string> &arguments, Data *d) {
-    string str;
-    getline(cin,str);
+    cout << "Press ENTER to continue...";
+    cin.ignore( std::numeric_limits<std::streamsize>::max(), '\n' );
 }

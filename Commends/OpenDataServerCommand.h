@@ -9,25 +9,20 @@
 #include "Command.h"
 #include <stdexcept>
 #include <Commends/PullAndPush/TcpServer.h>
-#define PORT_POS_Server 0
+#include <thread>
+
 class OpenDataServerCommand : public Command {
 
 public:
-    OpenDataServerCommand();
+
+    OpenDataServerCommand(TcpServer *server);
 
     virtual void doCommand(vector<string> &arguments, Data *d);
 
     virtual ~OpenDataServerCommand();
-
-private:
-    int convertToInt(string port);
-
-    pthread_t m_serverThreadId;
-public:
-    pthread_t getId() const;
-
 private:
     TcpServer* m_server;
+    int convertToInt(string port);
     string m_args;
 };
 

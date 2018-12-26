@@ -6,7 +6,8 @@
 
 using namespace std;
 
-LexerParser::LexerParser(Data *data) {
+LexerParser::LexerParser(Data *data, MapStringCommand * map) {
+    _mapStringCommad = map;
     _data = data;
 }
 
@@ -103,7 +104,6 @@ void LexerParser::FinalLexer(vector<string> &result, vector<string> &final) {
 
 
 void LexerParser::Parser(vector<string> &lexer) {
-    MapStringCommand *mapStringCommand = new MapStringCommand();
     string temp = "";
 
     while (!lexer.empty()) {
@@ -111,10 +111,10 @@ void LexerParser::Parser(vector<string> &lexer) {
         temp = lexer.back();
         if (temp == "while" || temp == "if") {
             ConditionParser(lexer);
-        } else if (mapStringCommand->isLeagalCommand(temp)) {
+        } else if (_mapStringCommad->isLeagalCommand(temp)) {
             cout << "the command is: " + temp << endl;
             lexer.pop_back();
-            Command *command = mapStringCommand->getCommand(temp);
+            Command *command = _mapStringCommad->getCommand(temp);
             ExpressionCommand *expressionCommand = new ExpressionCommand
                     (command, &lexer, _data);
             expressionCommand->calculate();
@@ -127,7 +127,10 @@ void LexerParser::Parser(vector<string> &lexer) {
                 expressionCommandVar->calculate();
 
             } else {
-                throw ("var is not valid!");
+//              throw ("var is not valid!");
+                cout<<"var is not valid!"<<endl;
+                lexer.clear();
+                continue;
             }
         }
     }

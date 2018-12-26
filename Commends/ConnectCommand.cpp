@@ -3,18 +3,14 @@
 //
 
 #include "ConnectCommand.h"
-ConnectCommand::ConnectCommand() {
-    m_client = new TcpClient();
+ConnectCommand::ConnectCommand(TcpClient* client) {
+    m_client = client;
 }
 
 void ConnectCommand::doCommand(vector<string> &arguments, Data *d) {
     cout<<"ConnectCommand!"<<endl;
     m_client->setup(arguments[IP_POS],stoi(arguments[PORT_POS_Client]));
     arguments.clear();
-}
-
-pthread_t ConnectCommand::getM_clientThreadId() const {
-    return m_clientThreadId;
 }
 
 ConnectCommand::~ConnectCommand() {
