@@ -7,6 +7,7 @@
 
 #include "Commends/Command.h"
 #include "Utils.h"
+#include "Maps/MapStringCommand.h"
 
 class IfCommand : public Command {
 public:
