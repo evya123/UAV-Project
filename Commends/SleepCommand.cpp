@@ -5,6 +5,6 @@
 #include "SleepCommand.h"
 
 void SleepCommand::doCommand(vector<string> &arguments, Data *d) {
-    sleep(stoi(arguments.at(SLEEP_TIME)));
+    usleep(stoi(arguments.at(SLEEP_TIME)));
     arguments.clear();
 }
