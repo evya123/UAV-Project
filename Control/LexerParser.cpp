@@ -121,10 +121,13 @@ void LexerParser::Parser(vector<string> &lexer) {
                 ConditionParser(lexer);
                 return;
             }
+
             lexer.pop_back();
             condition_lock = true;
             conditionVec.clear();
             ConditionParser(lexer);
+            Command *commander = _mapStringCommad->getCommand(temp);
+            ExcecuteCommand(conditionVec, commander);
         } else {
             if (_mapStringCommad->isLeagalCommand(temp)) {
                 cout << "the command is: " + temp << endl;
