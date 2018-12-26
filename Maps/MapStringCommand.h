@@ -5,6 +5,7 @@
 
 #ifndef UAV_PROJECT_MAPSTRINGCOMMAND_H
 #define UAV_PROJECT_MAPSTRINGCOMMAND_H
+
 #include "Commends/PrintCommand.h"
 #include "Commends/ConnectCommand.h"
 #include "Commends/SleepCommand.h"
@@ -15,6 +16,7 @@
 #include "Commends/EntercCommand.h"
 #include "Commends/PullAndPush/TcpClient.h"
 #include <cstring>
+
 using namespace std;
 
 class MapStringCommand {
@@ -28,6 +30,11 @@ public:
     ~MapStringCommand();
 
     Command *getCommand(const string c) const;
+
+    void Parser(vector<string> &lexer);
+
+    void ExcecuteCommand(vector<string> &lexer, Command *command);
+
 };
 
 #endif //UAV_PROJECT_MAPSTRINGCOMMAND_H

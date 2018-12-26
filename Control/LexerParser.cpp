@@ -140,7 +140,7 @@ void LexerParser::Parser(vector<string> &lexer) {
                     Command *varCommand = new VarCommand();
                     ExcecuteCommand(lexer, varCommand);
                 } else {
-//              throw ("var is not valid!");
+                    throw ("var is not valid!");
                     cout << "var is not valid!" << endl;
                     lexer.clear();
                     continue;
@@ -156,7 +156,6 @@ void LexerParser::ExcecuteCommand(vector<string> &lexer, Command *command) {
             ExpressionCommand(command, &lexer, _data);
     expressionCommand->calculate();
 }
-
 void LexerParser::ReadFromFile(string filename) {
     fstream file;
     file.open(filename);
@@ -217,18 +216,18 @@ LexerParser::ConditionparserWhile(vector<string> &lexer) {
             }
             conditionVec.push_back(";");
         } catch (exception e) {
-            cout<<e.what()<<endl;
+            cout << e.what() << endl;
         }
 
         try {
             lexer.clear();
         } catch (exception e) {
-            cout<<e.what()<<endl;
+            cout << e.what() << endl;
         }
         try {
             LexerS(Readline());
         } catch (exception e) {
-            cout<<e.what()<<endl;
+            cout << e.what() << endl;
 
         }
     }

@@ -15,6 +15,7 @@
 #include "Utils.h"
 #include <fstream>
 #include "ExpressionCommand.h"
+#include "Commends/IfCommand.h"
 #include <algorithm>
 
 
@@ -24,6 +25,7 @@ class LexerParser {
 private:
     Data *_data;
     MapStringCommand *_mapStringCommad;
+    unsigned long int _lineNumber;
     string _content;
     bool condition_lock;
     vector<string> conditionVec;
