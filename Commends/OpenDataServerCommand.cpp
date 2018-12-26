@@ -1,7 +1,7 @@
 
 #include "OpenDataServerCommand.h"
-OpenDataServerCommand::OpenDataServerCommand() {
-    m_server = new TcpServer();
+OpenDataServerCommand::OpenDataServerCommand(TcpServer *server) {
+    m_server = server;
 }
 
 /**
@@ -39,15 +39,14 @@ void OpenDataServerCommand::doCommand(vector<string> &arguments, Data *d) {
     m_server->setup(port);
     args.arg1 = m_server->receive();
     args.arg2 = d;
-    pthread_create(&m_serverThreadId,NULL, &TcpServer::TaskServer,(void *)&args);
+    thread dataServer(TcpServer::TaskServer,&args);
+
+    dataServer.detach();
 }
 
 OpenDataServerCommand::~OpenDataServerCommand() {
     delete m_server;
 }
 
-pthread_t OpenDataServerCommand::getId() const {
-    return m_serverThreadId;
-}
 
 

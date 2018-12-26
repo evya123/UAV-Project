@@ -2,6 +2,10 @@
 // Created by lidor115 on 12/21/18.
 //
 
+using namespace std;
+
+#ifndef UAV_PROJECT_MAPSTRINGCOMMAND_H
+#define UAV_PROJECT_MAPSTRINGCOMMAND_H
 #include "Commends/PrintCommand.h"
 #include "Commends/ConnectCommand.h"
 #include "Commends/SleepCommand.h"
@@ -10,17 +14,15 @@
 #include "Commends/IfCommand.h"
 #include "Commends/WhileCommand.h"
 #include "Commends/EntercCommand.h"
+#include "Commends/PullAndPush/TcpClient.h"
 
 #include <map>
 
-using namespace std;
-#ifndef UAV_PROJECT_MAPSTRINGCOMMAND_H
-#define UAV_PROJECT_MAPSTRINGCOMMAND_H
-
 class MapStringCommand {
+private:
     map<string, Command *> _stringCommandMap;
 public:
-    MapStringCommand();
+    MapStringCommand(TcpClient *client, TcpServer *server);
 
     bool isLeagalCommand(const string c) const;
 

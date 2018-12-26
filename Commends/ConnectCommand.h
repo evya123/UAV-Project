@@ -14,14 +14,12 @@
 class ConnectCommand : public Command{
 
 public:
-    ConnectCommand();
+    ConnectCommand(TcpClient*);
     virtual void doCommand(vector<string> &arguments, Data *d);
     virtual ~ConnectCommand();
 
-    pthread_t getM_clientThreadId() const;
-
 private:
-    pthread_t m_clientThreadId;
+
     TcpClient* m_client;
 };
 

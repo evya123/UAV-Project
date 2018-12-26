@@ -8,9 +8,9 @@
 /**
  * initialize the map of the string and commands
  */
-MapStringCommand::MapStringCommand() {
+MapStringCommand::MapStringCommand(TcpClient *client, TcpServer *server) {
     //OpenData server command
-    Command *openDataServer = new OpenDataServerCommand();
+    Command *openDataServer = new OpenDataServerCommand(server);
     _stringCommandMap.insert(pair<string, Command *>("openDataServer",
                                                      openDataServer));
     //Print Command
@@ -18,7 +18,7 @@ MapStringCommand::MapStringCommand() {
     _stringCommandMap.insert(pair<string, Command *>("print",
                                                      printCommand));
     //Connect Command
-    Command *connectCommand = new ConnectCommand();
+    Command *connectCommand = new ConnectCommand(client);
     _stringCommandMap.insert(pair<string, Command *>("connect",
                                                      connectCommand));
 
@@ -33,9 +33,9 @@ MapStringCommand::MapStringCommand() {
 
     //Enterc
     Command *whileCommand = new WhileCommand();
-    _stringCommandMap.insert(pair<string, Command *>("Enterc", whileCommand));
+    _stringCommandMap.insert(pair<string, Command *>("while", whileCommand));
     Command *entercCommand = new EntercCommand();
-    _stringCommandMap.insert(pair<string, Command *>("openDataServer",
+    _stringCommandMap.insert(pair<string, Command *>("Enterc",
                                                      entercCommand));
 
 }

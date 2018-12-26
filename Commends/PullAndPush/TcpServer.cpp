@@ -50,8 +50,6 @@ void * TcpServer::TaskServer(void *arg) {
             close(newsockfd);
             break;
         }
-        cout<<"this is just a test in server!: "<<msg<<endl;
-        sleep(TIME_TO_WAIT);
     }
     pthread_exit(0);
 }
@@ -79,11 +77,15 @@ int TcpServer::receive() {
  */
 void TcpServer::detach()
 {
-    shutdown(m_serverSocket,SHUT_RDWR);
-    shutdown(m_accVal,SHUT_RDWR);
+    if (shutdown(m_serverSocket,SHUT_RDWR) != 0){
+        perror("TcpServer->detach->shutdown 1: ");
+    } else if (shutdown(m_accVal,SHUT_RDWR) != 0){
+        perror("TcpServer->detach->shutdown 2: ");
+    }
     sleep(1);
-    close(m_serverSocket);
-    close(m_accVal);
+    if (close(m_serverSocket) != 0) {
+        perror("TcpServer->detach->close 1: ");
+    }
 }
 
 void TcpServer::toMap(string toSplit, Data *d) {
@@ -93,7 +95,13 @@ void TcpServer::toMap(string toSplit, Data *d) {
         if(++it == m_xmlHandler.end())
             break;
         pos = toSplit.find(DELIMITER);
-        pair<string,double> p = make_pair(*it,stod(toSplit.substr(0, pos)));
+        pair<string,double> p;
+        try {
+            p = make_pair(*it,stod(toSplit.substr(0, pos)));
+        } catch (invalid_argument ia) {
+            cerr<<"Caught invalid_argument exception at TcpServer->toMap: "<<ia.what()<<endl;
+        }
+
         d->addToMapsFromServer(p);
         toSplit.erase(0, pos + 1);
         if(++it == m_xmlHandler.end())
