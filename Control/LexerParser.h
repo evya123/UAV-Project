@@ -6,18 +6,11 @@
 
 #ifndef UAV_PROJECT_LEXER_H
 #define UAV_PROJECT_LEXER_H
-#include <vector>
-#include <map>
 #include <regex>
-#include <iostream>
 #include <string>
 #include <list>
-#include "Maps/Data.h"
 #include "Maps/MapStringCommand.h"
-#include "Commends/Command.h"
-#include "Expression/ShuntingYard.h"
 #include "Utils.h"
-#include <iostream>
 #include <fstream>
 #include "ExpressionCommand.h"
 

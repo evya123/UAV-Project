@@ -5,7 +5,7 @@
 #include "Utils.h"
 
 
-bool isMathExpression(string s) {
+bool Utils::isMathExpression(string s) {
     std::regex e("[a-z]+|\\[A-Z]+");
     std::smatch m;
     string match;
@@ -16,7 +16,7 @@ bool isMathExpression(string s) {
     }
 }
 
-double dijkstra(string s) {
+double Utils::dijkstra(string s) {
     string newStr;
     std::smatch m1;
     std::smatch m2;
@@ -43,7 +43,7 @@ double dijkstra(string s) {
     return temp;
 }
 
-double calculateExpression(string str, Data *d) {
+double Utils::calculateExpression(string str, Data *d) {
     string dString;
     smatch m;
     std::regex r("\\+|\\*|\\(|\\)|\\-|\\/|\\(|\\)");
@@ -72,4 +72,28 @@ double calculateExpression(string str, Data *d) {
     double value = dijkstra(dString);
 
     return value;
+}
+
+double Utils::fromStringToNum(string &str, const string &type) {
+    try {
+        if(type.compare(INTEGER) == 0)
+            return stoi(str);
+        if(type.compare(DOUBLE) == 0)
+            return stod(str);
+    } catch(invalid_argument& e){
+        // if no conversion could be performed
+        printf("OpenDataServerCommand->fromStringToNum: %s", e.what());
+        exit(EXIT_FAILURE);
+    } catch(out_of_range& e){
+        // if the converted value would fall out of the range of the result type
+        // or if the underlying function (std::strtol or std::strtoull) sets errno
+        // to ERANGE.
+        printf("OpenDataServerCommand->fromStringToNum: %s", e.what());
+        exit(EXIT_FAILURE);
+    } catch(exception& e) {
+        // everything else
+        printf("OpenDataServerCommand->fromStringToNum: %s", e.what());
+        exit(EXIT_FAILURE);
+    }
+    return 0;
 }

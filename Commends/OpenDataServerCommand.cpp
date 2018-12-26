@@ -6,7 +6,7 @@ OpenDataServerCommand::OpenDataServerCommand(TcpServer *server) {
 
 void OpenDataServerCommand::doCommand(vector<string> &arguments, Data *d) {
     cout<<"OpenDataServerCommand!"<<endl;
-    int port = fromStringToNum(arguments.back(), INTEGER);
+    double port = Utils::fromStringToNum(arguments.back(), INTEGER);
     arguments.clear();
     TcpStruct args;
     m_server->setup(port);

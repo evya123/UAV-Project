@@ -37,7 +37,8 @@ bool TcpClient::setup(string address , int port){
     server.sin_port = htons(port);
     int connectRet;
     for (int j = 0; j <= 9 ; ++j) {
-        if ((connectRet = connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0))
+        connectRet = connect(sock , (struct sockaddr *)&server , sizeof(server));
+        if (connectRet < 0)
             sleep(1);
         else
             return true;
@@ -51,7 +52,7 @@ bool TcpClient::setup(string address , int port){
 bool TcpClient::Send(string &data){
     cout<<"Sending!"<<endl;
     if(sock != -1) {
-        if(send(sock , data.c_str() , strlen( data.c_str() ) , NULL) < 0) {
+        if(send(sock , data.c_str() , strlen( data.c_str() ) , 0) < 0) {
             cout<<"Send failed :"<<data<<endl;
             return false;
         }

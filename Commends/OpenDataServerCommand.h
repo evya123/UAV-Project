@@ -5,10 +5,8 @@
 #ifndef DEV_OPENDATASERVERCOMMAND_H
 #define DEV_OPENDATASERVERCOMMAND_H
 
-
-#include "Command.h"
-#include <stdexcept>
 #include <Commends/PullAndPush/TcpServer.h>
+#include <stdexcept>
 #include <thread>
 
 class OpenDataServerCommand : public Command {
@@ -22,8 +20,6 @@ public:
     virtual ~OpenDataServerCommand();
 private:
     TcpServer* m_server;
-    //int fromStringToNum(string port);
-    string m_args;
 };
 
 

@@ -5,18 +5,14 @@
 #ifndef UAV_PROJECT_TCPSERVER_H
 #define UAV_PROJECT_TCPSERVER_H
 
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
 #include <cstring>
 #include <stdexcept>
-#include <unistd.h>
-#include <iostream>
 #include <vector>
+#include <fstream>
 #include <Maps/Data.h>
 #include "XmlFormat.h"
 #include <Commends/Command.h>
+#include "Utils.h"
 
 #define DELIMITER ','
 

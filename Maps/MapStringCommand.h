@@ -14,7 +14,6 @@ using namespace std;
 #include "Commends/IfCommand.h"
 #include "Commends/WhileCommand.h"
 #include "Commends/EntercCommand.h"
-#include "Commends/PullAndPush/TcpClient.h"
 
 #include <map>
 

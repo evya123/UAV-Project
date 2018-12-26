@@ -9,7 +9,6 @@
 #include "Var.h"
 #include <mutex>
 #include <Commends/PullAndPush/TcpClient.h>
-#include <algorithm>
 
 using namespace std;
 

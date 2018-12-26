@@ -9,11 +9,17 @@
 #include <regex>
 #include "Expression/ShuntingYard.h"
 #include "Maps/Data.h"
+#define INTEGER "i"
+#define DOUBLE "d"
 
 using namespace std;
 
-bool isMathExpression(string s);
-double dijkstra(string s);
-double calculateExpression(string str, Data * d);
+class Utils {
+public:
+    static bool isMathExpression(string s);
+    static double dijkstra(string s);
+    static double calculateExpression(string str, Data * d);
+    static double fromStringToNum(string &str, const string &type);
+};
 
 #endif //UAV_PROJECT_UTILS_H

@@ -5,7 +5,6 @@
 #ifndef UAV_PROJECT_PRINTCOMMAND_H
 #define UAV_PROJECT_PRINTCOMMAND_H
 #include "Command.h"
-#include <iostream>
 
 class PrintCommand : public Command{
 public:

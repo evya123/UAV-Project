@@ -28,6 +28,7 @@ MapStringCommand::MapStringCommand(TcpClient *client, TcpServer *server) {
 
     //ifComnand
     Command *ifCommand = new IfCommand();
+
     _stringCommandMap.insert(pair<string, Command *>("if", ifCommand));
 
 

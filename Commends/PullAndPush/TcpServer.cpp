@@ -2,8 +2,6 @@
 // Created by evya on 12/18/18.
 //
 #include "TcpServer.h"
-#include <iostream>
-#include <fstream>
 
 /**
  * Function name: setup
@@ -97,7 +95,7 @@ void TcpServer::toMap(string toSplit, Data *d) {
             break;
         pos = toSplit.find(DELIMITER);
         string splitted = toSplit.substr(0, pos);
-        pair<string,double> p = make_pair(*it, Command::fromStringToNum(splitted,DOUBLE));
+        pair<string,double> p = make_pair(*it, Utils::fromStringToNum(splitted,DOUBLE));
         d->addToMapsFromServer(p);
         toSplit.erase(0, pos + 1);
         if(++it == m_xmlHandler.end())

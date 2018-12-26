@@ -6,8 +6,6 @@
 #define UAV_PROJECT_EXPRESSIONCOMMAND_H
 
 #include "Commends/Command.h"
-#include "Expression/Expression.h"
-#include <vector>
 
 #endif //UAV_PROJECT_EXPRESSIONCOMMAND_H
 

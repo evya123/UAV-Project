@@ -52,7 +52,7 @@ void VarCommand::doCommand(vector<string> &arguments, Data *d) {
     else {
 // string for dijecstra
         string str = arguments.back();
-        double value = calculateExpression(str, d);
+        double value = Utils::calculateExpression(str, d);
         d->assignVar(name, value);   // all maps
     }
     arguments.

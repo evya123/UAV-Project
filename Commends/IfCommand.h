@@ -7,6 +7,7 @@
 
 #include "Commends/Command.h"
 #include "ArithmeticConditions.h"
+#include "Utils.h"
 
 #define LHS 0
 #define COMPARE 1
@@ -19,7 +20,7 @@ public:
     void setMap(map<string, Command *>*);
 
 private:
-    bool checkCondition (vector<string>&);
+    bool checkCondition(vector<string> &arguments, Data *_data);
     map<string, Command *>* m_mapStringCommand;
     vector<string>
     splitByDelimiter(vector<string>::iterator &, const string delimiter);

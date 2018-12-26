@@ -1,7 +1,7 @@
-#include <stdio.h>
 #include "Commends/OpenDataServerCommand.h"
 #include "Commends/ConnectCommand.h"
 #include "Control/LexerParser.h"
+
 bool exit(string& str, TcpClient* client, TcpServer* server){
 
     if (!str.compare("exit")){
