@@ -51,7 +51,7 @@ bool TcpClient::setup(string address , int port){
 bool TcpClient::Send(string &data){
     cout<<"Sending!"<<endl;
     if(sock != -1) {
-        if(send(sock , data.c_str() , strlen( data.c_str() ) , 0) < 0) {
+        if(send(sock , data.c_str() , strlen( data.c_str() ) , NULL) < 0) {
             cout<<"Send failed :"<<data<<endl;
             return false;
         }

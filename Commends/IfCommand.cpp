@@ -10,7 +10,14 @@ void IfCommand::doCommand(vector<string> &arguments, Data *d) {
     auto it = arguments.begin();
 
     vector<string> ifArgs {arguments.at(LHS),arguments.at(RHS)};
-    if (m_ac.getCondition(arguments[COMPARE])(stod(ifArgs[LHS]),stod(ifArgs[RHS - 1])))
+    double lhsD, rhsD;
+    try {
+        lhsD = stod(ifArgs[LHS]);
+        rhsD = stod(ifArgs[RHS - 1]);
+    } catch (invalid_argument ia) {
+        cerr<<"Caught invalid_argument exception at IfCommand->doCommand: "<<ia.what()<<endl;
+    }
+    if (m_ac.getCondition(arguments[COMPARE])(lhsD,rhsD));
         printf("success");
 }
 
