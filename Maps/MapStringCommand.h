@@ -13,7 +13,11 @@
 #include "Commends/IfCommand.h"
 #include "Commends/WhileCommand.h"
 #include "Commends/EntercCommand.h"
+<<<<<<< HEAD
 
+=======
+#include "Commends/PullAndPush/TcpClient.h"
+>>>>>>> da2099899249f08d59dd8757a077f478fa1ec23e
 #include <map>
 using namespace std;
 
