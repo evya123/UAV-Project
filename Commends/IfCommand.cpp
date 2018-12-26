@@ -1,54 +1,35 @@
 //
 // Created by evya on 12/21/18.
 //
-#include <Utils.h>
+
 #include "IfCommand.h"
 
 void IfCommand::doCommand(vector<string> &arguments, Data *d) {
+    vector<string> ifArgs {arguments.at(LHS),arguments[COMPARE],
+                           arguments.at(RHS), arguments[BRACKET_POS]};
     auto it = arguments.begin();
-
-    vector<string> ifArgs {arguments.at(LHS),arguments.at(RHS)};
-    double lhsD, rhsD;
-    lhsD = Utils::fromStringToNum(ifArgs[LHS],DOUBLE);
-    rhsD = Utils::fromStringToNum(ifArgs[LHS],DOUBLE);
-    if (m_ac.getCondition(arguments[COMPARE])(lhsD,rhsD));
-        printf("success");
-}
-
-vector<string> IfCommand::splitByDelimiter(vector<string>::iterator &it,
-                                           const string delimiter) {
-    vector<string> ret;
-    while ((*it).compare(delimiter) != 0) {
-        ret.push_back((*it));
-        ++it;
+    vector<string> tmp;
+    Utils::splitByDelimiter(it,BRACKET);
+    if(Utils::checkCondition(ifArgs,d,m_brackets)) {
+        while(it != arguments.end()){
+            tmp = Utils::splitByDelimiter(it,IF_DELIMITER);
+            auto tmpIt = tmp.begin();
+            while(tmpIt != arguments.end()) {
+                if ((*tmpIt).compare(BRACKET) == 0){
+                    m_brackets.push(*it);
+                    ++tmpIt;
+                }
+                if ((*tmpIt).compare(CLOSING_BRACKET) == 0){
+                    m_brackets.pop();
+                    ++tmpIt;
+                }
+                if (tmpIt != arguments.end())
+                    //TODO: pass to lexer
+                ++tmpIt;
+            }
+            ++it;
+        }
     }
-    ++it;
-    return ret;
-}
-
-bool IfCommand::checkCondition(vector<string> &arguments, Data *_data) {
-    // now we
-    // get 4 args - like x > 3 {
-    //first argument
-    string first_expression = arguments[1];
-    // the condition
-    string condition = arguments[2];
-    // second argument
-    string second_expression = arguments[3];
-    // now we nee to have in args only {
-    if (arguments[4] != "{") {
-        throw "invalid Condition!";
-    } else {
-        //_numOfBrackets += 1;
-    }
-    ArithmeticConditions *arithmeticConditions = new ArithmeticConditions();
-    double first = Utils::calculateExpression(first_expression, _data);
-    double second = Utils::calculateExpression(second_expression, _data);
-    //return if the condition is true or false
-    return arithmeticConditions->getCondition(condition)(first, second);
-
-}
-
-void IfCommand::setMap(map<string, Command *>* map) {
-    m_mapStringCommand = map;
+    if(!m_brackets.empty())
+        cerr<<"If syntax is incorrect!"<<endl;
 }

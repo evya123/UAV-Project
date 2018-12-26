@@ -3,17 +3,9 @@
 //
 
 #include "ShuntingYard.h"
-#include "Plus.h"
-#include "Num.h"
-#include "Minus.h"
-#include "Mult.h"
-#include "Div.h"
 // CPP program to evaluate a given
 // expression where tokens are
 // separated by space.
-#include <bits/stdc++.h>
-
-using namespace std;
 
 ShuntingYard::ShuntingYard(const string &tokens) : tokens(tokens) {}
 

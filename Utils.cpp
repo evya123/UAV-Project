@@ -85,7 +85,7 @@ double Utils::fromStringToNum(string &str, const string &type) {
         printf("OpenDataServerCommand->fromStringToNum: %s", e.what());
         exit(EXIT_FAILURE);
     } catch(out_of_range& e){
-        // if the converted value would fall out of the range of the result type
+        // if the converted value w/ould fall out of the range of the result type
         // or if the underlying function (std::strtol or std::strtoull) sets errno
         // to ERANGE.
         printf("OpenDataServerCommand->fromStringToNum: %s", e.what());
@@ -96,4 +96,40 @@ double Utils::fromStringToNum(string &str, const string &type) {
         exit(EXIT_FAILURE);
     }
     return 0;
+}
+
+
+vector<string> Utils::splitByDelimiter(vector<string>::iterator &it,
+                                          const string delimiter) {
+    vector<string> ret;
+    while ((*it).compare(delimiter) != 0) {
+        ret.push_back((*it));
+        ++it;
+    }
+    ++it;
+    return ret;
+}
+
+bool Utils::checkCondition(vector<string> &arguments, Data *_data, stack<string> &bStack) {
+
+    // now we
+    // get 4 args - like x > 3 {
+    //first argument
+    string first_expression = arguments[LHS];
+    // the condition
+    string condition = arguments[COMPARE];
+    // second argument
+    string second_expression = arguments[RHS];
+    // now we nee to have in args only {
+    if (arguments[BRACKET_POS] != BRACKET) {
+        throw "invalid Condition!";
+    } else {
+        bStack.push(arguments[BRACKET_POS]);
+    }
+    ArithmeticConditions *arithmeticConditions = new ArithmeticConditions();
+    double first = Utils::calculateExpression(first_expression, _data);
+    double second = Utils::calculateExpression(second_expression, _data);
+    //return if the condition is true or false
+    return arithmeticConditions->getCondition(condition)(first, second);
+
 }

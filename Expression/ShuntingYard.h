@@ -3,6 +3,12 @@
 //
 #include <string>
 #include "Expression.h"
+#include "Plus.h"
+#include "Num.h"
+#include "Minus.h"
+#include "Mult.h"
+#include "Div.h"
+#include <bits/stdc++.h>
 using namespace std;
 #ifndef DEV_SHUNTINGYARD_H
 #define DEV_SHUNTINGYARD_H

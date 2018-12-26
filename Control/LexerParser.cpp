@@ -216,18 +216,18 @@ LexerParser::ConditionparserWhile(vector<string> &lexer) {
             }
             conditionVec.push_back(";");
         } catch (exception e) {
-            printf(e.what());
+            cout<<e.what()<<endl;
         }
 
         try {
             lexer.clear();
         } catch (exception e) {
-            printf(e.what());
+            cout<<e.what()<<endl;
         }
         try {
             LexerS(Readline());
         } catch (exception e) {
-            printf(e.what());
+            cout<<e.what()<<endl;
 
         }
     }
