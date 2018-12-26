@@ -12,14 +12,14 @@
 #include <iostream>
 #include <string>
 #include <list>
-#include "Maps/Data.h"
 #include "Maps/MapStringCommand.h"
-#include "Commends/Command.h"
 #include "Expression/ShuntingYard.h"
 #include "Utils.h"
 #include <iostream>
 #include <fstream>
 #include "ExpressionCommand.h"
+#include "Commends/IfCommand.h"
+
 
 using namespace std;
 

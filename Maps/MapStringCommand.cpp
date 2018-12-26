@@ -26,10 +26,11 @@ MapStringCommand::MapStringCommand(TcpClient *client, TcpServer *server) {
     Command *varCommand = new VarCommand();
     _stringCommandMap.insert(pair<string, Command *>("var", varCommand));
 
+    /*
     //ifComnand
     Command *ifCommand = new IfCommand();
     _stringCommandMap.insert(pair<string, Command *>("if", ifCommand));
-
+*/
 
     //Enterc
     Command *whileCommand = new WhileCommand();
