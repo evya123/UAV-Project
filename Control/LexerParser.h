@@ -25,7 +25,6 @@ class LexerParser {
 private:
     Data *_data;
     MapStringCommand *_mapStringCommad;
-    unsigned long int _lineNumber;
     string _content;
     bool condition_lock;
     vector<string> conditionVec;

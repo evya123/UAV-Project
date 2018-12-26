@@ -43,12 +43,6 @@ void startUI(int argc, char* argv[]) {
 }
 
 int main(int argc, char* argv[]) {
-//    startUI(argc,argv);
-    TcpClient *client = new TcpClient();
-    TcpServer *server = new TcpServer();
-    Data *data = new Data(client);
-    MapStringCommand *mapStringCommand = new MapStringCommand(client, server);
-    LexerParser *lexerParser = new LexerParser(data, mapStringCommand);
-    IfCommand* ifC = new IfCommand();
+    startUI(argc,argv);
     return 0;
 }

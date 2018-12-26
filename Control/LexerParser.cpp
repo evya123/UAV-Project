@@ -4,12 +4,10 @@
 
 #include "LexerParser.h"
 
-using namespace std;
 
 LexerParser::LexerParser(Data *data, MapStringCommand *map) {
     _mapStringCommad = map;
     _data = data;
-    _lineNumber = 0;
     // lock if there is a condition while or if commands
     condition_lock = false;
     brackets = 0;

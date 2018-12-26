@@ -18,8 +18,7 @@ void IfCommand::doCommand(vector<string> &arguments, Data *d) {
                 if ((*tmpIt).compare(BRACKET) == 0){
                     m_brackets.push(*it);
                     ++tmpIt;
-                }
-                if ((*tmpIt).compare(CLOSING_BRACKET) == 0){
+                } else if ((*tmpIt).compare(CLOSING_BRACKET) == 0){
                     m_brackets.pop();
                     ++tmpIt;
                 }
