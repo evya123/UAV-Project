@@ -2,45 +2,16 @@
 // Created by evya on 12/21/18.
 //
 #include "IfCommand.h"
-<<<<<<< HEAD
-
-void IfCommand::doCommand(vector<string> &arguments, Data *d) {
-    vector<Command *> commands;
-    try {
-        if (this->checkCondition(arguments)) {
-            for (unsigned long int i = 0;i<commands.size(); i++){
-                commands.at(i)->doCommand()
-        }
-
-    }
-}
-
-/**
-auto it = arguments.begin();
-LexerParser lp(d);
-vector<string> ifArgs {arguments.at(LHS),arguments.at(RHS)};
-if (m_ac.getCondition(arguments[COMPARE])(stod(ifArgs[LHS]),stod(ifArgs[RHS - 1])))
-    printf("success");
-    **/
-=======
-IfCommand::IfCommand() {
-
-}
 
 void IfCommand::doCommand(vector<string> &arguments, Data *d) {
     auto it = arguments.begin();
 
     vector<string> ifArgs {arguments.at(LHS),arguments.at(RHS)};
     double lhsD, rhsD;
-    try {
-        lhsD = stod(ifArgs[LHS]);
-        rhsD = stod(ifArgs[RHS - 1]);
-    } catch (invalid_argument ia) {
-        cerr<<"Caught invalid_argument exception at IfCommand->doCommand: "<<ia.what()<<endl;
-    }
+    lhsD = fromStringToNum(ifArgs[LHS],DOUBLE);
+    rhsD = fromStringToNum(ifArgs[LHS],DOUBLE);
     if (m_ac.getCondition(arguments[COMPARE])(lhsD,rhsD));
         printf("success");
->>>>>>> 50ccfc62480e0d460ea8805b27593848482a0288
 }
 
 vector<string> IfCommand::splitByDelimiter(vector<string>::iterator &it,
@@ -54,3 +25,29 @@ vector<string> IfCommand::splitByDelimiter(vector<string>::iterator &it,
     return ret;
 }
 
+bool IfCommand::checkCondition(vector<string> &arguments) {
+    // now we
+    // get 4 args - like x > 3 {
+    //first argument
+    string first_expression = arguments[1];
+    // the condition
+    string condition = arguments[2];
+    // second argument
+    string second_expression = arguments[3];
+    // now we nee to have in args only {
+    if (arguments[4] != "{") {
+        throw "invalid Condition!";
+    } else {
+        //_numOfBrackets += 1;
+    }
+    ArithmeticConditions *arithmeticConditions = new ArithmeticConditions();
+    double first = calculateExpression(first_expression, _data);
+    double second = calculateExpression(second_expression, _data);
+    // return if the condition is true or false
+    return arithmeticConditions->getCondition(condition)(first, second);
+
+}
+
+void IfCommand::setMap(map<string, Command *>* map) {
+    m_mapStringCommand = map;
+}
