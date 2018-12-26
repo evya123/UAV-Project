@@ -16,6 +16,7 @@
 #include <vector>
 #include <Maps/Data.h>
 #include "XmlFormat.h"
+#include <Commends/Command.h>
 
 #define DELIMITER ','
 

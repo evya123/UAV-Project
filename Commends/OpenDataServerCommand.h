@@ -22,7 +22,7 @@ public:
     virtual ~OpenDataServerCommand();
 private:
     TcpServer* m_server;
-    int convertToInt(string port);
+    //int fromStringToNum(string port);
     string m_args;
 };
 

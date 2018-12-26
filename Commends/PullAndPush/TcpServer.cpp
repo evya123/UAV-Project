@@ -4,6 +4,7 @@
 #include "TcpServer.h"
 #include <iostream>
 #include <fstream>
+
 /**
  * Function name: setup
  * @param port
@@ -95,13 +96,8 @@ void TcpServer::toMap(string toSplit, Data *d) {
         if(++it == m_xmlHandler.end())
             break;
         pos = toSplit.find(DELIMITER);
-        pair<string,double> p;
-        try {
-            p = make_pair(*it,stod(toSplit.substr(0, pos)));
-        } catch (invalid_argument ia) {
-            cerr<<"Caught invalid_argument exception at TcpServer->toMap: "<<ia.what()<<endl;
-        }
-
+        string splitted = toSplit.substr(0, pos);
+        pair<string,double> p = make_pair(*it, Command::fromStringToNum(splitted,DOUBLE));
         d->addToMapsFromServer(p);
         toSplit.erase(0, pos + 1);
         if(++it == m_xmlHandler.end())
