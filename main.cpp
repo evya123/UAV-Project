@@ -19,6 +19,7 @@ void startUI(int argc, char* argv[]) {
     Data *data = new Data(client);
     MapStringCommand *mapStringCommand = new MapStringCommand(client, server);
     LexerParser *lexerParser = new LexerParser(data, mapStringCommand);
+
     string str = " ";
     bool firstTime = true;
     if (argc < 2) {

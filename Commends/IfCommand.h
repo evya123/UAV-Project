@@ -11,7 +11,7 @@
 
 class IfCommand : public Command {
 public:
-    IfCommand() = default;
+    IfCommand();
     virtual void doCommand(vector<string> &arguments, Data *d);
 
 private:

@@ -74,4 +74,3 @@ Command *MapStringCommand::getCommand(const string c) const {
     return _stringCommandMap.at(c);
 
 }
-

@@ -4,6 +4,9 @@
 
 #include "IfCommand.h"
 
+IfCommand::IfCommand() {
+}
+
 void IfCommand::doCommand(vector<string> &arguments, Data *d) {
     vector<string> ifArgs {arguments.at(LHS),arguments[COMPARE],
                            arguments.at(RHS), arguments[BRACKET_POS]};
@@ -23,7 +26,7 @@ void IfCommand::doCommand(vector<string> &arguments, Data *d) {
                     ++tmpIt;
                 }
                 if (tmpIt != arguments.end())
-                    //TODO: pass to lexer
+                    //TODO
                 ++tmpIt;
             }
             ++it;
