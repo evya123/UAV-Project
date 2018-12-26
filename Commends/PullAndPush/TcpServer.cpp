@@ -99,5 +99,4 @@ void TcpServer::toMap(string toSplit, Data *d) {
         if(++it == m_xmlHandler.end())
             break;
     }
-
 }
