@@ -160,6 +160,12 @@ void LexerParser::ConditionParser(vector<string> &lexer) {
     // save the condition (if or while) and pop it
     string ifwhile = lexer.back();
     lexer.pop_back();
+    if( ifwhile == "if"){
+
+
+
+
+    }
     /**
      * now we bulid the condition after we know if its while or if
      */

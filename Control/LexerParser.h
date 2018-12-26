@@ -10,9 +10,15 @@
 #include <string>
 #include <list>
 #include "Maps/MapStringCommand.h"
+<<<<<<< HEAD
+=======
+#include "Expression/ShuntingYard.h"
+>>>>>>> 9e9d907a7412a70e123a178c5f7668327171fe57
 #include "Utils.h"
 #include <fstream>
 #include "ExpressionCommand.h"
+#include "Commends/IfCommand.h"
+
 
 using namespace std;
 

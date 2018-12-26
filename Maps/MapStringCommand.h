@@ -2,7 +2,6 @@
 // Created by lidor115 on 12/21/18.
 //
 
-using namespace std;
 
 #ifndef UAV_PROJECT_MAPSTRINGCOMMAND_H
 #define UAV_PROJECT_MAPSTRINGCOMMAND_H
@@ -14,8 +13,13 @@ using namespace std;
 #include "Commends/IfCommand.h"
 #include "Commends/WhileCommand.h"
 #include "Commends/EntercCommand.h"
+<<<<<<< HEAD
 
+=======
+#include "Commends/PullAndPush/TcpClient.h"
+>>>>>>> 9e9d907a7412a70e123a178c5f7668327171fe57
 #include <map>
+using namespace std;
 
 class MapStringCommand {
 private:
