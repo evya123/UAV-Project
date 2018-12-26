@@ -6,8 +6,7 @@
 #define UAV_PROJECT_IFCOMMAND_H
 
 #include "Commends/Command.h"
-#include "Utils.h"
-#include "Maps/MapStringCommand.h"
+#include "Control/LexerParser.h"
 
 class IfCommand : public Command {
 public:

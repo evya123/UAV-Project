@@ -9,6 +9,15 @@
 #include "Expression/ShuntingYard.h"
 #include "Maps/Data.h"
 #include "Commends/ArithmeticConditions.h"
+#include "Commends/OpenDataServerCommand.h"
+//#include <Commends/PullAndPush/TcpServer.h>
+#include "Commends/PrintCommand.h"
+#include "Commends/ConnectCommand.h"
+#include "Commends/SleepCommand.h"
+#include "Commends/VarCommand.h"
+#include "Commends/IfCommand.h"
+#include "Commends/WhileCommand.h"
+#include "Commends/EntercCommand.h"
 #define INTEGER "i"
 #define DOUBLE "d"
 #define LHS 0

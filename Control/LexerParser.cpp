@@ -5,13 +5,13 @@
 #include "LexerParser.h"
 
 
-LexerParser::LexerParser(Data *data, MapStringCommand *map) {
-    _mapStringCommad = map;
+LexerParser::LexerParser(Data *data, TcpClient *client, TcpServer *server) {
     _data = data;
     // lock if there is a condition while or if commands
     condition_lock = false;
     brackets = 0;
     isfirstbrackets = false;
+    setMapStringCommand(client,server);
 }
 
 void LexerParser::LexerS(string line) {
@@ -126,13 +126,13 @@ void LexerParser::Parser(vector<string> &lexer) {
             condition_lock = true;
             conditionVec.clear();
             ConditionParser(lexer);
-            Command *commander = _mapStringCommad->getCommand(temp);
+            Command *commander = getCommand(temp);
             ExcecuteCommand(conditionVec, commander);
         } else {
-            if (_mapStringCommad->isLeagalCommand(temp)) {
+            if (isLeagalCommand(temp)) {
                 cout << "the command is: " + temp << endl;
                 lexer.pop_back();
-                Command *command = _mapStringCommad->getCommand(temp);
+                Command *command = getCommand(temp);
                 ExcecuteCommand(lexer, command);
             } else {
                 cout << "Other : " + temp << endl;
@@ -229,6 +229,76 @@ LexerParser::ConditionparserWhile(vector<string> &lexer) {
         } catch (exception e) {
             cout << e.what() << endl;
 
+        }
+    }
+}
+
+
+void LexerParser::setMapStringCommand(TcpClient *client, TcpServer *server)  {
+    //OpenData server command
+    Command *openDataServer = new OpenDataServerCommand(server);
+    _mapStringCommad.insert(pair<string, Command *>("openDataServer",
+                                                     openDataServer));
+    //Print Command
+    Command *printCommand = new PrintCommand();
+    _mapStringCommad.insert(pair<string, Command *>("print",
+                                                     printCommand));
+    //Connect Command
+    Command *connectCommand = new ConnectCommand(client);
+    _mapStringCommad.insert(pair<string, Command *>("connect",
+                                                     connectCommand));
+
+    //VarCommand
+    Command *varCommand = new VarCommand();
+    _mapStringCommad.insert(pair<string, Command *>("var", varCommand));
+
+
+    //ifComnand
+    Command *ifCommand = new IfCommand();
+
+    _mapStringCommad.insert(pair<string, Command *>("if", ifCommand));
+
+
+    //Enterc
+    Command *whileCommand = new WhileCommand();
+    _mapStringCommad.insert(pair<string, Command *>("while", whileCommand));
+    Command *entercCommand = new EntercCommand();
+    _mapStringCommad.insert(pair<string, Command *>("Enterc",
+                                                     entercCommand));
+
+}
+
+
+/**
+ * get strign and return if the string represent a command or not.
+ * @param c  - command (in string)
+ * @return if the string represent a command or not
+ */
+bool LexerParser::isLeagalCommand(const string c) const {
+    if (_mapStringCommad.count(c) > 0) {
+        return true;
+    }
+    return false;
+}
+
+/**
+ * get strign and return the command the string represent.
+ * @param c  - command (in string)
+ * @return the command the string represent if its illegal return nullptr
+ */
+Command *LexerParser::getCommand(const string c) const {
+    return _mapStringCommad.at(c);
+
+}
+
+LexerParser::~LexerParser() {
+    // check if the map isn't empty
+    if (!_mapStringCommad.empty()) {
+        for (map<string, Command *>::iterator it = _mapStringCommad.begin();
+             it != _mapStringCommad.end(); ++it) {
+            //delete map and place null pointer;
+            delete it->second;
+            it->second = nullptr;
         }
     }
 }

@@ -10,29 +10,26 @@
 #include <regex>
 #include <string>
 #include <list>
-#include "Maps/MapStringCommand.h"
 #include "Expression/ShuntingYard.h"
 #include "Utils.h"
 #include <fstream>
 #include "ExpressionCommand.h"
-#include "Commends/IfCommand.h"
+#include <Commends/PullAndPush/TcpServer.h>
 #include <algorithm>
 
 
 using namespace std;
-
 class LexerParser {
 private:
     Data *_data;
-    MapStringCommand *_mapStringCommad;
-    unsigned long int _lineNumber;
+    map<string, Command *> _mapStringCommad;
     string _content;
     bool condition_lock;
     vector<string> conditionVec;
     int brackets;
     bool isfirstbrackets;
 public:
-    explicit LexerParser(Data *data, MapStringCommand *);
+    explicit LexerParser(Data *data, TcpClient *client, TcpServer *server);
 
     void LexerS(string line);
 
@@ -41,6 +38,8 @@ public:
     void FinalLexer(vector<string> &result, vector<string> &final);
 
     void Parser(vector<string> &lexer);
+
+    void setMapStringCommand(TcpClient*, TcpServer*);
 
     vector<string>
     ConditionParser(vector<string> &lexer);
@@ -53,6 +52,12 @@ public:
     void ConditionparserWhile(vector<string> &lexer);
 
     string Readline();
+
+    bool isLeagalCommand(const string c) const;
+
+    Command *getCommand(const string c) const;
+
+    virtual ~LexerParser();
 };
 
 #endif //UAV_PROJECT_LEXER_H
