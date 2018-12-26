@@ -155,13 +155,9 @@ void LexerParser::ReadFromFile(string fileName) {
 
 void LexerParser::ConditionParser(vector<string> &lexer) {
     // save the condition (if or while) and pop it
-    string condition = lexer.back();
+    string ifwhile = lexer.back();
     lexer.pop_back();
-
     /**
      * now we bulid the condition after we know if its while or if
      */
-
-    std::regex e("==|\\>|\\<|\\<=|\\>=|\\");
-
 }

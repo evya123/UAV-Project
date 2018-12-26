@@ -7,18 +7,18 @@
 
 #include <string>
 #include <map>
-typedef bool(*condition)(int,int);
+typedef bool(*condition)(double,double);
 
 using namespace std;
 
 class ArithmeticConditions {
 private:
-    static bool equal(int lhs, int rhs) { return lhs == rhs;}
-    static bool greater(int lhs, int rhs) { return lhs > rhs;}
-    static bool smaller(int lhs, int rhs) { return lhs < rhs;}
-    static bool equalOrGreater(int lhs, int rhs) { return lhs >= rhs;}
-    static bool equalOrSmaller(int lhs, int rhs) { return lhs <= rhs;}
-    static bool notEqual(int lhs, int rhs) { return lhs != rhs;}
+    static bool equal(double lhs, double rhs) { return lhs == rhs;}
+    static bool greater(double lhs, double rhs) { return lhs > rhs;}
+    static bool smaller(double lhs, double rhs) { return lhs < rhs;}
+    static bool equalOrGreater(double lhs, double rhs) { return lhs >= rhs;}
+    static bool equalOrSmaller(double lhs, double rhs) { return lhs <= rhs;}
+    static bool notEqual(double lhs, double rhs) { return lhs != rhs;}
 
     map<string, condition> m_conditionMap;
 

@@ -26,9 +26,9 @@ MapStringCommand::MapStringCommand() {
     Command *varCommand = new VarCommand();
     _stringCommandMap.insert(pair<string, Command *>("var", varCommand));
 
-    //ifComnabd
-//    Command *ifCommand = new IfCommand();
-//    _stringCommandMap.insert(pair<string, Command *>("if", ifCommand));
+    //ifComnand
+    Command *ifCommand = new IfCommand();
+    _stringCommandMap.insert(pair<string, Command *>("if", ifCommand));
 
 
     //Enterc
