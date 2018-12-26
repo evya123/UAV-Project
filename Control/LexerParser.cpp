@@ -6,9 +6,14 @@
 
 using namespace std;
 
-LexerParser::LexerParser(Data *data, MapStringCommand * map) {
+LexerParser::LexerParser(Data *data, MapStringCommand *map) {
     _mapStringCommad = map;
     _data = data;
+    _lineNumber = 0;
+    // lock if there is a condition while or if commands
+    condition_lock = false;
+    brackets = 0;
+    isfirstbrackets = false;
 }
 
 void LexerParser::LexerS(string line) {
@@ -22,7 +27,8 @@ void LexerParser::LexerS(string line) {
         expretions.push_back(exp);
         line = line.substr(firstSpace + 1, endOfstring);
     }
-    std::regex e("=|\\+|\\*|\\(|\\)|\\-|\\,|\\<|\\>|\\/|\\&|\\||\\!");
+    std::regex e(
+            ">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|\\=|\\+|\\*|\\(|\\)|\\-|\\,|\\<|\\>|\\/|\\&|\\||\\!");
 
     checkRegex(expretions, result, e);
     vector<string> final;
@@ -57,8 +63,11 @@ void LexerParser::checkRegex(list<string> &expretions, vector<string> &result,
             for (auto x:m) {
                 op = x;
             }
-            if ((regex_match(result.back(), regex("="))) ||
-                (regex_match(op, regex("="))) || (result.back() == "bind")) {
+            if ((regex_match(result.back(), regex
+                    (">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|\\="))) ||
+                (regex_match(op, regex
+                        (">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|\\="))) ||
+                (result.back() == "bind")) {
                 result.push_back(",");
             }
             result.push_back(op);
@@ -69,7 +78,8 @@ void LexerParser::checkRegex(list<string> &expretions, vector<string> &result,
             }
 
 
-            if (!result.empty() && (regex_match(result.back(), regex("=")))) {
+            if (!result.empty() && (regex_match(result.back(),
+                                                regex(">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|\\=")))) {
                 result.push_back(",");
             }
         }
@@ -105,68 +115,120 @@ void LexerParser::FinalLexer(vector<string> &result, vector<string> &final) {
 
 void LexerParser::Parser(vector<string> &lexer) {
     string temp = "";
-
     while (!lexer.empty()) {
         // first if its a var - get the value
         temp = lexer.back();
-        if (temp == "while" || temp == "if") {
-            ConditionParser(lexer);
-        } else if (_mapStringCommad->isLeagalCommand(temp)) {
-            cout << "the command is: " + temp << endl;
+        if (temp == "while" || temp == "if" || condition_lock) {
+            if (condition_lock) {
+                ConditionParser(lexer);
+                return;
+            }
             lexer.pop_back();
-            Command *command = _mapStringCommad->getCommand(temp);
-            ExpressionCommand *expressionCommand = new ExpressionCommand
-                    (command, &lexer, _data);
-            expressionCommand->calculate();
+            condition_lock = true;
+            conditionVec.clear();
+            ConditionParser(lexer);
         } else {
-            cout << "Other : " + temp << endl;
-            if (_data->isLeagalVar(temp)) {
-                Command *varCommand = new VarCommand();
-                ExpressionCommand *expressionCommandVar = new
-                        ExpressionCommand(varCommand, &lexer, _data);
-                expressionCommandVar->calculate();
-
+            if (_mapStringCommad->isLeagalCommand(temp)) {
+                cout << "the command is: " + temp << endl;
+                lexer.pop_back();
+                Command *command = _mapStringCommad->getCommand(temp);
+                ExcecuteCommand(lexer, command);
             } else {
+                cout << "Other : " + temp << endl;
+                if (_data->isLeagalVar(temp)) {
+                    Command *varCommand = new VarCommand();
+                    ExcecuteCommand(lexer, varCommand);
+                } else {
 //              throw ("var is not valid!");
-                cout<<"var is not valid!"<<endl;
-                lexer.clear();
-                continue;
+                    cout << "var is not valid!" << endl;
+                    lexer.clear();
+                    continue;
+                }
             }
         }
     }
 }
 
-void LexerParser::ReadFromFile(string fileName) {
+
+void LexerParser::ExcecuteCommand(vector<string> &lexer, Command *command) {
+    ExpressionCommand *expressionCommand = new
+            ExpressionCommand(command, &lexer, _data);
+    expressionCommand->calculate();
+}
+
+void LexerParser::ReadFromFile(string filename) {
     fstream file;
-//    file.exceptions ( std::ifstream::failbit | std::ifstream::badbit );
-//    try {
-//        file.open(fileName,
-//                  std::fstream::in | std::fstream::out);
-//        while (!file.eof()) file.get();
-//        file.close();
-//    }
-//    catch (std::ifstream::failure e) {
-//        std::cerr << "Exception opening/reading/closing file\n";
-//    }
-    file.open(fileName);
-    ifstream infile(fileName);
+    file.open(filename);
+    ifstream _infile(filename);
     string line;
-    while (getline(infile, line)) {
-        LexerS(line);
+    int lineNumber = 0;
+    while (getline(_infile, line)) {
+        _content += line + " \n ";
+        lineNumber++;
+    }
+    while (!_content.empty()) {
+        LexerS(Readline());
     }
 }
 
-void LexerParser::ConditionParser(vector<string> &lexer) {
-    // save the condition (if or while) and pop it
-    string ifwhile = lexer.back();
-    lexer.pop_back();
-    if( ifwhile == "if"){
 
+vector<string> LexerParser::ConditionParser(vector<string> &lexer) {
+    // count the bracksets { = +1 , } = -1
+    ConditionparserWhile(lexer);
+    condition_lock = false;
+    return conditionVec;
+}
 
-
+string LexerParser::Readline() {
+    int n = 0;
+    string line = "";
+    if (!_content.empty()) {
+        n = _content.find_first_of("\n");
+        if (n == -1) {
+            _content.clear();
+            return "";
+        }
+        line = _content.substr(0, n);
+        _content.erase(0, n);
+        if (!_content.empty()) {
+            _content.erase(0, 1);
+        }
 
     }
-    /**
-     * now we bulid the condition after we know if its while or if
-     */
+    return line;
+}
+
+void
+LexerParser::ConditionparserWhile(vector<string> &lexer) {
+    if (!isfirstbrackets || brackets > 0) {
+        cout << lexer.front() << endl;
+        if (lexer.front() == "{") {
+            ++brackets;
+            isfirstbrackets = true;
+        }
+        if (lexer.front() == "}") {
+            brackets -= 1;
+        }
+        try {
+            while (!lexer.empty()) {
+                conditionVec.push_back(lexer.back());
+                lexer.pop_back();
+            }
+            conditionVec.push_back(";");
+        } catch (exception e) {
+            printf(e.what());
+        }
+
+        try {
+            lexer.clear();
+        } catch (exception e) {
+            printf(e.what());
+        }
+        try {
+            LexerS(Readline());
+        } catch (exception e) {
+            printf(e.what());
+
+        }
+    }
 }

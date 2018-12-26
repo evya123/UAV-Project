@@ -2,9 +2,9 @@
 #include "Commends/ConnectCommand.h"
 #include "Control/LexerParser.h"
 
-bool exit(string& str, TcpClient* client, TcpServer* server){
+bool exit(string &str, TcpClient *client, TcpServer *server) {
 
-    if (!str.compare("exit")){
+    if (!str.compare("exit")) {
         server->detach();
         client->exit();
         return true;
@@ -13,7 +13,7 @@ bool exit(string& str, TcpClient* client, TcpServer* server){
 }
 
 
-void startUI(int argc, char* argv[]) {
+void startUI(int argc, char *argv[]) {
     TcpClient *client = new TcpClient();
     TcpServer *server = new TcpServer();
     Data *data = new Data(client);
@@ -42,7 +42,7 @@ void startUI(int argc, char* argv[]) {
     }
 }
 
-int main(int argc, char* argv[]) {
-    startUI(argc,argv);
+int main(int argc, char *argv[]) {
+    startUI(argc, argv);
     return 0;
 }
