@@ -121,8 +121,6 @@ void LexerParser::Parser(vector<string> &lexer) {
                 ConditionParser(lexer);
                 return;
             }
-
-            lexer.pop_back();
             condition_lock = true;
             ConditionParser(lexer);
             Command *commander = getCommand(temp);
