@@ -90,7 +90,7 @@ void LexerParser::checkRegex(list<string> &expretions, vector<string> &result,
 
 
             if (!result.empty() && (regex_match(result.back(),
-                    regex(">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|\\=|\\<|\\>")))) {
+                                                regex(">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|\\=|\\<|\\>")))) {
                 result.push_back(",");
             }
         }
@@ -124,7 +124,6 @@ void LexerParser::FinalLexer(vector<string> &result, vector<string> &final) {
 }
 
 
-
 void LexerParser::Parser(vector<string> &lexer) {
     string temp = "";
     while (!lexer.empty()) {
@@ -139,8 +138,9 @@ void LexerParser::Parser(vector<string> &lexer) {
             ConditionParser(lexer);
             Command *commander = getCommand(temp);
             ExcecuteCommand(conditionVec, commander);
+            return;
         } else {
-              if (isLeagalCommand(temp)) {
+            if (isLeagalCommand(temp)) {
                 cout << "the command is: " + temp << endl;
                 lexer.pop_back();
                 Command *command = getCommand(temp);
@@ -234,7 +234,9 @@ LexerParser::ConditionparserWhile(vector<string> &lexer) {
             cout << e.what() << endl;
         }
         try {
-            LexerS(Readline());
+            if (brackets > 0) {
+                LexerS(Readline());
+            }
         } catch (exception e) {
             cout << e.what() << endl;
 
@@ -300,6 +302,7 @@ Command *LexerParser::getCommand(const string c) const {
     return _mapStringCommad.at(c);
 
 }
+
 /**
  * Distructor,
  */
@@ -317,4 +320,5 @@ LexerParser::~LexerParser() {
 
 void LexerParser::setConditionLock(bool c) {
     condition_lock = c;
+    isfirstbrackets = c;
 }
