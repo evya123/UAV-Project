@@ -8,6 +8,7 @@
 #include <Commends/PullAndPush/TcpServer.h>
 #include <stdexcept>
 #include <thread>
+class TcpServer;
 
 class OpenDataServerCommand : public Command {
 

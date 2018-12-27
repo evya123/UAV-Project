@@ -17,7 +17,7 @@
 #include <Commends/PullAndPush/TcpServer.h>
 #include <algorithm>
 
-
+class TcpServer;
 using namespace std;
 class LexerParser {
 private:

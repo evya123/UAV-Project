@@ -4,7 +4,8 @@
 
 #include "IfCommand.h"
 
-IfCommand::IfCommand() {
+IfCommand::IfCommand(LexerParser *lp) {
+    m_lp = lp;
 }
 
 void IfCommand::doCommand(vector<string> &arguments, Data *d) {
@@ -16,22 +17,32 @@ void IfCommand::doCommand(vector<string> &arguments, Data *d) {
     if(Utils::checkCondition(ifArgs,d,m_brackets)) {
         while(it != arguments.end()){
             tmp = Utils::splitByDelimiter(it,IF_DELIMITER);
+            if (tmp.empty())
+                continue;
             auto tmpIt = tmp.begin();
-            while(tmpIt != arguments.end()) {
-                if ((*tmpIt).compare(BRACKET) == 0){
-                    m_brackets.push(*it);
-                    ++tmpIt;
-                } else if ((*tmpIt).compare(CLOSING_BRACKET) == 0){
-                    m_brackets.pop();
-                    ++tmpIt;
-                }
-                if (tmpIt != arguments.end())
-                    //TODO
+            if(tmp.back().compare(BRACKET) == 0) {
+                m_brackets.push(BRACKET);
+                tmp.pop_back();
                 ++tmpIt;
             }
-            ++it;
+            if(tmp.back().compare(CLOSING_BRACKET) == 0) {
+                m_brackets.pop();
+                tmp.pop_back();
+                ++tmpIt;
+            }
+            reverse(tmp.begin(),tmp.end());
+            if (tmpIt != arguments.end())
+                m_lp->Parser(tmp);
+            if ((*it).compare(BRACKET) == 0){
+                m_brackets.push(*it);
+                ++it;
+            } else if ((*it).compare(CLOSING_BRACKET) == 0){
+                m_brackets.pop();
+                ++it;
+            }
         }
     }
     if(!m_brackets.empty())
         cerr<<"If syntax is incorrect!"<<endl;
 }
+

@@ -124,7 +124,6 @@ void LexerParser::Parser(vector<string> &lexer) {
 
             lexer.pop_back();
             condition_lock = true;
-            conditionVec.clear();
             ConditionParser(lexer);
             Command *commander = getCommand(temp);
             ExcecuteCommand(conditionVec, commander);
@@ -141,9 +140,6 @@ void LexerParser::Parser(vector<string> &lexer) {
                     ExcecuteCommand(lexer, varCommand);
                 } else {
                     throw ("var is not valid!");
-                    cout << "var is not valid!" << endl;
-                    lexer.clear();
-                    continue;
                 }
             }
         }
@@ -254,9 +250,10 @@ void LexerParser::setMapStringCommand(TcpClient *client, TcpServer *server)  {
 
 
     //ifComnand
-    Command *ifCommand = new IfCommand();
+    Command *ifCommand = new IfCommand(this);
 
     _mapStringCommad.insert(pair<string, Command *>("if", ifCommand));
+
 
 
     //Enterc

@@ -7,14 +7,14 @@
 
 #include "Commends/Command.h"
 #include "Control/LexerParser.h"
-
+class LexerParser;
 class IfCommand : public Command {
 public:
-    IfCommand();
+    IfCommand(LexerParser *);
     virtual void doCommand(vector<string> &arguments, Data *d);
-
 private:
     stack<string> m_brackets;
+    LexerParser* m_lp;
 };
 
 
