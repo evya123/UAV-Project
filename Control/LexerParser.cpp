@@ -124,6 +124,7 @@ void LexerParser::FinalLexer(vector<string> &result, vector<string> &final) {
 }
 
 
+
 void LexerParser::Parser(vector<string> &lexer) {
     string temp = "";
     while (!lexer.empty()) {

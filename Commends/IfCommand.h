@@ -14,7 +14,7 @@ public:
     IfCommand(LexerParser *);
     virtual void doCommand(vector<string> &arguments, Data *d);
 private:
-    int ifRecursion(queue<vector<string>> &commands, queue<vector<string>> &conditions, Data *d);
+    void ifRecursion(queue<vector<string>> &commands, queue<vector<string>> &conditions, Data *d);
 
     queue<vector<string>> m_conditions;
     queue<vector<string>> m_commands;
