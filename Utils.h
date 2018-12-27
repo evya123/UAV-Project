@@ -38,7 +38,7 @@ public:
     static double fromStringToNum(string &str, const string &type);
     static vector<string> splitByDelimiter(vector<string>::iterator &it, const string delimiter);
     static bool checkCondition(vector<string> &arguments, Data *_data);
-
+    static void clearQ(std::queue<vector<string>> &q);
 private:
     stack<string> m_brackets;
 };

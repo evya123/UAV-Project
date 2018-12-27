@@ -48,6 +48,7 @@ public:
 
     void ExcecuteCommand(vector<string> &lexer, Command *);
 
+    void setConditionLock(bool);
 
     void ConditionparserWhile(vector<string> &lexer);
 

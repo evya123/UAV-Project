@@ -55,7 +55,9 @@ void IfCommand::doCommand(vector<string> &arguments, Data *d) {
         cerr << "If statement is incorrect!" << endl;
 
     arguments.clear();
-    return;
+    Utils::clearQ(m_commands);
+    Utils::clearQ(m_conditions);
+    m_lp->setConditionLock(false);
 }
 
 void IfCommand::ifRecursion(queue<vector<string>> &commands,
