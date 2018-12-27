@@ -14,7 +14,7 @@
 #include <Commends/Command.h>
 #include "Utils.h"
 
-#define DELIMITER ','
+#define DELIMITER ","
 
 #define MAXPACKETSIZE 1024
 

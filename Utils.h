@@ -37,7 +37,7 @@ public:
     static double calculateExpression(string str, Data * d);
     static double fromStringToNum(string &str, const string &type);
     static vector<string> splitByDelimiter(vector<string>::iterator &it, const string delimiter);
-    static bool checkCondition(vector<string> &arguments, Data *_data, stack<string> &bStack);
+    static bool checkCondition(vector<string> &arguments, Data *_data);
 
 private:
     stack<string> m_brackets;

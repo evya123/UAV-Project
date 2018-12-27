@@ -130,29 +130,27 @@ double Utils::fromStringToNum(string &str, const string &type) {
 vector<string> Utils::splitByDelimiter(vector<string>::iterator &it,
                                           const string delimiter) {
     vector<string> ret;
-    while ((*it).compare(delimiter) != 0 &&
-            !(*it).empty()) {
-        if((*it).compare(IF_DELIMITER) == 0){
-            ++it;
-            continue;
+    if (!(*it).empty()){
+        while ((*it).compare(delimiter) != 0 &&
+               !(*it).empty()) {
+            if((*it).compare(IF_DELIMITER) == 0){
+                ++it;
+                continue;
+            }
         }
-        if((*it).compare(CLOSING_BRACKET) == 0)
-            break;
-        ret.push_back(*it);
-        ++it;
+        if((*it).compare(IF_DELIMITER) == 0)
+            ++it;
+        return ret;
     }
-    if((*it).compare(IF_DELIMITER) == 0)
-        ++it;
-    return ret;
 }
 /**
  * get condintion and return if the condition is true or false.
  * @param arguments  - vector of arguments (first arg, condition, second arg)
  * @param _data  the data
- * @param bStack stack
+ * @param bQueue stack
  * @return true if the condition is true and false otherwise
  */
-bool Utils::checkCondition(vector<string> &arguments, Data *_data, stack<string> &bStack) {
+bool Utils::checkCondition(vector<string> &arguments, Data *_data) {
 
     // now we
     // get 4 args - like x > 3 {

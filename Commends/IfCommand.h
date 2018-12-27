@@ -7,14 +7,18 @@
 
 #include "Commends/Command.h"
 #include "Control/LexerParser.h"
+#define IF_CHECK "if"
 class LexerParser;
 class IfCommand : public Command {
 public:
     IfCommand(LexerParser *);
     virtual void doCommand(vector<string> &arguments, Data *d);
 private:
-    stack<string> m_brackets;
-    vector<vector<string>> m_allCommands;
+    int ifRecursion(queue<vector<string>> &commands, queue<vector<string>> &conditions, Data *d);
+
+    queue<vector<string>> m_conditions;
+    queue<vector<string>> m_commands;
+    queue<vector<string>> m_allCommands;
     LexerParser* m_lp;
 };
 

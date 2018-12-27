@@ -12,7 +12,7 @@ public:
     virtual void doCommand(vector<string> &arguments, Data *d);
 
 private:
-    stack<string> m_brackets;
+    queue<string> m_brackets;
 
 };
 

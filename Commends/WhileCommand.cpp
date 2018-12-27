@@ -10,7 +10,7 @@ void WhileCommand::doCommand(vector<string> &arguments, Data *d) {
     auto it = arguments.begin();
     vector<string> tmp;
     Utils::splitByDelimiter(it,BRACKET);
-    while (Utils::checkCondition(ifArgs,d,m_brackets)) {
+    while (Utils::checkCondition(ifArgs, d)) {
         while(it != arguments.end()){
             tmp = Utils::splitByDelimiter(it,IF_DELIMITER);
             auto tmpIt = tmp.begin();
