@@ -12,7 +12,7 @@ void IfCommand::doCommand(vector<string> &arguments, Data *d) {
     auto it = arguments.begin();
     vector<string> commandsTmp;
     while (it != arguments.end()) {
-        if ((*it).compare(WHILE_CHECK) == 0) {
+        if ((*it).compare(IF_CHECK) == 0) {
             vector<string> conditionTmp;
             while ((*it).compare(BRACKET)) {
                 if ((*it).compare(SEMICOLON) == 0) {
@@ -28,7 +28,7 @@ void IfCommand::doCommand(vector<string> &arguments, Data *d) {
                 ++it;
             }
         }
-        while ((*it).compare(IF_CHECK) && !(*it).empty()) {
+        while (it != arguments.end() && (*it).compare(IF_CHECK)) {
             while ((*it).compare(SEMICOLON) &&
                    (*it).compare(CLOSING_BRACKET)) {
                 if ((*it).empty()) {
@@ -50,6 +50,7 @@ void IfCommand::doCommand(vector<string> &arguments, Data *d) {
             ++it;
         }
     }
+
     Utils::ifRecursion(m_commands, m_conditions, d,m_lp);
     if (!(m_conditions.empty() & m_commands.empty()))
         cerr << "If statement is incorrect!" << endl;

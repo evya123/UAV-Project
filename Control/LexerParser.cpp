@@ -141,12 +141,10 @@ void LexerParser::Parser(vector<string> &lexer) {
             return;
         } else {
             if (isLeagalCommand(temp)) {
-                cout << "the command is: " + temp << endl;
                 lexer.pop_back();
                 Command *command = getCommand(temp);
                 ExcecuteCommand(lexer, command);
             } else {
-                cout << "Other : " + temp << endl;
                 if (_data->isLeagalVar(temp)) {
                     Command *varCommand = new VarCommand();
                     ExcecuteCommand(lexer, varCommand);
@@ -210,7 +208,6 @@ string LexerParser::Readline() {
 void
 LexerParser::ConditionparserWhile(vector<string> &lexer) {
     if (!isfirstbrackets || brackets > 0) {
-        cout << lexer.front() << endl;
         if (lexer.front() == "{") {
             ++brackets;
             isfirstbrackets = true;

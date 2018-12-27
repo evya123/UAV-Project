@@ -174,8 +174,8 @@ void Utils::clearQ(std::queue<vector<string>> &q) {
     std::swap( q, empty );
 }
 
-void Utils::ifRecursion(queue<vector<string>> commands,
-                        queue<vector<string>> conditions,
+void Utils::ifRecursion(queue<vector<string>>& commands,
+                        queue<vector<string>>& conditions,
                         Data *d, LexerParser *lp) {
     int killCounter = 1;
     if (conditions.empty() && commands.empty())
@@ -204,8 +204,10 @@ void Utils::ifRecursion(queue<vector<string>> commands,
         ifRecursion(commands, conditions, d,lp);
     } else {
         if (commandVec.front().compare(CLOSING_BRACKET) == 0) {
-            conditions.pop();
-            ifRecursion(commands, conditions, d,lp);
+            if (!conditions.empty()){
+                conditions.pop();
+                ifRecursion(commands, conditions, d,lp);
+            }
         } else {
             reverse(commandVec.begin(), commandVec.end());
             lp->Parser(commandVec);
