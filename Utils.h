@@ -10,7 +10,6 @@
 #include "Maps/Data.h"
 #include "Commends/ArithmeticConditions.h"
 #include "Commends/OpenDataServerCommand.h"
-
 #include "Commends/PrintCommand.h"
 #include "Commends/ConnectCommand.h"
 #include "Commends/SleepCommand.h"
@@ -29,7 +28,7 @@
 #define IF_DELIMITER ";"
 
 using namespace std;
-
+class LexerParser;
 class Utils {
 public:
     static bool isMathExpression(string s);
@@ -39,6 +38,8 @@ public:
     static vector<string> splitByDelimiter(vector<string>::iterator &it, const string delimiter);
     static bool checkCondition(vector<string> &arguments, Data *_data);
     static void clearQ(std::queue<vector<string>> &q);
+    static void
+    ifRecursion(queue<vector<string>> &commands, queue<vector<string>> &conditions, Data *d, LexerParser *lp);
 private:
     stack<string> m_brackets;
 };

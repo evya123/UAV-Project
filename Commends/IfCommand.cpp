@@ -50,52 +50,11 @@ void IfCommand::doCommand(vector<string> &arguments, Data *d) {
             ++it;
         }
     }
-    ifRecursion(m_commands, m_conditions, d);
+    Utils::ifRecursion(m_commands, m_conditions, d,m_lp);
     if (!(m_conditions.empty() & m_commands.empty()))
         cerr << "If statement is incorrect!" << endl;
-
     arguments.clear();
     Utils::clearQ(m_commands);
     Utils::clearQ(m_conditions);
     m_lp->setConditionLock(false);
-}
-
-void IfCommand::ifRecursion(queue<vector<string>> &commands,
-                            queue<vector<string>> &conditions, Data *d) {
-    int killCounter = 1;
-    if (conditions.empty() && commands.empty())
-        return;
-    vector<string> commandVec = commands.front();
-    commands.pop();
-    if (commandVec.front().compare(BRACKET) == 0) {
-        vector<string> conditionCheck = conditions.front();
-        conditions.pop();
-        if (Utils::checkCondition(conditionCheck, d)) {
-            conditions.push(conditionCheck);
-            ifRecursion(commands, conditions, d);
-        } else {
-            while (killCounter) {
-                commandVec = commands.front();
-                commands.pop();
-                if (commandVec.front().compare(BRACKET) == 0) {
-                    conditions.pop();
-                    ++killCounter;
-                } else if (commandVec.front().compare(CLOSING_BRACKET) == 0) {
-                    conditions.pop();
-                    --killCounter;
-                }
-            }
-        }
-        ifRecursion(commands, conditions, d);
-    } else {
-        if (commandVec.front().compare(CLOSING_BRACKET) == 0) {
-            conditions.pop();
-            ifRecursion(commands, conditions, d);
-        } else {
-            reverse(commandVec.begin(), commandVec.end());
-            m_lp->Parser(commandVec);
-            ifRecursion(commands, conditions, d);
-        }
-    }
-
 }
