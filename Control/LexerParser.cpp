@@ -18,8 +18,9 @@ LexerParser::LexerParser(Data *data, TcpClient *client, TcpServer *server) {
     brackets = 0;
     isfirstbrackets = false;
     // set the map of the commands
-    setMapStringCommand(client,server);
+    setMapStringCommand(client, server);
 }
+
 /**
  * get line and lex the line into
  * @param line line from the file/command line
@@ -74,9 +75,9 @@ void LexerParser::checkRegex(list<string> &expretions, vector<string> &result,
                 op = x;
             }
             if ((regex_match(result.back(), regex
-                    (">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|\\=\\<|\\>"))) ||
+                    (">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|\\=|\\<|\\>"))) ||
                 (regex_match(op, regex
-                        (">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|\\=\\<|\\>"))) ||
+                        (">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|\\=|\\<|\\>"))) ||
                 (result.back() == "bind")) {
                 result.push_back(",");
             }
@@ -89,7 +90,7 @@ void LexerParser::checkRegex(list<string> &expretions, vector<string> &result,
 
 
             if (!result.empty() && (regex_match(result.back(),
-                                                regex(">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|\\=")))) {
+                    regex(">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|\\=|\\<|\\>")))) {
                 result.push_back(",");
             }
         }
@@ -162,6 +163,7 @@ void LexerParser::ExcecuteCommand(vector<string> &lexer, Command *command) {
             ExpressionCommand(command, &lexer, _data);
     expressionCommand->calculate();
 }
+
 void LexerParser::ReadFromFile(string filename) {
     fstream file;
     file.open(filename);
@@ -240,19 +242,19 @@ LexerParser::ConditionparserWhile(vector<string> &lexer) {
 }
 
 
-void LexerParser::setMapStringCommand(TcpClient *client, TcpServer *server)  {
+void LexerParser::setMapStringCommand(TcpClient *client, TcpServer *server) {
     //OpenData server command
     Command *openDataServer = new OpenDataServerCommand(server);
     _mapStringCommad.insert(pair<string, Command *>("openDataServer",
-                                                     openDataServer));
+                                                    openDataServer));
     //Print Command
     Command *printCommand = new PrintCommand();
     _mapStringCommad.insert(pair<string, Command *>("print",
-                                                     printCommand));
+                                                    printCommand));
     //Connect Command
     Command *connectCommand = new ConnectCommand(client);
     _mapStringCommad.insert(pair<string, Command *>("connect",
-                                                     connectCommand));
+                                                    connectCommand));
 
     //VarCommand
     Command *varCommand = new VarCommand();
@@ -271,7 +273,7 @@ void LexerParser::setMapStringCommand(TcpClient *client, TcpServer *server)  {
     _mapStringCommad.insert(pair<string, Command *>("while", whileCommand));
     Command *entercCommand = new EntercCommand();
     _mapStringCommad.insert(pair<string, Command *>("Enterc",
-                                                     entercCommand));
+                                                    entercCommand));
 
 }
 
