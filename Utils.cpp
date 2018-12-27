@@ -168,3 +168,8 @@ bool Utils::checkCondition(vector<string> &arguments, Data *_data) {
     return arithmeticConditions->getCondition(condition)(first, second);
 
 }
+
+void Utils::clearQ(std::queue<vector<string>> &q) {
+    std::queue<vector<string>> empty;
+    std::swap( q, empty );
+}

@@ -313,3 +313,7 @@ LexerParser::~LexerParser() {
         }
     }
 }
+
+void LexerParser::setConditionLock(bool c) {
+    condition_lock = c;
+}

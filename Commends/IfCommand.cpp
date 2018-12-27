@@ -53,7 +53,9 @@ void IfCommand::doCommand(vector<string> &arguments, Data *d) {
     if (!(m_conditions.empty() & m_commands.empty()))
         cerr<<"If statement is incorrect!"<<endl;
     arguments.clear();
-    return;
+    Utils::clearQ(m_commands);
+    Utils::clearQ(m_conditions);
+    m_lp->setConditionLock(false);
 }
 
 int IfCommand::ifRecursion(queue<vector<string>> &commands,
