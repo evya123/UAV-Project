@@ -1,16 +1,17 @@
-//
-// Created by lidor115 on 12/18/18.
-//
 
 #include "ShuntingYard.h"
-// CPP program to evaluate a given
-// expression where tokens are
-// separated by space.
 
+/**
+ * get numbers and return after the algorithm the result in dubble
+ * @param tokens - a string seperated by spaces
+ */
 ShuntingYard::ShuntingYard(const string &tokens) : tokens(tokens) {}
 
-// Function to find precedence of
-// operators.
+/**
+ * Function to find precedence of operators.
+ * @param op the operation
+ * @return nothing
+ */
 double ShuntingYard::precedence(char op) {
     if (op == '+' || op == '-')
         return 1;
@@ -19,10 +20,16 @@ double ShuntingYard::precedence(char op) {
     return 0;
 }
 
-// Function to perform arithmetic operations.
-double ShuntingYard::applyOp(double a, double b, char op) {
-    Expression *aEx = new Num(a);
-    Expression *bEx = new Num(b);
+/**
+ * function that uses Expressions to calculate the values
+ * @param first Expression
+ * @param second  Expression
+ * @param op - operation
+ * @return the result in double
+ */
+double ShuntingYard::applyOp(double first, double second, char op) {
+    Expression *aEx = new Num(first);
+    Expression *bEx = new Num(second);
     switch (op) {
 
         case '+':
@@ -36,8 +43,10 @@ double ShuntingYard::applyOp(double a, double b, char op) {
     }
 }
 
-// Function that returns value of
-// expression after evaluation.
+/**returns value of expression after evaluation
+ *
+ * @return value of expression after evaluation
+ */
 double ShuntingYard::evaluate() {
     int i = 0;
     bool wasOperation = false;
@@ -61,7 +70,6 @@ double ShuntingYard::evaluate() {
         else if (tokens[i] == '(') {
             ops.push(tokens[i]);
         }
-
 
             // Current token is a number, push
             // it to stack for numbers.
@@ -96,30 +104,25 @@ double ShuntingYard::evaluate() {
             values.push(val);
             isNeg = 1;
         }
-
             // Closing brace encountered, solve
             // entire brace.
         else if (tokens[i] == ')') {
             while (!ops.empty() && ops.top() != '(') {
                 double val2 = values.top();
                 values.pop();
-
-
                 double val1 = values.top();
                 values.pop();
 
                 char op = ops.top();
                 ops.pop();
-
                 values.push(applyOp(val1, val2, op));
             }
-
             // pop opening brace.
             ops.pop();
         }
-
             // Current token is an operator.
         else {
+            // there wasn't operation before
             wasOperation = false;
             // While top of 'ops' has same or greater
             // precedence to current token, which
@@ -144,7 +147,6 @@ double ShuntingYard::evaluate() {
             ops.push(tokens[i]);
         }
     }
-
     // Entire expression has been parsed at this
     // point, apply remaining ops to remaining
     // values.

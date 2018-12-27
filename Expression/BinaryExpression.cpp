@@ -3,7 +3,11 @@
 //
 
 #include "BinaryExpression.h"
-
+/**
+ * binary expression - an interface
+ * @param right expression
+ * @param left  expression
+ */
 BinaryExpression::BinaryExpression(Expression *right, Expression *left) {
     _rightExpression = right;
     _leftExpression = left;

@@ -7,7 +7,10 @@
 Num::Num(double n) {
     _num = n;
 }
-
+/**
+ * Num class
+ * @return the Num
+ */
 double Num::calculate() {
     return _num;
 }
