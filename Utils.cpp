@@ -4,7 +4,11 @@
 
 #include "Utils.h"
 
-
+/**
+ * check if the expression is a math expression
+ * @param s string of expression
+ * @return if its math expression or not
+ */
 bool Utils::isMathExpression(string s) {
     std::regex e("[a-z]+|\\[A-Z]+");
     std::smatch m;
@@ -15,7 +19,11 @@ bool Utils::isMathExpression(string s) {
         return true;
     }
 }
-
+/**
+ * prepare the var to shuanting yard algorithm.
+ * @param s string of an expression
+ * @return the value in double after shuanting yard
+ */
 double Utils::dijkstra(string s) {
     string newStr;
     std::smatch m1;
@@ -29,6 +37,7 @@ double Utils::dijkstra(string s) {
             for (auto x:m1) {
                 op = x;
             }
+            // making spaces - prepare for dijkstra
             newStr += ' ';
             newStr += op;
             newStr += ' ';
@@ -38,14 +47,21 @@ double Utils::dijkstra(string s) {
             s = "";
         }
     }
+    // shuntingyard
     ShuntingYard shuntingYard(newStr);
     double temp = shuntingYard.evaluate();
     return temp;
 }
-
+/**
+ * input: math expression, and the output is double (the value)
+ * @param str
+ * @param d
+ * @return
+ */
 double Utils::calculateExpression(string str, Data *d) {
     string dString;
     smatch m;
+    // find the operations
     std::regex r("\\+|\\*|\\(|\\)|\\-|\\/|\\(|\\)");
     while (str != "") {
         regex_search(str, m, r);
@@ -57,6 +73,7 @@ double Utils::calculateExpression(string str, Data *d) {
         if (op == "") {
             var = str;
         }
+        // the string now is only the suffix
         str = m.suffix();
         if (!isMathExpression(var)) {
             if (d->isLeagalVar(var)) {
@@ -69,11 +86,17 @@ double Utils::calculateExpression(string str, Data *d) {
         }
         dString += op;
     }
+    // sending to dijkstra and return the value.
     double value = dijkstra(dString);
 
     return value;
 }
-
+/**
+ * get string and type and return double
+ * @param str string of expression
+ * @param type type of the expression
+ * @return the value of the expression
+ */
 double Utils::fromStringToNum(string &str, const string &type) {
     try {
         if(type.compare(INTEGER) == 0)
@@ -98,7 +121,12 @@ double Utils::fromStringToNum(string &str, const string &type) {
     return 0;
 }
 
-
+/**
+ *
+ * @param it iterator of the vector
+ * @param delimiter - ";"
+ * @return the vector split by delimiter
+ */
 vector<string> Utils::splitByDelimiter(vector<string>::iterator &it,
                                           const string delimiter) {
     vector<string> ret;
@@ -117,7 +145,13 @@ vector<string> Utils::splitByDelimiter(vector<string>::iterator &it,
         ++it;
     return ret;
 }
-
+/**
+ * get condintion and return if the condition is true or false.
+ * @param arguments  - vector of arguments (first arg, condition, second arg)
+ * @param _data  the data
+ * @param bStack stack
+ * @return true if the condition is true and false otherwise
+ */
 bool Utils::checkCondition(vector<string> &arguments, Data *_data, stack<string> &bStack) {
 
     // now we

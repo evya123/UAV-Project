@@ -162,12 +162,18 @@ void Data::sendToClient(const string &path, double value) {
     s += "set " + path + " " + to_string(value) + "\r\n";
     _client->Send(s);
 }
+/**
+ *put arguments in the path map
+ * @param toMap arguments of <path, value> to put in the path-map
+ */
 void Data::addToMapsFromServer(pair<string, double> &toMap) {
     unique_lock<mutex> lock(m_locker);//locked!
+    // iterator of the multimap
     typedef std::multimap<string, Var *>::iterator MMAPIterator;
     string path = toMap.first;
     double val = toMap.second;
     _pathMap[path] = val;
+    // change values of the vars bind with the changed values
     std::pair<MMAPIterator, MMAPIterator> result = _pathVarMap
             .equal_range(path);
     for (auto it = result.first; it !=result.second; ++it) {

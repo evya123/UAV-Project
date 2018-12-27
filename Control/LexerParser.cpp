@@ -4,18 +4,29 @@
 
 #include "LexerParser.h"
 
-
+/**
+ * constructor of the lexer-parser
+ * @param data - the maps of the path and variables
+ * @param client - client
+ * @param server - server
+ */
 LexerParser::LexerParser(Data *data, TcpClient *client, TcpServer *server) {
     _data = data;
     // lock if there is a condition while or if commands
     condition_lock = false;
+    // for conditions like if and while
     brackets = 0;
     isfirstbrackets = false;
+    // set the map of the commands
     setMapStringCommand(client,server);
 }
-
+/**
+ * get line and lex the line into
+ * @param line line from the file/command line
+ */
 void LexerParser::LexerS(string line) {
     list<string> expretions;
+    // split line by spaces
     vector<string> result;
     line = line + " ";
     while (line != "") {
@@ -25,6 +36,7 @@ void LexerParser::LexerS(string line) {
         expretions.push_back(exp);
         line = line.substr(firstSpace + 1, endOfstring);
     }
+    // set the regex
     std::regex e(
             ">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|\\=|\\+|\\*|\\(|\\)|\\-|\\,|\\<|\\>|\\/|\\&|\\||\\!");
 
