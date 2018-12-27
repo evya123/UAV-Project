@@ -139,7 +139,6 @@ void LexerParser::Parser(vector<string> &lexer) {
             Command *commander = getCommand(temp);
             ExcecuteCommand(conditionVec, commander);
         } else {
-
               if (isLeagalCommand(temp)) {
                 cout << "the command is: " + temp << endl;
                 lexer.pop_back();
