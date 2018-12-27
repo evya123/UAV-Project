@@ -14,6 +14,7 @@ public:
     virtual void doCommand(vector<string> &arguments, Data *d);
 private:
     stack<string> m_brackets;
+    vector<vector<string>> m_allCommands;
     LexerParser* m_lp;
 };
 

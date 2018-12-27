@@ -102,11 +102,19 @@ double Utils::fromStringToNum(string &str, const string &type) {
 vector<string> Utils::splitByDelimiter(vector<string>::iterator &it,
                                           const string delimiter) {
     vector<string> ret;
-    while ((*it).compare(delimiter) != 0) {
-        ret.push_back((*it));
+    while ((*it).compare(delimiter) != 0 &&
+            !(*it).empty()) {
+        if((*it).compare(IF_DELIMITER) == 0){
+            ++it;
+            continue;
+        }
+        if((*it).compare(CLOSING_BRACKET) == 0)
+            break;
+        ret.push_back(*it);
         ++it;
     }
-    ++it;
+    if((*it).compare(IF_DELIMITER) == 0)
+        ++it;
     return ret;
 }
 

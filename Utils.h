@@ -10,7 +10,7 @@
 #include "Maps/Data.h"
 #include "Commends/ArithmeticConditions.h"
 #include "Commends/OpenDataServerCommand.h"
-#include <Commends/PullAndPush/TcpServer.h>
+
 #include "Commends/PrintCommand.h"
 #include "Commends/ConnectCommand.h"
 #include "Commends/SleepCommand.h"
@@ -20,10 +20,10 @@
 #include "Commends/EntercCommand.h"
 #define INTEGER "i"
 #define DOUBLE "d"
-#define LHS 0
-#define COMPARE 1
-#define RHS 2
-#define BRACKET_POS 3
+#define LHS 1
+#define COMPARE 2
+#define RHS 3
+#define BRACKET_POS 4
 #define BRACKET "{"
 #define CLOSING_BRACKET "}"
 #define IF_DELIMITER ";"

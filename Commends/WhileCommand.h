@@ -6,12 +6,6 @@
 #define UAV_PROJECT_WHILECOMMAND_H
 #include "Command.h"
 #include "Utils.h"
-#define LHS 0
-#define COMPARE 1
-#define RHS 2
-#define BRACKET_POS 3
-#define BRACKET "{"
-#define CLOSING_BRACKET "}"
 
 class WhileCommand : public Command{
 public:
