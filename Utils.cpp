@@ -133,12 +133,12 @@ vector<string> Utils::splitByDelimiter(vector<string>::iterator &it,
     if (!(*it).empty()){
         while ((*it).compare(delimiter) != 0 &&
                !(*it).empty()) {
-            if((*it).compare(IF_DELIMITER) == 0){
+            if((*it).compare(SEMICOLON) == 0){
                 ++it;
                 continue;
             }
         }
-        if((*it).compare(IF_DELIMITER) == 0)
+        if((*it).compare(SEMICOLON) == 0)
             ++it;
         return ret;
     }
@@ -174,8 +174,8 @@ void Utils::clearQ(std::queue<vector<string>> &q) {
     std::swap( q, empty );
 }
 
-void Utils::ifRecursion(queue<vector<string>> &commands,
-                        queue<vector<string>> &conditions,
+void Utils::ifRecursion(queue<vector<string>> commands,
+                        queue<vector<string>> conditions,
                         Data *d, LexerParser *lp) {
     int killCounter = 1;
     if (conditions.empty() && commands.empty())

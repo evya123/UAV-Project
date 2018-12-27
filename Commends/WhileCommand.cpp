@@ -5,29 +5,56 @@
 #include "WhileCommand.h"
 
 void WhileCommand::doCommand(vector<string> &arguments, Data *d) {
-    vector<string> ifArgs {arguments.at(LHS),arguments[COMPARE],
-                           arguments.at(RHS), arguments[BRACKET_POS]};
     auto it = arguments.begin();
-    vector<string> tmp;
-    Utils::splitByDelimiter(it,BRACKET);
-    while (Utils::checkCondition(ifArgs, d)) {
-        while(it != arguments.end()){
-            tmp = Utils::splitByDelimiter(it,IF_DELIMITER);
-            auto tmpIt = tmp.begin();
-            while(tmpIt != arguments.end()) {
-                if ((*tmpIt).compare(BRACKET) == 0){
-                    m_brackets.push(*it);
-                    ++tmpIt;
+    vector<string> commandsTmp;
+    while (it != arguments.end()) {
+        if ((*it).compare(WHILE_CHECK) == 0) {
+            vector<string> conditionTmp;
+            while ((*it).compare(BRACKET)) {
+                if ((*it).compare(SEMICOLON) == 0) {
+                    ++it;
+                    continue;
                 }
-                if ((*tmpIt).compare(CLOSING_BRACKET) == 0){
-                    m_brackets.pop();
-                    ++tmpIt;
+                conditionTmp.push_back(*it);
+                ++it;
+            }
+            m_conditions.push(conditionTmp);
+            if ((*it).compare(BRACKET) == 0) {
+                commandsTmp.push_back(BRACKET);
+                ++it;
+            }
+        }
+        while ((*it).compare(WHILE_CHECK) && it != arguments.end()) {
+            while ((*it).compare(SEMICOLON) && //While not semicolon or empty
+                   (*it).compare(CLOSING_BRACKET)) {
+                if ((*it).empty()) {
+                    continue;
                 }
-                if (tmpIt != arguments.end())
-                    //TODO: pass to lexer
-                    ++tmpIt;
+                commandsTmp.push_back(*it);
+                ++it;
+            }
+            if ((*it).compare(WHILE_CHECK) == 0)
+                continue;
+            if ((*it).compare(CLOSING_BRACKET) == 0) {
+                commandsTmp.push_back(CLOSING_BRACKET);
+                ++it;
+            }
+            if (!commandsTmp.empty()) {
+                m_commands.push(commandsTmp);
+                commandsTmp.clear();
             }
             ++it;
+//            if ((*it).empty())
+//                break;
         }
     }
+    vector<string> wCond = m_conditions.front();
+    while(Utils::checkCondition(wCond,d)) {
+        Utils::ifRecursion(m_commands,m_conditions,d,m_lp);
+    }
+    m_conditions.pop();
+}
+
+WhileCommand::WhileCommand(LexerParser *lp) {
+    m_lp = lp;
 }

@@ -25,7 +25,7 @@
 #define BRACKET_POS 4
 #define BRACKET "{"
 #define CLOSING_BRACKET "}"
-#define IF_DELIMITER ";"
+#define SEMICOLON ";"
 
 using namespace std;
 class LexerParser;
@@ -39,9 +39,11 @@ public:
     static bool checkCondition(vector<string> &arguments, Data *_data);
     static void clearQ(std::queue<vector<string>> &q);
     static void
-    ifRecursion(queue<vector<string>> &commands, queue<vector<string>> &conditions, Data *d, LexerParser *lp);
+    ifRecursion(queue<vector<string>> commands,
+                queue<vector<string>> conditions,
+                Data *d, LexerParser *lp);
 private:
-    stack<string> m_brackets;
+
 };
 
 #endif //UAV_PROJECT_UTILS_H

@@ -12,10 +12,10 @@ void IfCommand::doCommand(vector<string> &arguments, Data *d) {
     auto it = arguments.begin();
     vector<string> commandsTmp;
     while (it != arguments.end()) {
-        if ((*it).compare(IF_CHECK) == 0) {
+        if ((*it).compare(WHILE_CHECK) == 0) {
             vector<string> conditionTmp;
             while ((*it).compare(BRACKET)) {
-                if ((*it).compare(IF_DELIMITER) == 0) {
+                if ((*it).compare(SEMICOLON) == 0) {
                     ++it;
                     continue;
                 }
@@ -29,7 +29,7 @@ void IfCommand::doCommand(vector<string> &arguments, Data *d) {
             }
         }
         while ((*it).compare(IF_CHECK) && !(*it).empty()) {
-            while ((*it).compare(IF_DELIMITER) &&
+            while ((*it).compare(SEMICOLON) &&
                    (*it).compare(CLOSING_BRACKET)) {
                 if ((*it).empty()) {
                     continue;
