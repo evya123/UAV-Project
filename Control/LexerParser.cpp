@@ -74,9 +74,9 @@ void LexerParser::checkRegex(list<string> &expretions, vector<string> &result,
                 op = x;
             }
             if ((regex_match(result.back(), regex
-                    (">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|\\="))) ||
+                    (">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|\\=\\<|\\>"))) ||
                 (regex_match(op, regex
-                        (">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|\\="))) ||
+                        (">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|\\=\\<|\\>"))) ||
                 (result.back() == "bind")) {
                 result.push_back(",");
             }
