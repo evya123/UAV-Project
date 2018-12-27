@@ -129,11 +129,6 @@ bool Utils::checkCondition(vector<string> &arguments, Data *_data, stack<string>
     // second argument
     string second_expression = arguments[RHS];
     // now we nee to have in args only {
-    if (arguments[BRACKET_POS] != BRACKET) {
-        throw "invalid Condition!";
-    } else {
-        bStack.push(arguments[BRACKET_POS]);
-    }
     ArithmeticConditions *arithmeticConditions = new ArithmeticConditions();
     double first = Utils::calculateExpression(first_expression, _data);
     double second = Utils::calculateExpression(second_expression, _data);

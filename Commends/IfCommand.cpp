@@ -22,9 +22,11 @@ void IfCommand::doCommand(vector<string> &arguments, Data *d) {
             ++it;
         }
     }
-    auto firstCommand = m_allCommands.data();
-    if(firstCommand->at(0).compare("if") == 0){
-
+    vector<string> conditionVec = m_allCommands.front();
+    if (Utils::checkCondition(conditionVec,d,m_brackets)) {
+        //TODO: from here till the end, I execute every command but ifs and whiles.
+        //If i encounter if or while i create a vector that contains all the data
+        //in the condition scope and move it to parser
     }
     return;
 }
