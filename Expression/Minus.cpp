@@ -3,6 +3,11 @@
 //
 
 #include "Minus.h"
+
+/**
+ * Minus class
+ * @return the expression after the Minus
+ */
 double Minus::calculate() {
     return (_rightExpression->calculate() - _leftExpression->calculate());
 }

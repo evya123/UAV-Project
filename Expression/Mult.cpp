@@ -3,7 +3,10 @@
 //
 
 #include "Mult.h"
-
+/**
+ * Mult class
+ * @return the expression after the multiplication
+ */
 double Mult::calculate() {
     return (_rightExpression->calculate() * _leftExpression->calculate());
 }

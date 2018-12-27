@@ -300,7 +300,9 @@ Command *LexerParser::getCommand(const string c) const {
     return _mapStringCommad.at(c);
 
 }
-
+/**
+ * Distructor,
+ */
 LexerParser::~LexerParser() {
     // check if the map isn't empty
     if (!_mapStringCommad.empty()) {
