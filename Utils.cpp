@@ -19,6 +19,7 @@ bool Utils::isMathExpression(string s) {
         return true;
     }
 }
+
 /**
  * prepare the var to shuanting yard algorithm.
  * @param s string of an expression
@@ -52,6 +53,7 @@ double Utils::dijkstra(string s) {
     double temp = shuntingYard.evaluate();
     return temp;
 }
+
 /**
  * input: math expression, and the output is double (the value)
  * @param str
@@ -91,6 +93,7 @@ double Utils::calculateExpression(string str, Data *d) {
 
     return value;
 }
+
 /**
  * get string and type and return double
  * @param str string of expression
@@ -99,21 +102,21 @@ double Utils::calculateExpression(string str, Data *d) {
  */
 double Utils::fromStringToNum(string &str, const string &type) {
     try {
-        if(type.compare(INTEGER) == 0)
+        if (type.compare(INTEGER) == 0)
             return stoi(str);
-        if(type.compare(DOUBLE) == 0)
+        if (type.compare(DOUBLE) == 0)
             return stod(str);
-    } catch(invalid_argument& e){
+    } catch (invalid_argument &e) {
         // if no conversion could be performed
         printf("OpenDataServerCommand->fromStringToNum: %s", e.what());
         exit(EXIT_FAILURE);
-    } catch(out_of_range& e){
+    } catch (out_of_range &e) {
         // if the converted value w/ould fall out of the range of the result type
         // or if the underlying function (std::strtol or std::strtoull) sets errno
         // to ERANGE.
         printf("OpenDataServerCommand->fromStringToNum: %s", e.what());
         exit(EXIT_FAILURE);
-    } catch(exception& e) {
+    } catch (exception &e) {
         // everything else
         printf("OpenDataServerCommand->fromStringToNum: %s", e.what());
         exit(EXIT_FAILURE);
@@ -128,21 +131,22 @@ double Utils::fromStringToNum(string &str, const string &type) {
  * @return the vector split by delimiter
  */
 vector<string> Utils::splitByDelimiter(vector<string>::iterator &it,
-                                          const string delimiter) {
+                                       const string delimiter) {
     vector<string> ret;
-    if (!(*it).empty()){
+    if (!(*it).empty()) {
         while ((*it).compare(delimiter) != 0 &&
                !(*it).empty()) {
-            if((*it).compare(SEMICOLON) == 0){
+            if ((*it).compare(SEMICOLON) == 0) {
                 ++it;
                 continue;
             }
         }
-        if((*it).compare(SEMICOLON) == 0)
+        if ((*it).compare(SEMICOLON) == 0)
             ++it;
         return ret;
     }
 }
+
 /**
  * get condintion and return if the condition is true or false.
  * @param arguments  - vector of arguments (first arg, condition, second arg)
@@ -171,11 +175,11 @@ bool Utils::checkCondition(vector<string> &arguments, Data *_data) {
 
 void Utils::clearQ(std::queue<vector<string>> &q) {
     std::queue<vector<string>> empty;
-    std::swap( q, empty );
+    std::swap(q, empty);
 }
 
-void Utils::ifRecursion(queue<vector<string>>& commands,
-                        queue<vector<string>>& conditions,
+void Utils::ifRecursion(queue<vector<string>> &commands,
+                        queue<vector<string>> &conditions,
                         Data *d, LexerParser *lp) {
     int killCounter = 1;
     if (conditions.empty() && commands.empty())
@@ -187,7 +191,7 @@ void Utils::ifRecursion(queue<vector<string>>& commands,
         conditions.pop();
         if (Utils::checkCondition(conditionCheck, d)) {
             conditions.push(conditionCheck);
-            ifRecursion(commands, conditions, d,lp);
+            ifRecursion(commands, conditions, d, lp);
         } else {
             while (killCounter) {
                 commandVec = commands.front();
@@ -201,18 +205,137 @@ void Utils::ifRecursion(queue<vector<string>>& commands,
                 }
             }
         }
-        ifRecursion(commands, conditions, d,lp);
+        ifRecursion(commands, conditions, d, lp);
     } else {
         if (commandVec.front().compare(CLOSING_BRACKET) == 0) {
-            if (!conditions.empty()){
+            if (!conditions.empty()) {
                 conditions.pop();
-                ifRecursion(commands, conditions, d,lp);
+                ifRecursion(commands, conditions, d, lp);
             }
         } else {
             reverse(commandVec.begin(), commandVec.end());
             lp->Parser(commandVec);
-            ifRecursion(commands, conditions, d,lp);
+            ifRecursion(commands, conditions, d, lp);
         }
     }
 
+}
+
+void Utils::takeBetweenBrackets(queue<vector<string>> &commands,
+                                queue<vector<string>> &conditions,
+                                LexerParser *lp, Data *d) {
+
+    queue<vector<string>> loopingVecCommands;
+    queue<vector<string>> loopingVecConditions;
+    vector<string> temp;
+    vector<string> tempCondition;
+    if (!commands.empty()) {
+        int brackets = 0;
+        bool firstB = false;
+        while (brackets || !firstB) {
+            temp = commands.front();
+            loopingVecCommands.push(temp);
+            if (temp.front().compare(BRACKET) == 0) {
+                tempCondition = conditions.front();
+                conditions.pop();
+                conditions.push(tempCondition);
+                loopingVecConditions.push(tempCondition);
+                ++brackets;
+                firstB = true;
+            } else if (temp.front().compare(CLOSING_BRACKET) == 0) {
+                --brackets;
+                if (!brackets) {
+                    break;
+                }
+            }
+            commands.pop();
+            commands.push(temp);
+        }
+    }
+    commands = loopingVecCommands;
+    conditions = loopingVecConditions;
+}
+
+void Utils::LoopCommand(queue<vector<string>> &commands,
+                        queue<vector<string>> &conditions, Data *d,
+                        LexerParser *lp) {
+    vector<string> main_condition = conditions.front(); // condition
+    vector<string> temp = commands.front(); // first bracket
+    vector<string> parseVec; // condition
+    vector<string> corrent_condition = conditions.front(); // condition
+
+    commands.pop();
+    commands.push(temp);
+
+    while (checkCondition(main_condition, d)) {
+        if (!checkCondition(corrent_condition, d)) {
+            conditions.pop();
+            conditions.push(corrent_condition);
+            corrent_condition = conditions.front();
+        }
+        while (checkCondition(corrent_condition, d)) {
+            temp = commands.front();
+            commands.pop();
+            commands.push(temp);
+
+            if (temp.front() == BRACKET) {
+                conditions.pop();
+                conditions.push(corrent_condition);
+                corrent_condition = conditions.front();
+                break;
+            }
+            if (temp.front() == CLOSING_BRACKET) {
+                if (corrent_condition.front() == IF_CHECK) {
+                    break;
+                } else
+                    continue;
+            }
+            parseVec = temp;
+            reverse(parseVec.begin(), parseVec.end());
+            lp->Parser(parseVec);
+        }
+    }
+}
+
+void Utils::WhileRecursion(queue<vector<string>> &commands,
+                           queue<vector<string>> &conditions, Data *d,
+                           LexerParser *lp) {
+    int killCounter = 1;
+    if (conditions.empty() && commands.empty())
+        return;
+    vector<string> commandVec = commands.front();
+    commands.pop();
+    if (commandVec.front().compare(BRACKET) == 0) {
+        vector<string> conditionCheck = conditions.front();
+        conditions.pop();
+        if (Utils::checkCondition(conditionCheck, d)) {
+            conditions.push(conditionCheck);
+            ifRecursion(commands, conditions, d, lp);
+        } else {
+            while (killCounter) {
+                commandVec = commands.front();
+                commands.pop();
+                if (commandVec.front().compare(BRACKET) == 0) {
+                    conditions.pop();
+                    ++killCounter;
+                } else if (commandVec.front().compare(CLOSING_BRACKET) ==
+                           0) {
+                    conditions.pop();
+                    --killCounter;
+                }
+            }
+        }
+        ifRecursion(commands, conditions, d, lp);
+    } else {
+        if (commandVec.front().compare(CLOSING_BRACKET) == 0) {
+            if (!conditions.empty()) {
+                conditions.pop();
+                ifRecursion(commands, conditions, d, lp);
+            }
+        } else {
+            reverse(commandVec.begin(), commandVec.end());
+            lp->Parser(commandVec);
+            ifRecursion(commands, conditions, d, lp);
+        }
+    }
 }

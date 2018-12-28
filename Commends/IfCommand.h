@@ -7,7 +7,7 @@
 
 #include "Commends/Command.h"
 #include "Control/LexerParser.h"
-#define IF_CHECK "if"
+
 class LexerParser;
 class IfCommand : public Command {
 public:

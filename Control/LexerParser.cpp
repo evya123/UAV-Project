@@ -267,7 +267,7 @@ void LexerParser::setMapStringCommand(TcpClient *client, TcpServer *server) {
     _mapStringCommad.insert(pair<string, Command *>("if", ifCommand));
 
     //whileCommand
-    Command *whileCommand = new WhileCommand(this);
+    Command *whileCommand = new IfCommand(this);
     _mapStringCommad.insert(pair<string, Command *>("while", whileCommand));
 
     //Enterc
