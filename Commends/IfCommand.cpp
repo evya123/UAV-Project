@@ -55,7 +55,6 @@ void IfCommand::doCommand(vector<string> &arguments, Data *d) {
             ++it;
         }
     }
-    //////
     vector<string> tempCondition;
     tempCondition = m_conditions.front();
         Utils::LoopCommand(m_commands, m_conditions, d, m_lp);

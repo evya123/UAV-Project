@@ -269,6 +269,11 @@ void Utils::LoopCommand(queue<vector<string>> &commands,
 
     while (checkCondition(main_condition, d)) {
         if (!checkCondition(corrent_condition, d)) {
+            while (temp.front() != CLOSING_BRACKET) {
+                temp = commands.front();
+                commands.pop();
+                commands.push(temp);
+            }
             conditions.pop();
             conditions.push(corrent_condition);
             corrent_condition = conditions.front();
@@ -282,13 +287,16 @@ void Utils::LoopCommand(queue<vector<string>> &commands,
                 conditions.pop();
                 conditions.push(corrent_condition);
                 corrent_condition = conditions.front();
-                break;
+                continue;
             }
             if (temp.front() == CLOSING_BRACKET) {
                 if (corrent_condition.front() == IF_CHECK) {
                     break;
-                } else
+                } else {
+                    commands.pop();
+                    commands.push(temp);
                     continue;
+                }
             }
             parseVec = temp;
             reverse(parseVec.begin(), parseVec.end());
