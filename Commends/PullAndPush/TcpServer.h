@@ -23,23 +23,25 @@ using namespace std;
 class TcpServer {
 public:
     TcpServer() = default;
+
     void setup(int port);
+
     int receive();
+
     void detach();
 
-    static void *TaskServer(void *arg);
+    static void *TaskServer(void *arg,Data* data);
 
 private:
     static void toMap(string toSplit, Data *d);
     int m_serverSocket, m_accVal;
     struct sockaddr_in m_serverAddress;
     struct sockaddr_in m_clientAddress;
-
 };
 
 typedef struct arg_struct_server {
     int arg1;
-    Data* arg2;
-}TcpStruct;
+    Data *arg2;
+} TcpStruct;
 
 #endif //UAV_PROJECT_TCPSERVER_H

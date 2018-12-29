@@ -12,7 +12,7 @@ void OpenDataServerCommand::doCommand(vector<string> &arguments, Data *d) {
     m_server->setup(port);
     args.arg1 = m_server->receive();
     args.arg2 = d;
-    thread dataServer(TcpServer::TaskServer,&args);
+    thread dataServer(TcpServer::TaskServer,&args,d);
 
     dataServer.detach();
 }
@@ -20,6 +20,3 @@ void OpenDataServerCommand::doCommand(vector<string> &arguments, Data *d) {
 OpenDataServerCommand::~OpenDataServerCommand() {
     delete m_server;
 }
-
-
-

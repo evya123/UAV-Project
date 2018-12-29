@@ -14,9 +14,11 @@ using namespace std;
 
 class Data {
 private:
+    map<string,string> checkPathVar;
+    map<string, double > checkMap;
     map<string, Var *> _symbolTable;
     map<string, double> _pathMap;
-    multimap<string, Var *> _pathVarMap;
+    map<string, Var *> _pathVarMap;
     mutex m_locker;
     TcpClient *_client;
 public:

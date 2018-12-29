@@ -41,7 +41,7 @@ public:
 
     void setMapStringCommand(TcpClient*, TcpServer*);
 
-    vector<string>
+    void
     ConditionParser(vector<string> &lexer);
 
     void ReadFromFile(string fileName);

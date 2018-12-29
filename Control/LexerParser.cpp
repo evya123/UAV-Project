@@ -26,6 +26,9 @@ LexerParser::LexerParser(Data *data, TcpClient *client, TcpServer *server) {
  * @param line line from the file/command line
  */
 void LexerParser::LexerS(string line) {
+    if (line == "" || line == " ") {
+        return;
+    }
     list<string> expretions;
     // split line by spaces
     vector<string> result;
@@ -34,12 +37,18 @@ void LexerParser::LexerS(string line) {
         unsigned long firstSpace = line.find_first_of(' ');
         unsigned long endOfstring = line.size() - firstSpace - 1;
         string exp = line.substr(0, firstSpace);
+        if (exp == "") {
+            line = line.substr(firstSpace + 1, endOfstring);
+            continue;
+        }
         expretions.push_back(exp);
         line = line.substr(firstSpace + 1, endOfstring);
     }
     // set the regex
     std::regex e(
-            ">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|\\=|\\+|\\*|\\(|\\)|\\-|\\,|\\<|\\>|\\/|\\&|\\||\\!");
+            ">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|"
+            "\\=|\\+|\\*|\\(|\\)|\\-|\\,|\\"
+            "<|\\>|\\/|\\}|\\{|\\&|\\||\\!");
 
     checkRegex(expretions, result, e);
     vector<string> final;
@@ -49,10 +58,23 @@ void LexerParser::LexerS(string line) {
 
 void LexerParser::checkRegex(list<string> &expretions, vector<string> &result,
                              regex e) {
+
+    if (expretions.size() == 1) {
+        string check_brackets = expretions.front();
+        if (check_brackets == BRACKET || check_brackets == CLOSING_BRACKET) {
+            result.push_back(check_brackets);
+            expretions.clear();
+            return;
+        }
+    }
     std::smatch m;
     // for each expresion divided by space
     for (list<string>::iterator word = expretions.begin(); word != expretions
             .end(); ++word) {
+        if (*word == " " || *word == "") {
+            continue;
+        }
+
         if (!(result.empty())) {
             string c = word->substr(0, 1);
             string back = result.back();
@@ -74,23 +96,24 @@ void LexerParser::checkRegex(list<string> &expretions, vector<string> &result,
             for (auto x:m) {
                 op = x;
             }
-            if ((regex_match(result.back(), regex
-                    (">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|\\=|\\<|\\>"))) ||
-                (regex_match(op, regex
-                        (">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|\\=|\\<|\\>"))) ||
-                (result.back() == "bind")) {
-                result.push_back(",");
-            }
-            result.push_back(op);
-            *word = m.suffix().str();
-            if (regex_match(result.back(), regex("\\)")) && (!regex_match
-                    (word->substr(0, 1), regex("\\+|\\-|\\*|\\/")))) {
-                result.push_back(",");
+            // regex for boolean expressions, equal and brackets
+            regex r(">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|\\=|\\<|\\>|\\}|\\{");
+            if (!result.empty()) {
+                if ((regex_match(result.back(), r)) ||
+                    (regex_match(op, r))
+                    || (result.back() == "bind")) {
+                    result.push_back(",");
+                }
+                result.push_back(op);
+                *word = m.suffix().str();
+                if (regex_match(result.back(), regex("\\)")) &&
+                    (!regex_match(word->substr(0, 1),
+                                  regex("\\+|\\-|\\*|\\/")))) {
+                    result.push_back(",");
+                }
             }
 
-
-            if (!result.empty() && (regex_match(result.back(),
-                                                regex(">=|\\<=|\\==|\\=>|\\=<|\\!=|\\=!|\\=|\\<|\\>")))) {
+            if (!result.empty() && (regex_match(result.back(), r))) {
                 result.push_back(",");
             }
         }
@@ -179,11 +202,10 @@ void LexerParser::ReadFromFile(string filename) {
 }
 
 
-vector<string> LexerParser::ConditionParser(vector<string> &lexer) {
+void LexerParser::ConditionParser(vector<string> &lexer) {
     // count the bracksets { = +1 , } = -1
     ConditionparserWhile(lexer);
     condition_lock = false;
-    return conditionVec;
 }
 
 string LexerParser::Readline() {
@@ -200,7 +222,6 @@ string LexerParser::Readline() {
         if (!_content.empty()) {
             _content.erase(0, 1);
         }
-
     }
     return line;
 }
@@ -231,7 +252,7 @@ LexerParser::ConditionparserWhile(vector<string> &lexer) {
             cout << e.what() << endl;
         }
         try {
-            if (brackets > 0) {
+            if (brackets > 0 || !isfirstbrackets) {
                 LexerS(Readline());
             }
         } catch (exception e) {
@@ -242,7 +263,8 @@ LexerParser::ConditionparserWhile(vector<string> &lexer) {
 }
 
 
-void LexerParser::setMapStringCommand(TcpClient *client, TcpServer *server) {
+void
+LexerParser::setMapStringCommand(TcpClient *client, TcpServer *server) {
     //OpenData server command
     Command *openDataServer = new OpenDataServerCommand(server);
     _mapStringCommad.insert(pair<string, Command *>("openDataServer",

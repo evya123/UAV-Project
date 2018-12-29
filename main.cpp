@@ -14,8 +14,8 @@ bool exit(string& str, TcpClient* client, TcpServer* server){
 
 void startUI(int argc, char* argv[]) {
     TcpClient *client = new TcpClient();
-    TcpServer *server = new TcpServer();
     Data *data = new Data(client);
+    TcpServer *server = new TcpServer();
     LexerParser *lexerParser = new LexerParser(data, client,server);
     string str = " ";
     bool firstTime = true;
