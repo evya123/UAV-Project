@@ -11,166 +11,169 @@ Data::Data(TcpClient *client) {
 
 void Data::initPath() {
     this->_pathMap.insert(pair<string, double>(
-            "/instrumentation/airspeed-indicator/indicated-speed-kt",
+            "instrumentation/airspeed-indicator/indicated-speed-kt",
             0));
     this->_pathMap.insert(pair<string, double>(
-            "/instrumentation/altimeter/indicated-altitude-ft", 0));
+            "instrumentation/altimeter/indicated-altitude-ft", 0));
     this->_pathMap.insert(
             pair<string, double>
-                    ("/instrumentation/altimeter/pressure-alt-ft",
+                    ("instrumentation/altimeter/pressure-alt-ft",
                      0));
     this->_pathMap.insert(pair<string, double>(
-            "/instrumentation/attitude-indicator/indicated-pitch-deg", 0));
+            "instrumentation/attitude-indicator/indicated-pitch-deg", 0));
     this->_pathMap.insert(pair<string, double>(
-            "/instrumentation/attitude-indicator/indicated-roll-deg", 0));
+            "instrumentation/attitude-indicator/indicated-roll-deg", 0));
     this->_pathMap.insert(pair<string, double>(
-            "/instrumentation/attitude-indicator/internal-pitch-deg", 0));
+            "instrumentation/attitude-indicator/internal-pitch-deg", 0));
     this->_pathMap.insert(pair<string, double>(
-            "/instrumentation/attitude-indicator/internal-roll-deg", 0));
+            "instrumentation/attitude-indicator/internal-roll-deg", 0));
     this->_pathMap.insert(pair<string, double>(
-            "/instrumentation/encoder/indicated-altitude-ft", 0));
+            "instrumentation/encoder/indicated-altitude-ft", 0));
     this->_pathMap.insert(
-            pair<string, double>("/instrumentation/encoder/pressure-alt-ft",
+            pair<string, double>("instrumentation/encoder/pressure-alt-ft",
                                  0));
     this->_pathMap.insert(
             pair<string, double>
-                    ("/instrumentation/gps/indicated-altitude-ft",
+                    ("instrumentation/gps/indicated-altitude-ft",
                      0));
     this->_pathMap.insert(pair<string, double>(
-            "/instrumentation/gps/indicated-ground-speed-kt", 0));
+            "instrumentation/gps/indicated-ground-speed-kt", 0));
     this->_pathMap.insert(pair<string, double>(
-            "/instrumentation/gps/indicated-vertical-speed", 0));
+            "instrumentation/gps/indicated-vertical-speed", 0));
     this->_pathMap.insert(pair<string, double>(
-            "/instrumentation/heading-indicator/indicated-heading-deg", 0));
+            "instrumentation/heading-indicator/indicated-heading-deg", 0));
     this->_pathMap.insert(pair<string, double>
-                                  ("/instrumentation/magnetic-compass/indicated-heading-deg",
+                                  ("instrumentation/magnetic-compass/indicated-heading-deg",
                                    0));
     this->_pathMap.insert(pair<string, double>(
-            "/instrumentation/slip-skid-ball/indicated-slip-skid", 0));
+            "instrumentation/slip-skid-ball/indicated-slip-skid", 0));
     this->_pathMap.insert(pair<string, double>(
-            "/instrumentation/turn-indicator/indicated-turn-rate", 0));
+            "instrumentation/turn-indicator/indicated-turn-rate", 0));
     this->_pathMap.insert(pair<string, double>(
-            "/instrumentation/vertical-speed-indicator/indicated-speed-fpm",
+            "instrumentation/vertical-speed-indicator/indicated-speed-fpm",
             0));
-    this->_pathMap.insert(pair<string, double>("/controls/flight/aileron",
+    this->_pathMap.insert(pair<string, double>("controls/flight/aileron",
                                                0));
     this->_pathMap.insert(pair<string, double>
-                                  ("/controls/flight/elevator", 0));
-    this->_pathMap.insert(pair<string, double>("/controls/flight/rudder",
+                                  ("controls/flight/elevator", 0));
+    this->_pathMap.insert(pair<string, double>("controls/flight/rudder",
                                                0));
-    this->_pathMap.insert(pair<string, double>("/controls/flight/flaps",
+    this->_pathMap.insert(pair<string, double>("controls/flight/flaps",
                                                0));
     this->_pathMap.insert(
-            pair<string, double>("/controls/engines/current-engine/throttle",
+            pair<string, double>("controls/engines/current-engine/throttle",
                                  0));
-    this->_pathMap.insert(pair<string, double>("/engines/engine/rpm", 0));
+    this->_pathMap.insert(pair<string, double>("engines/engine/rpm", 0));
 }
 
-void Data::addVar(string var_name, Var *var) {
-    unique_lock<mutex> lock(m_locker);//locked!
+/**
+ * add to symbole table name and 0
+ * @param var_name  name
+ * @param var  the var (allocated from VarCommand)
+ */
+void Data::addVar(string var_name, Var *var) { // just add name
     _symbolTable.insert(std::pair<string, Var *>(var_name, var));
-    checkMap.insert(std::pair<string, double>(var_name, var->calculate()));
-    //unlocked!
-    m_locker.unlock();
 }
 
-void Data::addPathAndVar(Var *var, string path) {
-    unique_lock<mutex> lock(m_locker);//locked!
-    _pathVarMap.insert(std::pair<string, Var *>(path, var));
-    checkPathVar.insert(std::pair<string, string>(path, var->getVarName()));
+/**
+ * add path and var (which is bind with)
+ * @param var
+ * @param path
+ */
+void Data::addPathAndVar(Var *var, string path) { // just name and path
+    bindMap.insert(std::pair<string, Var *>(path, var));
     var->setBind(path);
     _pathMap[path] = var->getValue();
-    m_locker.unlock();
-    //unlocked!
 }
 
+/**
+ * return if there is a var or not
+ * @param var  var name
+ * @return if there is a var or not
+ */
 bool Data::isLeagalVar(const string &var) {
     int res = _symbolTable.count(var);
     return (_symbolTable.count(var) > 0);
-    //unlocked!
 }
 
+/**
+ *
+ * @param var the var name
+ * @return the value of the var if its leagal var
+ */
 double Data::getVarValue(const string &var) {
-    return checkMap.at(var);
-    //unlocked!
-}
-
-bool Data::isBind(const Var *var) {
-    return var->isBind();
-    //unlocked!
+    if (isLeagalVar(var)) {
+        return _symbolTable[var]->getValue();
+    }
 }
 
 bool Data::isPath(const string &var) {
     return (_pathMap.count(var) > 0);
 }
 
-
-void Data::changeBindValue(const string path, const double val) {
-    unique_lock<mutex> lock(m_locker);//locked!
-    _pathMap[path] = val;
-    m_locker.unlock();
-    //unlocked!
-}
-
+/*
+ * set the maps of bind and path maps
+ */
 void Data::setPath(const string &path, double val) {
-    if (isPath(path)) {
-        unique_lock<mutex> lock(m_locker);//locked!
-        _pathMap[path] = val;
-        sendToClient(path, val); // send to the client
+    if (bindMap.count(path) > 0) {
+        bindMap[path]->assign(val);
     }
-    m_locker.unlock();
-    //unlocked!
+    if (_pathMap.count(path) > 0) {
+        _pathMap[path] = val;
+    }
 }
 
+/**
+ * return the var if exist
+ */
 Var *Data::getVar(const string &var) {
     if (isLeagalVar(var)) {
-        unique_lock<mutex> lock(m_locker);//locked!
         return _symbolTable.at(var);
     }
     //unlocked!
 }
 
 void Data::assignVar(string var_name, double val) {
-    unique_lock<mutex> lock(m_locker);//locked!
     Var *v = _symbolTable[var_name];
-    checkMap[var_name] = val;
     v->assign(val);
     string path = v->getBindAdress();
-    ///////////////////////////////////////////////////////////
-    checkMap.insert(std::pair<string, double>(var_name, val));
-    if (_pathMap.count(path) > 0) {
+    if (v->isBind()) { // only from the xml
         _pathMap[path] = val;
-//        RemoveQuotationMark(path);
+    }
+    if (bindMap.count(path) > 0) {
         sendToClient(path, val);
     }
-    m_locker.unlock();
-    //unlocked!
 }
 
 void Data::addBind(Var *var, const string &bind_adress) {
-    unique_lock<mutex> lock(m_locker);//locked!
-    _pathVarMap.insert(pair<string, Var *>(bind_adress, var));
-    m_locker.unlock();
-    //unlocked!
+    bindMap.insert(pair<string, Var *>(bind_adress, var));
+    if (isPath(bind_adress)) {
+        var->assign(_pathMap[bind_adress]);
+    }
+    bindMap[bind_adress] = var;
 }
 
 void Data::changeVarBind(Var *var, string &bind) {
-    unique_lock<mutex> lock(m_locker);//locked!
     var->setBind(bind);
-    m_locker.unlock();
 }
 
 void Data::changeVarValue(Var *var, double value) {
     var->assign(value);
+    string path = var->getBindAdress();
+    if (isPath(var->getVarName())) {
+        _pathMap[path] = value;
+    }
+    sendToClient(var->getBindAdress(), value);
 }
 
 void Data::sendToClient(const string &path, double value) {
-    string newPath = path;
-    newPath.erase(newPath.begin());
     string s = "";
     s.clear();
-    s += "set " + newPath + ' ' + to_string(value) + " \r\n";
+    s += "set " + path + " " + to_string(value) + "\r\n";
+    cout << s << endl;
+    unique_lock<mutex> lock(m_locker);
     _client->Send(s);
+    lock.unlock();
 }
 
 /**
@@ -180,22 +183,32 @@ void Data::sendToClient(const string &path, double value) {
 void Data::addToMapsFromServer(pair<string, double> &toMap) {
     string path = toMap.first;
     double val = toMap.second;
-    string var_name = checkPathVar[path];
-    unique_lock<mutex> lock(m_locker);//locked!
-    // iterator of the multimap
-    typedef std::multimap<string, Var *>::iterator MMAPIterator;
+    unique_lock<mutex> lock(m_locker);
+    if (isPath(path)) {
+        _pathMap[path] = val;
+    }
+    string var_name ="";
+    if (bindMap.count(path) > 0){
+        bindMap[path]->assign(val);
+        var_name= bindMap[path]->getVarName();
+    }
+    lock.unlock();
     cout << "var is : " << var_name << " path is : " << path <<
-    " value is : """ << val << " "<<endl;
-    _pathMap[path] = val;
-    checkMap[var_name] = val;
-    m_locker.unlock();
-
-    /**
-// change values of the vars bind with the changed values
-std::pair<MMAPIterator, MMAPIterator> result = _pathVarMap
-    .equal_range(path);
-for (auto it = result.first; it !=result.second; ++it) {
-it->second->assign(val);
+         " value is : """ << val << " " << endl;
 }
-     **/
+
+void Data::toMap(string toSplit) {
+    auto it = m_xmlHandler.begin();
+    size_t pos = 0;
+    while (toSplit != "") {
+        if (++it == m_xmlHandler.end())
+            break;
+        pos = toSplit.find(DELIMITER);
+        string splitted = toSplit.substr(0, pos);
+        pair<string, double> p = make_pair(*it, stod(splitted));
+        addToMapsFromServer(p);
+        toSplit.erase(0, pos + 1);
+        if (++it == m_xmlHandler.end())
+            break;
+    }
 }

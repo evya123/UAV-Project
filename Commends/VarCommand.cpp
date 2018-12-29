@@ -63,4 +63,6 @@ void VarCommand::doCommand(vector<string> &arguments, Data *d) {
 
 void VarCommand::RemoveQuotationMark(string &path) {
     path.erase(remove(path.begin(), path.end(), '\"'), path.end());
+    path.erase(path.begin());
+
 }

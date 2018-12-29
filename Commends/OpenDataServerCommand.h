@@ -8,6 +8,7 @@
 #include <Commends/PullAndPush/TcpServer.h>
 #include <stdexcept>
 #include <thread>
+
 class TcpServer;
 
 class OpenDataServerCommand : public Command {
@@ -19,8 +20,11 @@ public:
     virtual void doCommand(vector<string> &arguments, Data *d);
 
     virtual ~OpenDataServerCommand();
+
 private:
-    TcpServer* m_server;
+    TcpServer *m_server;
+    thread m_trhead;
+    int m_port;
 };
 
 

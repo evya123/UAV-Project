@@ -9,7 +9,7 @@ ConnectCommand::ConnectCommand(TcpClient* client) {
 
 void ConnectCommand::doCommand(vector<string> &arguments, Data *d) {
     cout<<"ConnectCommand!"<<endl;
-    int port = Utils::fromStringToNum(arguments[PORT_POS_Client], INTEGER);
+    int port = stod(arguments[PORT_POS_Client]);
     m_client->setup(arguments[IP_POS],port);
     arguments.clear();
 }

@@ -5,6 +5,9 @@
 #include "SleepCommand.h"
 
 void SleepCommand::doCommand(vector<string> &arguments, Data *d) {
-    usleep(Utils::fromStringToNum(arguments.at(SLEEP_TIME), DOUBLE));
+
+    double msec = Utils::calculateExpression(arguments.back(),d);
+    this_thread::sleep_for(chrono::milliseconds(static_cast<int>(msec)));
+    usleep(msec);
     arguments.clear();
-}
+    }

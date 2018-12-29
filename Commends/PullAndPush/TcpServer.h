@@ -14,8 +14,6 @@
 #include <Commends/Command.h>
 #include "Utils.h"
 
-#define DELIMITER ","
-
 #define MAXPACKETSIZE 1024
 
 using namespace std;
@@ -24,16 +22,19 @@ class TcpServer {
 public:
     TcpServer() = default;
 
-    void setup(int port);
+    int setup(int port);
 
-    int receive();
+  //  int receive();
 
     void detach();
 
-    static void *TaskServer(void *arg,Data* data);
+
+    static void *TaskServer(int soc, Data *data);
+    void toMap(string toSplit);
+
+
 
 private:
-    static void toMap(string toSplit, Data *d);
     int m_serverSocket, m_accVal;
     struct sockaddr_in m_serverAddress;
     struct sockaddr_in m_clientAddress;

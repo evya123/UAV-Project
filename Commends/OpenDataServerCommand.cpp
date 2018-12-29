@@ -1,18 +1,18 @@
 
 #include "OpenDataServerCommand.h"
+
 OpenDataServerCommand::OpenDataServerCommand(TcpServer *server) {
     m_server = server;
 }
 
 void OpenDataServerCommand::doCommand(vector<string> &arguments, Data *d) {
-    cout<<"OpenDataServerCommand!"<<endl;
-    double port = Utils::fromStringToNum(arguments.back(), INTEGER);
+    cout << "OpenDataServerCommand!" << endl;
+    int port = stod(arguments.back());
     arguments.clear();
-    TcpStruct args;
-    m_server->setup(port);
-    args.arg1 = m_server->receive();
-    args.arg2 = d;
-    thread dataServer(TcpServer::TaskServer,&args,d);
+    TcpStruct* args = new  TcpStruct();
+    args->arg1 = m_server->setup(port);
+    args->arg2 = d;
+    thread dataServer(TcpServer::TaskServer,args->arg1, d);
 
     dataServer.detach();
 }

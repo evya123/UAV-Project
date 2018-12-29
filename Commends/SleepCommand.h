@@ -8,7 +8,6 @@
 #include "Command.h"
 #include "Utils.h"
 
-#define SLEEP_TIME 0
 
 class SleepCommand : public Command {
 public:

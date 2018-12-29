@@ -3,6 +3,7 @@
 //
 #include "TcpServer.h"
 
+
 /**
  * Function name: setup
  * @param port
@@ -11,41 +12,63 @@
  * bind the socket to the port and ip and the make the server
  * listen to the port and wait for connection.
  */
-void TcpServer::setup(int port) {
-    cout << "Setup" << endl;
-    m_serverSocket = socket(AF_INET, SOCK_STREAM, 0); //Create the socket
-    if (m_serverSocket < 0) { //Check if the creation succeeded
-        perror("OpenDataServerCommand->setup: ");
+int TcpServer::setup(int port) {
+    int opt = 1;
+    struct sockaddr_in server, client;
+
+    // Creating socket file descriptor
+    if ((m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == 0) {
+        perror("socket failed");
         exit(EXIT_FAILURE);
     }
-    memset(&m_serverAddress, 0,
-           sizeof(m_serverAddress)); //allocate space for the struct and put zeros
-    m_serverAddress.sin_family = AF_INET;
-    m_serverAddress.sin_addr.s_addr = htonl(
-            INADDR_ANY); //Convert '0.0.0.0' to network byte order. set to any ip because the server
-    //doesn't know the client ip and doesn't need to.
-    m_serverAddress.sin_port = htons(port);
-    ::bind(m_serverSocket, (sockaddr *) &m_serverAddress,
-           sizeof(m_serverAddress)); //:: before bind because without it, the function use std::bind
-    int lst = listen(m_serverSocket, 5);
-    if (lst < 0) {
-        perror("OpenDataServerCommand->setup: ");
-        close(m_serverSocket);
+
+    // Forcefully attaching socket to the port 8080
+    if (setsockopt(m_serverSocket, SOL_SOCKET, SO_REUSEADDR, &opt,
+                   sizeof(opt))) {
+        perror("setsockopt");
         exit(EXIT_FAILURE);
     }
+    server.sin_family = AF_INET;
+    server.sin_addr.s_addr = INADDR_ANY;
+    server.sin_port = htons(port);
+
+    // Forcefully attaching socket to the port 8080
+    if (bind(m_serverSocket, (struct sockaddr *) &server, sizeof(server)) < 0) {
+        perror("bind failed");
+        exit(EXIT_FAILURE);
+    }
+    if (listen(m_serverSocket, 5) < 0) {
+        perror("listen");
+        exit(EXIT_FAILURE);
+    }
+
+    //Accept and incoming connection
+    puts("Waiting for incoming connections...");
+    socklen_t addrlen = sizeof(sockaddr_in);
+    m_accVal = accept(m_serverSocket, (struct sockaddr *) &client, &addrlen);
+    if (m_accVal < 0) {
+        cout << "Error!" << endl;
+    } else
+        cout << "Connection accepted, starting listener thread" << endl;
+    char buf;
+    read(m_accVal, &buf, 1);
+    return m_accVal;
 }
 
 
-void *TcpServer::TaskServer(void *arg, Data* data) {
+void *TcpServer::TaskServer(int soc, Data *data) {
     cout << "Connected! now waiting for data!" << endl;
-    TcpStruct *args = static_cast<TcpStruct *>(arg);
-    int newsockfd = args->arg1;
+    int newsockfd = soc;
     int n;
+    cout << "the soc is: " << n << endl;
+
     char msg[MAXPACKETSIZE];
     while (true) {
         memset(msg, 0, MAXPACKETSIZE);
-        n = recv(newsockfd, msg, MAXPACKETSIZE, 0);
-        toMap(string(msg), data);
+        n = read(newsockfd, msg, MAXPACKETSIZE);
+        if (msg != "")
+            cout << msg << endl;
+        data->toMap(string(msg));
         if (n == 0) {
             close(newsockfd);
             break;
@@ -61,16 +84,6 @@ void *TcpServer::TaskServer(void *arg, Data* data) {
  * Upon connection, accept the connection and create a thread
  * which runs Task().
  **/
-int TcpServer::receive() {
-    cout << "Accepting connection!" << endl;
-    //string str;
-    socklen_t sosize = sizeof(m_clientAddress);
-    m_accVal = accept(m_serverSocket, (struct sockaddr *) &m_clientAddress,
-                      &sosize); //On success, these system calls return a nonnegative integer that is a
-    //file descriptor for the accepted socket.  On error, -1 is returned,
-    //and errno is set appropriately.
-    return m_accVal;
-}
 
 
 /**
@@ -85,22 +98,5 @@ void TcpServer::detach() {
     sleep(1);
     if (close(m_serverSocket) != 0) {
         perror("TcpServer->detach->close 1: ");
-    }
-}
-
-void TcpServer::toMap(string toSplit, Data *d) {
-    auto it = m_xmlHandler.begin();
-    size_t pos = 0;
-    while (toSplit != "") {
-        if (++it == m_xmlHandler.end())
-            break;
-        pos = toSplit.find(DELIMITER);
-        string splitted = toSplit.substr(0, pos);
-        pair<string, double> p = make_pair(*it, Utils::fromStringToNum(splitted,
-                                                                       DOUBLE));
-        d->addToMapsFromServer(p);
-        toSplit.erase(0, pos + 1);
-        if (++it == m_xmlHandler.end())
-            break;
     }
 }

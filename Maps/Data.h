@@ -9,16 +9,17 @@
 #include "Var.h"
 #include <mutex>
 #include <Commends/PullAndPush/TcpClient.h>
+#include "Commends/PullAndPush/XmlFormat.h"
+
+#define DELIMITER ","
 
 using namespace std;
 
 class Data {
 private:
-    map<string,string> checkPathVar;
-    map<string, double > checkMap;
     map<string, Var *> _symbolTable;
     map<string, double> _pathMap;
-    map<string, Var *> _pathVarMap;
+    map<string, Var *> bindMap;
     mutex m_locker;
     TcpClient *_client;
 public:
@@ -38,10 +39,6 @@ public:
 
     bool isPath(const string &var);
 
-    void changeBindValue(string path, double val);
-
-    bool isBind(const Var *var);
-
     void addBind(Var *var, const string &bind_adress);
 
     void setPath(const string &path, double val);
@@ -56,6 +53,8 @@ public:
 
 
     void addToMapsFromServer(pair<string, double> &toMap);
+
+    void toMap(string toSplit);
 
     ~Data();
 
