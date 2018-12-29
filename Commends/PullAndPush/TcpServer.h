@@ -14,7 +14,7 @@
 #include <Commends/Command.h>
 #include "Utils.h"
 
-#define MAXPACKETSIZE 1024
+#define MAXPACKETSIZE 256
 
 using namespace std;
 

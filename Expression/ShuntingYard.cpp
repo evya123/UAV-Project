@@ -79,7 +79,7 @@ double ShuntingYard::evaluate() {
             bool afterPoint = false;
 
             if (tokens[i] == '-') {
-                isNeg = -1;
+                isNeg *= -1;
                 continue;
             }
 

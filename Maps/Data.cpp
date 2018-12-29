@@ -2,6 +2,7 @@
 // Created by lidor115 on 12/20/18.
 //
 
+#include <Utils.h>
 #include "Data.h"
 
 Data::Data(TcpClient *client) {
@@ -72,7 +73,9 @@ void Data::initPath() {
  * @param var  the var (allocated from VarCommand)
  */
 void Data::addVar(string var_name, Var *var) { // just add name
+    unique_lock<mutex> lock(m_locker);
     _symbolTable.insert(std::pair<string, Var *>(var_name, var));
+    lock.unlock();
 }
 
 /**
@@ -81,9 +84,11 @@ void Data::addVar(string var_name, Var *var) { // just add name
  * @param path
  */
 void Data::addPathAndVar(Var *var, string path) { // just name and path
+    unique_lock<mutex> lock(m_locker);
     bindMap.insert(std::pair<string, Var *>(path, var));
     var->setBind(path);
     _pathMap[path] = var->getValue();
+    lock.unlock();
 }
 
 /**
@@ -92,8 +97,9 @@ void Data::addPathAndVar(Var *var, string path) { // just name and path
  * @return if there is a var or not
  */
 bool Data::isLeagalVar(const string &var) {
-    int res = _symbolTable.count(var);
+    unique_lock<mutex> lock(m_locker);
     return (_symbolTable.count(var) > 0);
+    lock.unlock();
 }
 
 /**
@@ -102,9 +108,11 @@ bool Data::isLeagalVar(const string &var) {
  * @return the value of the var if its leagal var
  */
 double Data::getVarValue(const string &var) {
-    if (isLeagalVar(var)) {
+    unique_lock<mutex> lock(m_locker);
+    if (_symbolTable.count(var) > 0) {
         return _symbolTable[var]->getValue();
     }
+    lock.unlock();
 }
 
 bool Data::isPath(const string &var) {
@@ -115,54 +123,70 @@ bool Data::isPath(const string &var) {
  * set the maps of bind and path maps
  */
 void Data::setPath(const string &path, double val) {
+    unique_lock<mutex> lock(m_locker);
     if (bindMap.count(path) > 0) {
         bindMap[path]->assign(val);
     }
     if (_pathMap.count(path) > 0) {
         _pathMap[path] = val;
     }
+    lock.unlock();
 }
 
 /**
  * return the var if exist
  */
 Var *Data::getVar(const string &var) {
-    if (isLeagalVar(var)) {
+    unique_lock<mutex> lock(m_locker);
+    if (_symbolTable.count(var) > 0) {
         return _symbolTable.at(var);
     }
+    lock.unlock();
     //unlocked!
 }
 
 void Data::assignVar(string var_name, double val) {
+    unique_lock<mutex> lock(m_locker);
     Var *v = _symbolTable[var_name];
     v->assign(val);
     string path = v->getBindAdress();
     if (v->isBind()) { // only from the xml
         _pathMap[path] = val;
     }
+    lock.unlock();
     if (bindMap.count(path) > 0) {
         sendToClient(path, val);
     }
 }
 
 void Data::addBind(Var *var, const string &bind_adress) {
+    unique_lock<mutex> lock(m_locker);
     bindMap.insert(pair<string, Var *>(bind_adress, var));
     if (isPath(bind_adress)) {
         var->assign(_pathMap[bind_adress]);
     }
     bindMap[bind_adress] = var;
+    lock.unlock();
+}
+
+map<string, Var *> Data::getBindMap() {
+    return bindMap;
 }
 
 void Data::changeVarBind(Var *var, string &bind) {
+    unique_lock<mutex> lock(m_locker);
     var->setBind(bind);
+    lock.unlock();
 }
 
 void Data::changeVarValue(Var *var, double value) {
+    unique_lock<mutex> lock(m_locker);
     var->assign(value);
     string path = var->getBindAdress();
     if (isPath(var->getVarName())) {
         _pathMap[path] = value;
     }
+    lock.unlock();
     sendToClient(var->getBindAdress(), value);
 }
 
@@ -171,9 +195,7 @@ void Data::sendToClient(const string &path, double value) {
     s.clear();
     s += "set " + path + " " + to_string(value) + "\r\n";
     cout << s << endl;
-    unique_lock<mutex> lock(m_locker);
     _client->Send(s);
-    lock.unlock();
 }
 
 /**
@@ -182,33 +204,33 @@ void Data::sendToClient(const string &path, double value) {
  */
 void Data::addToMapsFromServer(pair<string, double> &toMap) {
     string path = toMap.first;
+    path.erase(path.begin());
     double val = toMap.second;
     unique_lock<mutex> lock(m_locker);
     if (isPath(path)) {
         _pathMap[path] = val;
     }
-    string var_name ="";
-    if (bindMap.count(path) > 0){
+    string var_name = "";
+    if (bindMap.count(path) > 0) {
         bindMap[path]->assign(val);
-        var_name= bindMap[path]->getVarName();
+        var_name = bindMap[path]->getVarName();
     }
     lock.unlock();
-    cout << "var is : " << var_name << " path is : " << path <<
-         " value is : """ << val << " " << endl;
 }
 
 void Data::toMap(string toSplit) {
     auto it = m_xmlHandler.begin();
     size_t pos = 0;
-    while (toSplit != "") {
+    while (!toSplit.empty()) {
         if (++it == m_xmlHandler.end())
             break;
         pos = toSplit.find(DELIMITER);
         string splitted = toSplit.substr(0, pos);
-        pair<string, double> p = make_pair(*it, stod(splitted));
+        pair<string, double> p = make_pair(*it, Utils::fromStringToNum
+                (splitted, DOUBLE));
         addToMapsFromServer(p);
         toSplit.erase(0, pos + 1);
-        if (++it == m_xmlHandler.end())
-            break;
+       // if (++it == m_xmlHandler.end())
+          //  break;
     }
 }

@@ -50,24 +50,20 @@ int TcpServer::setup(int port) {
         cout << "Error!" << endl;
     } else
         cout << "Connection accepted, starting listener thread" << endl;
-    char buf;
+    char buf[MAXPACKETSIZE];
+    memset(buf, 0, MAXPACKETSIZE);
     read(m_accVal, &buf, 1);
     return m_accVal;
 }
 
 
 void *TcpServer::TaskServer(int soc, Data *data) {
-    cout << "Connected! now waiting for data!" << endl;
     int newsockfd = soc;
     int n;
-    cout << "the soc is: " << n << endl;
-
     char msg[MAXPACKETSIZE];
     while (true) {
         memset(msg, 0, MAXPACKETSIZE);
         n = read(newsockfd, msg, MAXPACKETSIZE);
-        if (msg != "")
-            cout << msg << endl;
         data->toMap(string(msg));
         if (n == 0) {
             close(newsockfd);

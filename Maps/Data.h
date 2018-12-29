@@ -51,6 +51,7 @@ public:
 
     void sendToClient(const string &path, double value);
 
+    map<string, Var*> getBindMap();
 
     void addToMapsFromServer(pair<string, double> &toMap);
 
