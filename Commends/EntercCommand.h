@@ -10,6 +10,7 @@
 
 class EntercCommand : public Command{
     virtual void doCommand(vector<string> &arguments, Data *d);
+    virtual ~EntercCommand(){}
 };
 
 

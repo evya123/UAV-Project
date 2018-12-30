@@ -19,7 +19,7 @@ public:
 
     virtual void doCommand(vector<string> &arguments, Data *d);
 
-    virtual ~OpenDataServerCommand();
+    virtual ~OpenDataServerCommand(){}
 
 private:
     TcpServer *m_server;

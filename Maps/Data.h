@@ -56,11 +56,7 @@ public:
     void addToMapsFromServer(pair<string, double> &toMap);
 
     void toMap(string toSplit);
-
-    void sendToClientAllTheTime();
-
     ~Data();
-
 
 };
 

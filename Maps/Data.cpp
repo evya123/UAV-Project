@@ -98,9 +98,7 @@ void Data::addPathAndVar(Var *var, string path) { // just name and path
  * @return if there is a var or not
  */
 bool Data::isLeagalVar(const string &var) {
-    unique_lock<mutex> lock(m_locker);
     return (_symbolTable.count(var) > 0);
-    lock.unlock();
 }
 
 /**
@@ -111,12 +109,13 @@ bool Data::isLeagalVar(const string &var) {
 double Data::getVarValue(const string &var) {
     unique_lock<mutex> lock(m_locker);
     if (_symbolTable.count(var) > 0) {
+        lock.unlock();
         return _symbolTable[var]->getValue();
     }
-    lock.unlock();
 }
 
 bool Data::isPath(const string &var) {
+
     return (_pathMap.count(var) > 0);
 }
 
@@ -140,10 +139,9 @@ void Data::setPath(const string &path, double val) {
 Var *Data::getVar(const string &var) {
     unique_lock<mutex> lock(m_locker);
     if (_symbolTable.count(var) > 0) {
+        lock.unlock();
         return _symbolTable.at(var);
     }
-    lock.unlock();
-    //unlocked!
 }
 
 void Data::assignVar(string var_name, double val) {
@@ -161,8 +159,8 @@ void Data::assignVar(string var_name, double val) {
 }
 
 void Data::addBind(Var *var, const string &bind_adress) {
-    unique_lock<mutex> lock(m_locker);
     bindMap.insert(pair<string, Var *>(bind_adress, var));
+    unique_lock<mutex> lock(m_locker);
     if (isPath(bind_adress)) {
         var->assign(_pathMap[bind_adress]);
     }
@@ -189,17 +187,18 @@ void Data::changeVarValue(Var *var, double value) {
     if (isPath(var->getVarName())) {
         _pathMap[path] = value;
     }
-    sendToClient(var->getBindAdress(), value);
     lock.unlock();
+    sendToClient(var->getBindAdress(), value);
 }
 
 void Data::sendToClient(const string &path, double value) {
+
     if (bindMap.count(path) > 0) {
-        string s = "";
-        s.clear();
-        s += "set " + path + " " + to_string(value) + "\r\n";
-        cout << s << endl;
-        _client->Send(s);
+        string message = "set " + path + " " + to_string(value) + "\r\n";
+        cout << message << endl;
+        cout << bindMap[path]->getVarName() << " = "
+             << bindMap[path]->getValue() << endl;
+        _client->Send(message);
     }
 }
 
@@ -235,5 +234,14 @@ void Data::toMap(string toSplit) {
                 (splitted, DOUBLE));
         addToMapsFromServer(p);
         toSplit.erase(0, pos + 1);
+    }
+}
+
+Data::~Data() {
+    for (auto it = _symbolTable.begin(); it != _symbolTable.end(); ++it) {
+        if (it->second != nullptr) {
+            delete (it->second);
+            it->second = nullptr;
+        }
     }
 }

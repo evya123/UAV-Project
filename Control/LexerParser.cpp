@@ -169,8 +169,7 @@ void LexerParser::Parser(vector<string> &lexer) {
                 ExcecuteCommand(lexer, command);
             } else {
                 if (_data->isLeagalVar(temp)) {
-                    Command *varCommand = new VarCommand();
-                    ExcecuteCommand(lexer, varCommand);
+                    ExcecuteCommand(lexer, _mapStringCommad["var"]);
                 } else {
                     throw ("var is not valid!");
                 }
@@ -184,6 +183,7 @@ void LexerParser::ExcecuteCommand(vector<string> &lexer, Command *command) {
     ExpressionCommand *expressionCommand = new
             ExpressionCommand(command, &lexer, _data);
     expressionCommand->calculate();
+    delete (expressionCommand);
 }
 
 void LexerParser::ReadFromFile(string filename) {
@@ -282,13 +282,12 @@ LexerParser::setMapStringCommand(TcpClient *client, TcpServer *server) {
     Command *varCommand = new VarCommand();
     _mapStringCommad.insert(pair<string, Command *>("var", varCommand));
 
-
     //ifComnand
     Command *ifCommand = new IfCommand(this);
 
     _mapStringCommad.insert(pair<string, Command *>("if", ifCommand));
 
-    //whileCommand
+    //whileCommand - its if command to...
     Command *whileCommand = new IfCommand(this);
     _mapStringCommad.insert(pair<string, Command *>("while", whileCommand));
 
@@ -300,7 +299,6 @@ LexerParser::setMapStringCommand(TcpClient *client, TcpServer *server) {
     Command *sleepCommand = new SleepCommand();
     _mapStringCommad.insert(pair<string, Command *>("sleep",
                                                     sleepCommand));
-
 }
 
 
@@ -331,13 +329,10 @@ Command *LexerParser::getCommand(const string c) const {
  */
 LexerParser::~LexerParser() {
     // check if the map isn't empty
-    if (!_mapStringCommad.empty()) {
-        for (map<string, Command *>::iterator it = _mapStringCommad.begin();
-             it != _mapStringCommad.end(); ++it) {
-            //delete map and place null pointer;
-            delete it->second;
-            it->second = nullptr;
-        }
+    for (map<string, Command *>::iterator it = _mapStringCommad.begin();
+         it != _mapStringCommad.end(); ++it) {
+        //delete map and place null pointer;
+        delete it->second;
     }
 }
 

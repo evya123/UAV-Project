@@ -169,7 +169,9 @@ bool Utils::checkCondition(vector<string> &arguments, Data *_data) {
     double first = Utils::calculateExpression(first_expression, _data);
     double second = Utils::calculateExpression(second_expression, _data);
     //return if the condition is true or false
-    return arithmeticConditions->getCondition(condition)(first, second);
+    bool result = arithmeticConditions->getCondition(condition)(first, second);
+    delete (arithmeticConditions);
+    return result;
 
 }
 
@@ -301,6 +303,9 @@ void Utils::LoopCommand(queue<vector<string>> &commands,
             parseVec = temp;
             reverse(parseVec.begin(), parseVec.end());
             lp->Parser(parseVec);
+        }
+        if (main_condition.front() == IF_CHECK) {
+            break;
         }
     }
 }

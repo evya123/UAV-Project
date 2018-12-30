@@ -1,9 +1,9 @@
 
 #include "Control/LexerParser.h"
 
-bool exit(string& str, TcpClient* client, TcpServer* server){
+bool exit(string &str, TcpClient *client, TcpServer *server) {
 
-    if (!str.compare("exit")){
+    if (!str.compare("exit")) {
         server->detach();
         client->exit();
         return true;
@@ -12,11 +12,11 @@ bool exit(string& str, TcpClient* client, TcpServer* server){
 }
 
 
-void startUI(int argc, char* argv[]) {
+void startUI(int argc, char *argv[]) {
     TcpClient *client = new TcpClient();
     Data *data = new Data(client);
     TcpServer *server = new TcpServer();
-    LexerParser *lexerParser = new LexerParser(data, client,server);
+    LexerParser *lexerParser = new LexerParser(data, client, server);
     string str = " ";
     bool firstTime = true;
     if (argc < 2) {
@@ -38,9 +38,13 @@ void startUI(int argc, char* argv[]) {
     } else {
         lexerParser->ReadFromFile(argv[1]);
     }
+    delete server;
+    delete client;
+    delete data;
+    delete lexerParser;
 }
 
-int main(int argc, char* argv[]) {
-    startUI(argc,argv);
+int main(int argc, char *argv[]) {
+    startUI(argc, argv);
     return 0;
 }

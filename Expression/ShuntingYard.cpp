@@ -30,17 +30,30 @@ double ShuntingYard::precedence(char op) {
 double ShuntingYard::applyOp(double first, double second, char op) {
     Expression *aEx = new Num(first);
     Expression *bEx = new Num(second);
+    Expression* answer;
+    double final_answer;
     switch (op) {
 
         case '+':
-            return (new Plus(aEx, bEx))->calculate();
+
+            answer = (new Plus(aEx, bEx));
+            final_answer = answer ->calculate();
+            break;
         case '-':
-            return (new Minus(aEx, bEx))->calculate();
+            answer = (new Minus(aEx, bEx));
+            final_answer = answer ->calculate();
+            break;
         case '*':
-            return (new Mult(aEx, bEx))->calculate();
+            answer = (new Mult(aEx, bEx));
+            final_answer = answer ->calculate();
+            break;
         case '/':
-            return (new Div(aEx, bEx))->calculate();
+            answer = (new Div(aEx, bEx));
+            final_answer = answer ->calculate();
+            break;
     }
+    delete(answer);
+    return final_answer;
 }
 
 /**returns value of expression after evaluation

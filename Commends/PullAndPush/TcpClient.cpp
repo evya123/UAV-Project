@@ -66,8 +66,7 @@ bool TcpClient::Send(string &data) {
 }
 
 void TcpClient::exit() {
-    shutdown(sock,
-             SHUT_RDWR); //stop connection from both sides but can still receive pending data
+    shutdown(sock,SHUT_RDWR); //stop connection from both sides but can still receive pending data
     sleep(1);               //let the pending data flow and then close
     close(sock);
 }

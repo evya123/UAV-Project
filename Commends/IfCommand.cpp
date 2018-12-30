@@ -59,11 +59,6 @@ void IfCommand::doCommand(vector<string> &arguments, Data *d) {
     tempCondition = m_conditions.front();
         Utils::LoopCommand(m_commands, m_conditions, d, m_lp);
 
-    printf ("Done!");
-/*
-    if (!(m_conditions.empty() & m_commands.empty()))
-        cerr << "If statement is incorrect!" << endl;
-        */
     arguments.clear();
     Utils::clearQ(m_commands);
     Utils::clearQ(m_conditions);

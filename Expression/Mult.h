@@ -10,6 +10,7 @@ public:
     Mult(Expression *right, Expression *left) : BinaryExpression(right, left){};
 
     double calculate();
+
 };
 
 #endif //DEV_MULT_H

@@ -3,6 +3,7 @@
 //
 
 #include "ExpressionCommand.h"
+
 /**
  * constructor of expression command
  * @param command
@@ -15,6 +16,7 @@ ExpressionCommand::ExpressionCommand(Command *command,
     _data = data;
     _command = command;
 }
+
 /**
  * do command of the expression
  * @return zero (nothing)

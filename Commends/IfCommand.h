@@ -17,6 +17,7 @@ private:
     queue<vector<string>> m_conditions;
     queue<vector<string>> m_commands;
     LexerParser* m_lp;
+    ~IfCommand(){}
 };
 
 

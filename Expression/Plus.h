@@ -9,5 +9,6 @@ public:
     Plus(Expression *right, Expression *left) : BinaryExpression(right, left){};
 
     double calculate();
+
 };
 #endif //DEV_PLUS_H

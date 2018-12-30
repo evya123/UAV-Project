@@ -6,12 +6,13 @@
 
 void VarCommand::doCommand(vector<string> &arguments, Data *d) {
     string name = arguments.back();
-    Var *var;
+    Var *var = nullptr;
     // if there is no var - build new var
     if (!d->isLeagalVar(name)) {
         Var *v = new Var(name); //Var*
         var = v;
         d->addVar(name, var); // its ok - mutex at the var - the add is in
+
         // the Data - Don't worry
     } else {
         var = d->getVar(name);  //Var* - we don't change the var here
@@ -55,14 +56,15 @@ void VarCommand::doCommand(vector<string> &arguments, Data *d) {
         double value = Utils::calculateExpression(str, d);
         d->assignVar(name, value);   // all maps
     }
-    arguments.
-
-            pop_back();
+    arguments.pop_back();
 }
 
 
 void VarCommand::RemoveQuotationMark(string &path) {
     path.erase(remove(path.begin(), path.end(), '\"'), path.end());
     path.erase(path.begin());
+
+}
+VarCommand::~VarCommand() {
 
 }

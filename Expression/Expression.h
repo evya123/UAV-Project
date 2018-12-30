@@ -4,6 +4,7 @@
 class Expression {
 public:
     virtual double calculate() = 0;
+    virtual ~Expression(){};
 };
 
 #endif //DEV_EXPRESSION_H

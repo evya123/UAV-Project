@@ -19,12 +19,13 @@ private:
     static bool equalOrGreater(double lhs, double rhs) { return lhs >= rhs;}
     static bool equalOrSmaller(double lhs, double rhs) { return lhs <= rhs;}
     static bool notEqual(double lhs, double rhs) { return lhs != rhs;}
-
     map<string, condition> m_conditionMap;
 
 public:
     ArithmeticConditions();
     condition getCondition(const string &cond);
+    virtual ~ArithmeticConditions(){}
+
 };
 
 

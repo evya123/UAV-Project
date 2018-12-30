@@ -18,4 +18,5 @@ public:
     ExpressionCommand(Command* command, vector<string> *arguments, Data *data);
 
     double calculate();
+    virtual ~ExpressionCommand(){}
 };
