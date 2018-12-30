@@ -9,6 +9,7 @@
 #include "Mult.h"
 #include "Div.h"
 #include <bits/stdc++.h>
+#include "Maps/Data.h"
 using namespace std;
 #ifndef DEV_SHUNTINGYARD_H
 #define DEV_SHUNTINGYARD_H

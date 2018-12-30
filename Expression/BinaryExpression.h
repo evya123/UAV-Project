@@ -5,7 +5,7 @@
 #ifndef DEV_BINARYEXPRESSION_H
 #define DEV_BINARYEXPRESSION_H
 
-#include "Expression/Expression.h"
+#include "Expression.h"
 
 class BinaryExpression : public Expression {
 protected:
