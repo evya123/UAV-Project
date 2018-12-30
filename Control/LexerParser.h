@@ -11,10 +11,10 @@
 #include <string>
 #include <list>
 #include "Expression/ShuntingYard.h"
-#include "Utils.h"
+#include "../Utils.h"
 #include <fstream>
-#include "ExpressionCommand.h"
-#include "Commends/PullAndPush/TcpServer.h"
+#include "../ExpressionCommand.h"
+#include "../Commends/PullAndPush/TcpServer.h"
 #include <algorithm>
 
 class TcpServer;

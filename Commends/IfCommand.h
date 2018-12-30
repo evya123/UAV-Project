@@ -6,7 +6,7 @@
 #define UAV_PROJECT_IFCOMMAND_H
 
 #include "Command.h"
-#include "Control/LexerParser.h"
+#include "../Control/LexerParser.h"
 
 class LexerParser;
 class IfCommand : public Command {

@@ -6,7 +6,7 @@
 #ifndef UAV_PROJECT_VARCOMMAND_H
 #define UAV_PROJECT_VARCOMMAND_H
 #include "Command.h"
-#include "Utils.h"
+#include "../Utils.h"
 class VarCommand : public Command {
 public:
     virtual void doCommand(vector<string> &arguments, Data *d);
