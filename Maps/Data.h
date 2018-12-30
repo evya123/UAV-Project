@@ -57,6 +57,8 @@ public:
 
     void toMap(string toSplit);
 
+    void sendToClientAllTheTime();
+
     ~Data();
 
 

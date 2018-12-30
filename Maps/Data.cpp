@@ -88,6 +88,7 @@ void Data::addPathAndVar(Var *var, string path) { // just name and path
     bindMap.insert(std::pair<string, Var *>(path, var));
     var->setBind(path);
     _pathMap[path] = var->getValue();
+    sendToClient(path, var->getValue());
     lock.unlock();
 }
 
@@ -166,6 +167,7 @@ void Data::addBind(Var *var, const string &bind_adress) {
         var->assign(_pathMap[bind_adress]);
     }
     bindMap[bind_adress] = var;
+    sendToClient(bind_adress, var->getValue());
     lock.unlock();
 }
 
@@ -176,6 +178,7 @@ map<string, Var *> Data::getBindMap() {
 void Data::changeVarBind(Var *var, string &bind) {
     unique_lock<mutex> lock(m_locker);
     var->setBind(bind);
+    sendToClient(bind, var->getValue());
     lock.unlock();
 }
 
@@ -186,16 +189,18 @@ void Data::changeVarValue(Var *var, double value) {
     if (isPath(var->getVarName())) {
         _pathMap[path] = value;
     }
-    lock.unlock();
     sendToClient(var->getBindAdress(), value);
+    lock.unlock();
 }
 
 void Data::sendToClient(const string &path, double value) {
-    string s = "";
-    s.clear();
-    s += "set " + path + " " + to_string(value) + "\r\n";
-    cout << s << endl;
-    _client->Send(s);
+    if (bindMap.count(path) > 0) {
+        string s = "";
+        s.clear();
+        s += "set " + path + " " + to_string(value) + "\r\n";
+        cout << s << endl;
+        _client->Send(s);
+    }
 }
 
 /**
@@ -230,7 +235,5 @@ void Data::toMap(string toSplit) {
                 (splitted, DOUBLE));
         addToMapsFromServer(p);
         toSplit.erase(0, pos + 1);
-       // if (++it == m_xmlHandler.end())
-          //  break;
     }
 }
