@@ -5,7 +5,7 @@
 #ifndef UAV_PROJECT_ENTERCCOMMAND_H
 #define UAV_PROJECT_ENTERCCOMMAND_H
 
-#include "Commends/Command.h"
+#include "Command.h"
 #include <stdio.h>
 
 class EntercCommand : public Command{

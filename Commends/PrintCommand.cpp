@@ -3,7 +3,6 @@
 //
 
 #include <vector>
-#include <Utils.h>
 #include "PrintCommand.h"
 
 void PrintCommand::doCommand(vector<string> &arguments, Data *d) {

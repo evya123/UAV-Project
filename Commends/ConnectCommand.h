@@ -6,7 +6,7 @@
 #define UAV_PROJECT_CONNECTCOMMAND_H
 
 #include "Command.h"
-#include <Commends/PullAndPush/TcpClient.h>
+#include "PullAndPush/TcpClient.h"
 #include "Utils.h"
 #define PORT_POS_Client 0
 #define IP_POS 1
